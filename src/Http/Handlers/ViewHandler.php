@@ -2,6 +2,7 @@
 
 namespace Vis\Builder\Handlers;
 
+use Vis\Builder\Helpers\AnnotationHelper;
 use Vis\Builder\JarboeController;
 use Illuminate\Support\Facades\Session;
 
@@ -86,6 +87,11 @@ class ViewHandler
 
         if (! $table->rows) {
             $table->rows = $this->controller->query->getRows();
+        }
+
+        if (isset($this->definition['options']['annotations'])) {
+            $annotation = new AnnotationHelper($this->definition['options']['annotations']);
+            $table->annotation = $annotation->handle();
         }
 
         $table->def = $this->definition;

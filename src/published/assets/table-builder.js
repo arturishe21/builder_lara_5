@@ -1920,9 +1920,47 @@ var TableBuilder = {
             window.history.pushState(url, '', url);
         }
     },
+    initSortableValue: function ($target) {
 
+        if ($target.length) {
+
+            $target.find(".sortable-values").sortable({
+                items: ".sortable-item",
+                handle: ".sortable-handler",
+                axis: "y",
+                update: function(event, ui){
+                    updateSortableValue($target);
+                }
+            }).disableSelection();
+        }
+    },
+
+    updateSortableValue: function ($target) {
+
+        var $items = $target.find('.sortable-item'),
+            values = [],
+            $input = $target.find('[data-sortable-result]');
+
+
+        $items.each(function () {
+            var $optionActivator = $(this).find('input[data-option-activation]');
+            if ($optionActivator.length) {
+                if ($optionActivator.is(':checked')) {
+                    values.push(this.getAttribute('data-value'));
+                }
+            } else {
+                values.push(this.getAttribute('data-value'));
+            }
+
+        });
+
+        $input.val(values.join(','));
+    }
 };
-
+$(document).on('change', '[data-interface="sortable"] [data-option-activation]', function(){
+    var $target = $(this).closest('[data-interface="sortable"]');
+    TableBuilder.updateSortableValue($target);
+});
 $(window).load(function() {
     //TableBuilder.initFroalaEditor();
     TableBuilder.handleStartLoad();
