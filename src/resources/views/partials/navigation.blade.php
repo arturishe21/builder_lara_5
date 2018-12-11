@@ -13,7 +13,7 @@
     <!-- end user info -->
     <nav>
         <ul style="display: block;">
-            @foreach($menu as $k=>$el)
+            @foreach($menu as $k => $el)
                 @if(!isset($el['check']) || $el['check']())
 
                     @if (isset($el['custom']))
@@ -21,7 +21,8 @@
                     @else
 
                         <li class="level1">
-                            <a  {!! isset($el['link']) && !isset($el['submenu'])? "href='/admin".$el['link']."'" : "" !!}>
+                            <?php $link = @$el['link'] && !@$el['submenu'] ? (@$el['not_admin'] ? $el['link'] : url("/admin/{$el['link']}")) : false; ?>
+                            <a  {!! $link ? 'href="' . $link .'"' : '' !!}>
                                 @if (isset($el['icon']))
                                     <i class="fa fa-lg fa-fw fa-{{$el['icon']}}"></i>
                                 @endif
@@ -46,19 +47,17 @@
                                         @if(!isset($sub_menu['check']) || $sub_menu['check']())
                                             <li>
                                                 <a
-                                                        {!! isset($sub_menu['link']) && !isset($sub_menu['submenu']) ? "href='/admin".$sub_menu['link']."'" : "" !!}
-                                                >{{__cms($sub_menu['title'])}}
+                                                    {!! isset($sub_menu['link']) && !isset($sub_menu['submenu']) ? "href='/admin".$sub_menu['link']."'" : "" !!}
+                                                >
+                                                    {{__cms($sub_menu['title'])}}
 
                                                     @if (isset($sub_menu['badge']))
                                                         <?php $badgeValue = $sub_menu['badge'](); ?>
 
-                                                        <span
-                                                                class="badge bg-color-greenLight pull-right inbox-badge"
-                                                                style="@if(!$badgeValue) display: none @endif"
-                                                        >
-                                                        {{is_numeric($badgeValue) ? $badgeValue : ''}}
-                                                    </span>
-                                                   @endif
+                                                        <span class="badge bg-color-greenLight pull-right inbox-badge"
+                                                              style="@if(!$badgeValue) display: none @endif"
+                                                        >{{is_numeric($badgeValue) ? $badgeValue : ''}}</span>
+                                                    @endif
                                                 </a>
                                                 @if(isset($sub_menu['submenu']))
 
