@@ -6,6 +6,7 @@ return [
     'favicon_url'      => '/packages/vis/builder/img/favicon/favicon.ico',
     'uri'              => '/admin',
     'limitation_of_ip' => [],
+    'definition_namespace' => '\\App\\Definitions',
     'menu'             => [
 
         /* array(

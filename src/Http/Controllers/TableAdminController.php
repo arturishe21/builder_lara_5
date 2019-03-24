@@ -3,34 +3,18 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\View;
 use Vis\Builder\Facades\Jarboe as JarboeFacade;
 
-/**
- * Class TableAdminController.
- */
 class TableAdminController extends Controller
 {
     private $urlAdmin = '/admin/';
 
-    /**
-     * @return mixed
-     */
     public function showTree()
     {
-        $controller = JarboeFacade::tree();
-
-        return $controller->handle();
+        return JarboeFacade::tree()->handle();
     }
 
-    /**
-     * @param $nameTree
-     *
-     * @return mixed
-     */
     public function showTreeOther($nameTree)
     {
         $model = config('builder.'.$nameTree.'_tree.model');
@@ -46,21 +30,11 @@ class TableAdminController extends Controller
         return $controller->handle();
     }
 
-    /**
-     * @return mixed
-     */
     public function handleTree()
     {
-        $controller = JarboeFacade::tree();
-
-        return $controller->process();
+        return JarboeFacade::tree()->process();
     }
 
-    /**
-     * @param $nameTree
-     *
-     * @return mixed
-     */
     public function handleTreeOther($nameTree)
     {
         $model = config('builder.'.$nameTree.'_tree.model');
@@ -71,16 +45,9 @@ class TableAdminController extends Controller
             'def_name' => $nameTree.'/node',
         ];
 
-        $controller = JarboeFacade::tree($model, $option, $nameTree);
-
-        return $controller->process();
+        return JarboeFacade::tree($model, $option, $nameTree)->process();
     }
 
-    /**
-     * @param string $nameTree
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function showTreeAll($nameTree)
     {
         $model = config('builder.'.$nameTree.'.model');
@@ -103,66 +70,28 @@ class TableAdminController extends Controller
         return view('admin::tree.tree', compact('tree', 'parentIDs'));
     }
 
-    /**
-     * @param string $page
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function showPage($page)
     {
-        $options = [
-            'url'      => $this->urlAdmin.$page,
-            'def_name' => $page,
-        ];
-
-        $table = JarboeFacade::table($options)['showList'];
+        $table = JarboeController::init($page)->handle()['showList'];
 
         return view('admin::table', compact('table'));
     }
 
-    /**
-     * @param $page
-     *
-     * @return mixed
-     */
     public function showPagePost($page)
     {
-        $options = [
-            'url'      => $this->urlAdmin.$page,
-            'def_name' => $page,
-        ];
-
-        return JarboeFacade::table($options)['showList'];
+        return JarboeController::init($page)->handle()['showList'];
     }
 
-    /**
-     * @param $page
-     *
-     * @return mixed
-     */
     public function handlePage($page)
     {
-        $options = [
-            'url'      => $this->urlAdmin.$page,
-            'def_name' => $page,
-        ];
-
-        return JarboeFacade::table($options);
+        return JarboeController::init($page)->handle();
     }
 
-    /**
-     * @param $table
-     */
     public function fastEditText($table)
     {
         DB::table($table)->where('id', request('pk'))->update([request('name') => request('value')]);
     }
 
-    /**
-     * @throws \Throwable
-     *
-     * @return string
-     */
     public function doChangeRelationField()
     {
         $data = json_decode(htmlspecialchars_decode(request('dataFieldJson')));
@@ -211,9 +140,6 @@ class TableAdminController extends Controller
         return view('admin::tb.foreign_options', compact('options', 'selected'))->render();
     }
 
-    /**
-     * @return int|mixed
-     */
     public function insertRecordForManyToMany()
     {
         $title = request('title');
