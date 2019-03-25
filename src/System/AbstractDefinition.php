@@ -2,19 +2,18 @@
 
 namespace Vis\Builder\System;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Vis\Builder\Fields\AbstractField;
 use Vis\Builder\Handlers\CustomHandler;
 
-abstract class AbstractDefinition
+abstract class AbstractDefinition implements \ArrayAccess
 {
     protected $handler;
+    protected $caption;
+    protected $perPage;
 
     abstract public function getModel() : Model;
-
-    abstract public function getCaption() : string;
 
     abstract public function getFields() : array;
 
@@ -25,6 +24,11 @@ abstract class AbstractDefinition
         }
 
         return null;
+    }
+
+    final public function getCaption() : string
+    {
+        return __cms($this->caption);
     }
 
     final public function hasCallbacks() : bool
@@ -52,9 +56,34 @@ abstract class AbstractDefinition
         return !empty($this->getMultiActions());
     }
 
-    public function getName() : string
+    final public function isShowInsert()
+    {
+        return isset($this->getActions()['insert']);
+    }
+
+    final public function getPerPage()
+    {
+        return $this->perPage;
+    }
+
+    final public function getName() : string
     {
         return substr(Str::snake(class_basename($this)), -11);
+    }
+
+    public function getPaginationQuantityButtons() : array
+    {
+        return [];
+    }
+
+    public function getCacheTags() : array
+    {
+        return [];
+    }
+
+    public function getExtendsTable() : array
+    {
+        return [];
     }
 
     public function isSortable() : bool
@@ -72,9 +101,14 @@ abstract class AbstractDefinition
         return ['id', 'desc'];
     }
 
-    public function getFilter(Builder $builder) : Builder
+    public function getFilters()
     {
-        return $builder;
+        return [];
+    }
+
+    public function getAnnotations()
+    {
+        return null;
     }
 
     public function getButtons() : array
@@ -108,7 +142,7 @@ abstract class AbstractDefinition
 
         foreach ($this->getFields() as $field) {
             if ($this->checkShowList($field)) {
-                $result[$field->getAttribute('caption')] = $field;
+                $result[$field->getFieldName()] = $field;
             }
         }
 
@@ -126,6 +160,32 @@ abstract class AbstractDefinition
         }
 
         return false;
+    }
+
+    public function offsetGet($value)
+    {
+        $method = 'get' . strtoupper($value);
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        }
+
+        return null;
+    }
+
+    public function offsetUnset($value)
+    {
+
+    }
+
+    public function offsetExists($value)
+    {
+        return method_exists($this, 'get' . strtoupper($value));
+    }
+
+    public function offsetSet($offset, $value)
+    {
+
     }
 
     private function checkShowList(AbstractField $value)

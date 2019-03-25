@@ -37,8 +37,8 @@ class ViewHandler
     {
         $this->controller = $controller;
         $this->definition = $controller->getDefinition();
-        $this->definitionName = $controller->getOption('def_name');
-        $this->model = $this->definition['options']['model'] ?? '';
+        $this->definitionName = $this->definition->getName();
+        $this->model = $this->definition->getModel();
     }
 
     /**
@@ -121,15 +121,15 @@ class ViewHandler
             $table->rows = $this->controller->query->getRows();
         }
 
-        if (isset($this->definition['options']['annotations'])) {
-            $annotation = new AnnotationHelper($this->definition['options']['annotations']);
+        if (!is_null($this->definition->getAnnotations())) {
+            $annotation = new AnnotationHelper($this->definition->getAnnotations());
             $table->annotation = $annotation->handle();
         }
 
         $table->def = $this->definition;
         $table->controller = $this->controller;
         $table->per_page = Session::get('table_builder.'.$this->definitionName.'.per_page');
-        $table->fieldsList = $this->controller->definitionClass->getFieldsList();
+        $table->fieldsList = $this->controller->getDefinition()->getFieldsList();
         $table->filterView = $this->getViewFilter($table->def);
 
         return $table;

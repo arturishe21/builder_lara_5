@@ -10,52 +10,18 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Vis\Builder\JarboeController;
 
-/**
- * Class QueryHandler.
- */
 class QueryHandler
 {
-    /**
-     * @var JarboeController
-     */
     protected $controller;
-    /**
-     * @var
-     */
     protected $dbName;
-    /**
-     * @var
-     */
     protected $dbOptions;
-    /**
-     * @var
-     */
     protected $model;
-    /**
-     * @var mixed
-     */
     protected $definition;
-    /**
-     * @var mixed
-     */
     protected $definitionName;
-    /**
-     * @var
-     */
     protected $db;
-    /**
-     * @var
-     */
     protected $extendsTable;
-    /**
-     * @var
-     */
     protected $extendsTableId;
-    /**
-     * @var array
-     */
     protected $extendsFields = [];
-
     protected $extendsFieldsModel = [];
 
     /**
@@ -67,16 +33,16 @@ class QueryHandler
     {
         $this->controller = $controller;
         $this->definition = $controller->getDefinition();
-        $this->definitionName = $controller->getOption('def_name');
+        $this->definitionName = $this->definition->getName();
 
-        $this->cache = isset($this->definition['cache']['tags']) ? $this->definition['cache']['tags'] : '';
+        $this->cache = $this->definition->getCacheTags() ?: '';
 
-        $this->dbOptions = $this->definition['db'];
-        $this->model = $this->definition['options']['model'] ?? '';
-        $this->dbName = $this->definition['db']['table'] ?? '';
+//        $this->dbOptions = $this->definition['db'];
+        $this->model = $this->definition->getModel();
+        $this->dbName = $this->model->getTable();
 
-        if (isset($this->definition['options']['extends']) && count($this->definition['options']['extends'])) {
-            foreach ($this->definition['options']['extends'] as $extend) {
+        if (!empty($this->definition->getExtendsTable())) {
+            foreach ($this->definition->getExtendsTable() as $extend) {
                 $table = $extend['table'];
                 $this->extendsTable[$table] = $table;
 
@@ -125,7 +91,7 @@ class QueryHandler
             return [];
         }
 
-        $this->db = new $modelName();
+        $this->db = $modelName->newQuery();
 
         $this->prepareSelectValues();
 
@@ -164,10 +130,10 @@ class QueryHandler
         if ($order && $isUserFilters) {
             $this->db->orderBy($this->dbName.'.'.$order['field'], $order['direction']);
         } elseif ($this->hasOptionDB('order')) {
-            $order = $this->getOptionDB('order');
+            $order = $this->definition->getOrder();
 
             foreach ($order as $field => $direction) {
-                $this->db->orderBy($this->dbName.'.'.$field, $direction);
+                $this->db->orderBy($this->dbName.'.'.$order[0], $order[1] ?? 'asc');
             }
         }
 
@@ -178,9 +144,8 @@ class QueryHandler
             $this->db->whereBetween($betweenField, $betweenValues);
         }
 
-        if ($this->hasOptionDB('pagination') && $isPagination) {
-            $pagination = $this->getOptionDB('pagination');
-            $perPage = $this->getPerPageAmount($pagination['per_page']);
+        if ($isPagination) {
+            $perPage = $this->getPerPageAmount($this->definition->getPerPage());
 
             return $this->db->paginate($perPage);
         }
@@ -225,7 +190,8 @@ class QueryHandler
 
     protected function prepareFilterValues()
     {
-        $filters = isset($this->definition['filters']) ? $this->definition['filters'] : [];
+        $filters = $this->definition->getFilters();
+
         if (is_callable($filters)) {
             $filters($this->db);
 
@@ -256,7 +222,7 @@ class QueryHandler
     {
         $this->db = $this->db->select($this->dbName.'.id');
 
-        if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
+        if ($this->definition->isSortable()) {
             $this->db = $this->db->addSelect($this->dbName.'.priority');
         }
 

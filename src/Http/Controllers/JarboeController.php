@@ -14,9 +14,6 @@ use Vis\Builder\Services\DefinitionLoader;
 
 class JarboeController
 {
-    /**
-     * @var CustomClosureHandler
-     */
     protected $callbacks;
     protected $currentID = false;
     protected $options;
@@ -27,33 +24,12 @@ class JarboeController
     protected $patterns = [];
     protected $allowedIds;
 
-    /**
-     * @var ViewHandler
-     */
     public $view;
-    /**
-     * @var RequestHandler
-     */
     public $request;
-    /**
-     * @var QueryHandler
-     */
     public $query;
-    /**
-     * @var ActionsHandler
-     */
     public $actions;
-    /**
-     * @var ExportHandler
-     */
     public $export;
-    /**
-     * @var ImportHandler
-     */
     public $import;
-    /**
-     * @var ButtonsHandler
-    */
     public $buttons;
     public $imageStorage;
     public $fileStorage;
@@ -94,6 +70,11 @@ class JarboeController
         $this->request = new RequestHandler($this);
 
         $this->currentID = request('id');
+    }
+
+    public function getUrlAction()
+    {
+        return '/admin/handle/'.$this->definition->getName();
     }
 
     public function getCurrentID()
@@ -183,9 +164,9 @@ class JarboeController
         $definition = $this->getDefinition();
         $fields = [];
 
-        foreach ($definition->getFields() as $info) {
-            if ($info->getType() === 'group' && count($info->getAttribute('filds', []))) {
-                foreach ($info->getAttribute('filds', []) as $nameGroup => $infoGroup) {
+        foreach ($definition->getFields() as $field) {
+            if ($field->getType() === 'group' && count($field->getAttribute('filds', []))) {
+                foreach ($field->getAttribute('filds', []) as $nameGroup => $infoGroup) {
                     $fields[$nameGroup] = $this->createFieldInstance($nameGroup, $infoGroup);
                 }
             }
@@ -208,9 +189,8 @@ class JarboeController
     {
         return new Fields\PatternField(
             $name,
-            $info,
-            $this->options,
             $this->getDefinition(),
+            $info,
             $this->getCustomHandler()
         );
     }
@@ -229,14 +209,14 @@ class JarboeController
 
     public function getFiltersDefinition()
     {
-        $defName = $this->getOption('def_name');
+        $defName = $this->getDefinition()->getName();
 
         return session('table_builder.'.$defName.'.filters', []);
     }
 
     public function getOrderDefinition()
     {
-        $defName = $this->getOption('def_name');
+        $defName = $this->getDefinition()->getName();
 
         return session('table_builder.'.$defName.'.order', []);
     }

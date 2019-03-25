@@ -258,7 +258,7 @@ abstract class AbstractField
     public function prepareQueryValue($value)
     {
         if (! $value && $this->getAttribute('is_null')) {
-            return;
+            return null;
         }
 
         if (is_null($value)) {
@@ -279,7 +279,7 @@ abstract class AbstractField
 
         $tabs = $this->getAttribute('tabs');
 
-        $tableName = $this->getAttribute('extends_table', $this->definition['db']['table']);
+        $tableName = $this->getAttribute('extends_table', $this->definition->getModel()->getTable());
         $fieldName = $this->getFieldName();
 
         if ($tabs) {

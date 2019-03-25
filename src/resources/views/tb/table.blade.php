@@ -1,12 +1,12 @@
 @section('title')
-  {{ __cms($def['options']['caption'] ?? '') }}
+  {{ $def->getCaption() }}
 @stop
 
 @section('ribbon')
    <ol class="breadcrumb">
         <li><a href="/admin"> {{__cms('Главная')}}</a></li>
-        @if (isset($def['options']['caption']))
-        <li>{{__cms($def['options']['caption']) }}</li>
+        @if($def->getCaption())
+            <li>{{ $def->getCaption()  }}</li>
         @endif
    </ol>
 @stop
@@ -26,16 +26,15 @@
                     {!!  $filterView !!}
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>{{ __cms($def['options']['caption']) }}</h2>
-                        {!! isset($def['buttons']) && $def['buttons'] ?  $controller->buttons->fetch() : '' !!}
-                        {!! isset($def['import']) && $def['import']  ? $controller->import->fetch() : '' !!}
-                        {!! isset($def['export']) && $def['export'] ? $controller->export->fetch() : '' !!}
+                        <h2>{{ $def->getCaption() }}</h2>
+                        {!! $def->hasButtons() ?  $controller->buttons->fetch() : '' !!}
+                        {!! $def->hasExportButtons()  ? $controller->import->fetch() : '' !!}
+                        {!! $def->hasImportButtons() ? $controller->export->fetch() : '' !!}
                     </header>
                     <div>
                         <div class="jarviswidget-editbox"></div>
                         <div class="widget-body no-padding">
-                            <form
-                                  action="{{$controller->getUrlAction()}}"
+                            <form action="{{ $controller->getUrlAction() }}"
                                   method="post"
                                   class="form-horizontal tb-table"
                                   target="submiter" >
@@ -60,7 +59,7 @@
 </section>
 @if (isset($def['options']['caption']))
     <script>
-        $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{ __cms($def['options']['caption'] ?? '') }}</li>");
-        $("title").text("{{ __cms($def['options']['caption'] ?? '') }} - {{ __cms(config('builder.admin.caption')) }}");
+        $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{ $def->getCaption() }}</li>");
+        $("title").text("{{ $def->getCaption() }} - {{ __cms(config('builder.admin.caption')) }}");
     </script>
 @endif
