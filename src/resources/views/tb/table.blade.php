@@ -14,7 +14,7 @@
 
     @include('admin::partials.cards')
 
-    @if (isset($def['fields']))
+    @if($def->getFields())
         <div class="row" style="padding-right: 13px; padding-left: 13px;">
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right: 0px; padding-left: 0px;">
                 <div id="table-preloader" class="smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
@@ -57,7 +57,7 @@
         </div>
     @endif
 </section>
-@if (isset($def['options']['caption']))
+@if($def->getCaption())
     <script>
         $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{ $def->getCaption() }}</li>");
         $("title").text("{{ $def->getCaption() }} - {{ __cms(config('builder.admin.caption')) }}");

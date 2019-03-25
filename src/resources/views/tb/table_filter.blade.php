@@ -1,12 +1,12 @@
-@if (isset($def['actions']['filter']))
+@if($def->hasAction('filter'))
      <form name="filter">
        <table>
         <tr>
             <td>
-                {{$def['actions']['filter']['caption'] ?? ""}}
+                {{ $def->getAction()['filter']['caption'] ?? ""}}
             </td>
-            @if(isset($def['actions']['filter']['fields']) && count($def['actions']['filter']['fields']))
-                @foreach($def['actions']['filter']['fields'] as $field)
+            @if(isset($def->getAction()['filter']['fields']) && count($def->getAction()['filter']['fields']))
+                @foreach($def->getAction()['filter']['fields'] as $field)
                      <td>
                        <section>
                            <div style="position: relative;">
@@ -33,4 +33,4 @@
             doAjaxLoadContent(window.location.pathname);
         });
     </script>
- @endif
+@endif

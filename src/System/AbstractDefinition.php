@@ -7,11 +7,33 @@ use Illuminate\Support\Str;
 use Vis\Builder\Fields\AbstractField;
 use Vis\Builder\Handlers\CustomHandler;
 
-abstract class AbstractDefinition implements \ArrayAccess
+abstract class AbstractDefinition
 {
     protected $handler;
     protected $caption;
     protected $perPage;
+    protected $cards = [];
+    protected $sortable = false;
+    protected $actions = [
+        'insert' => [
+            'caption' => 'Добавить'
+        ],
+        'preview' => [
+            'caption' => 'Предпросмотр'
+        ],
+        'clone' => [
+            'caption' => 'Клонировать'
+        ],
+        'update' => [
+            'caption' => 'Редактировать'
+        ],
+        'revisions' => [
+            'caption' => 'Версии'
+        ],
+        'delete' => [
+            'caption' => 'Удалить'
+        ],
+    ];
 
     abstract public function getModel() : Model;
 
@@ -68,7 +90,32 @@ abstract class AbstractDefinition implements \ArrayAccess
 
     final public function getName() : string
     {
-        return substr(Str::snake(class_basename($this)), -11);
+        return substr(Str::snake(class_basename($this)), 0,-11);
+    }
+
+    final public function isSortable() : bool
+    {
+        return $this->sortable;
+    }
+
+    final public function hasAction($action) : bool
+    {
+        return isset($this->getActions()[$action]);
+    }
+
+    final public function getCards() : array
+    {
+        return $this->cards;
+    }
+
+    public function getActions() : array
+    {
+        return $this->actions;
+    }
+
+    public function getOrder() : array
+    {
+        return ['id', 'desc'];
     }
 
     public function getPaginationQuantityButtons() : array
@@ -86,19 +133,9 @@ abstract class AbstractDefinition implements \ArrayAccess
         return [];
     }
 
-    public function isSortable() : bool
-    {
-        return false;
-    }
-
     public function getCallbacks() : array
     {
         return [];
-    }
-
-    public function getOrder() : array
-    {
-        return ['id', 'desc'];
     }
 
     public function getFilters()
@@ -112,11 +149,6 @@ abstract class AbstractDefinition implements \ArrayAccess
     }
 
     public function getButtons() : array
-    {
-        return [];
-    }
-
-    public function getActions() : array
     {
         return [];
     }
@@ -160,32 +192,6 @@ abstract class AbstractDefinition implements \ArrayAccess
         }
 
         return false;
-    }
-
-    public function offsetGet($value)
-    {
-        $method = 'get' . strtoupper($value);
-
-        if (method_exists($this, $method)) {
-            return $this->{$method}();
-        }
-
-        return null;
-    }
-
-    public function offsetUnset($value)
-    {
-
-    }
-
-    public function offsetExists($value)
-    {
-        return method_exists($this, 'get' . strtoupper($value));
-    }
-
-    public function offsetSet($offset, $value)
-    {
-
     }
 
     private function checkShowList(AbstractField $value)
