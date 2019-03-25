@@ -5,23 +5,28 @@ namespace Vis\Builder\Fields;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Vis\Builder\Handlers\CustomHandler;
+use Vis\Builder\System\AbstractDefinition;
 
 abstract class AbstractField
 {
     protected $fieldName;
     protected $attributes;
-    protected $options;
     protected $definition;
     protected $handler;
 
-    public function __construct($fieldName, $attributes, $options, $definition, $handler)
+    public static function make(string $column, AbstractDefinition $def, array $attr = [], CustomHandler $handler = null)
     {
-        $this->attributes = $this->prepareAttributes($attributes);
-        $this->options = $options;
-        $this->definition = $definition;
-        $this->fieldName = $fieldName;
+        return new static($column, $def, $attr, $handler);
+    }
 
+    public function __construct(string $column, AbstractDefinition $def, array $attr = [], CustomHandler $handler = null)
+    {
+        $this->attributes = $this->prepareAttributes($attr);
+        $this->definition = $def;
+        $this->fieldName = $column;
         $this->handler = &$handler;
     }
 
@@ -37,7 +42,7 @@ abstract class AbstractField
 
     public function getUrlAction()
     {
-        return '/admin/handle/'.$this->options['def_name'];
+        return '/admin/handle/'.$this->definition->getName();
     }
 
     private function prepareAttributes($attributes)
@@ -52,7 +57,7 @@ abstract class AbstractField
 
     protected function getOption($ident)
     {
-        return $this->options[$ident];
+        throw new \Exception('debug getOption');
     }
 
     public function getAttribute($ident, $default = false)
@@ -457,5 +462,58 @@ abstract class AbstractField
         $order = $controller->getOrderDefinition();
 
         return $order && $order['field'] == $this->getFieldName() ? 'sorting_'.$order['direction'] : '';
+    }
+
+    public function caption(string $caption)
+    {
+        $this->attributes['caption'] = $caption;
+
+        return $this;
+    }
+
+    public function setClasses($classes)
+    {
+        $class = $classes;
+
+        if (is_array($class)) {
+            $class = implode(' ', $classes);
+        }
+
+        $this->attributes['class'] = $class;
+
+        return $this;
+    }
+
+    public function width(string $width)
+    {
+        $this->attributes['width'] = $width;
+
+        return $this;
+    }
+
+    public function hide(bool $hide = true)
+    {
+        $this->attributes['hide'] = $hide;
+
+        return $this;
+    }
+
+    public function sorting(bool $sorting = true)
+    {
+        $this->attributes['is_sorting'] = $sorting;
+
+        return $this;
+    }
+
+    public function filter(string $filterType = null)
+    {
+        $this->attributes['filter'] = $filterType ?? false;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return substr(Str::snake(class_basename($this)), -6);
     }
 }

@@ -11,7 +11,8 @@ class DefinitionLoader
     public static function get(string $page) : ?AbstractDefinition
     {
         if (static::exist($page)) {
-            return new (static::getPath($page));
+            $path = static::getPath($page);
+            return new $path;
         }
 
         return null;

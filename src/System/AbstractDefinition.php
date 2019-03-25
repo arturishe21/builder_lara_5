@@ -4,6 +4,7 @@ namespace Vis\Builder\System;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Vis\Builder\Fields\AbstractField;
 use Vis\Builder\Handlers\CustomHandler;
 
@@ -20,7 +21,7 @@ abstract class AbstractDefinition
     final public function getCustomHandler() : ?CustomHandler
     {
         if (is_string($this->handler) && class_exists($this->handler)) {
-            return new ($this->handler);
+            return new $this->handler;
         }
 
         return null;
@@ -49,6 +50,11 @@ abstract class AbstractDefinition
     final public function hasMultiActions() : bool
     {
         return !empty($this->getMultiActions());
+    }
+
+    public function getName() : string
+    {
+        return substr(Str::snake(class_basename($this)), -11);
     }
 
     public function isSortable() : bool
@@ -100,9 +106,9 @@ abstract class AbstractDefinition
     {
         $result = [];
 
-        foreach ($this->getFields() as $name => $value) {
-            if ($this->checkShowList($value)) {
-                $result[] = $value;
+        foreach ($this->getFields() as $field) {
+            if ($this->checkShowList($field)) {
+                $result[$field->getAttribute('caption')] = $field;
             }
         }
 

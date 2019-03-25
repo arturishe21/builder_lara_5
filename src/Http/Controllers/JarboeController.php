@@ -163,43 +163,35 @@ class JarboeController
 
     protected function loadFields()
     {
-        $definitionThis = $this->getDefinition();
+        $definition = $this->getDefinition();
 
-        $fieldsThis = [];
+        $fields = [];
 
-        if (! isset($definitionThis['fields'])) {
-            return $fieldsThis;
-        }
-
-        foreach ($definitionThis['fields'] as $name => $info) {
+        foreach ($definition->getFieldsList() as $name => $field) {
             if ($this->isPatternField($name)) {
-                $this->patterns[$name] = $this->createPatternInstance($name, $info);
+                $this->patterns[$name] = $this->createPatternInstance($name, $field);
             } else {
-                $fieldsThis[$name] = $this->createFieldInstance($name, $info);
+                $fields[$name] = $field;
             }
         }
 
-        return $fieldsThis;
+        return $fields;
     }
 
     protected function loadGroupFields()
     {
-        $definitionThis = $this->getDefinition();
-        $fieldsThis = [];
+        $definition = $this->getDefinition();
+        $fields = [];
 
-        if (! isset($definitionThis['fields'])) {
-            return $fieldsThis;
-        }
-
-        foreach ($definitionThis['fields'] as $info) {
-            if ($info['type'] == 'group' && count($info['filds'])) {
-                foreach ($info['filds'] as $nameGroup => $infoGroup) {
-                    $fieldsThis[$nameGroup] = $this->createFieldInstance($nameGroup, $infoGroup);
+        foreach ($definition->getFields() as $info) {
+            if ($info->getType() === 'group' && count($info->getAttribute('filds', []))) {
+                foreach ($info->getAttribute('filds', []) as $nameGroup => $infoGroup) {
+                    $fields[$nameGroup] = $this->createFieldInstance($nameGroup, $infoGroup);
                 }
             }
         }
 
-        return $fieldsThis;
+        return $fields;
     }
 
     public function getPatterns()
@@ -229,9 +221,8 @@ class JarboeController
 
         return new $className(
             $name,
-            $info,
-            $this->options,
             $this->getDefinition(),
+            $info,
             $this->getCustomHandler()
         );
     }
