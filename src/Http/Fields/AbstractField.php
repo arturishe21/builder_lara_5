@@ -2,32 +2,36 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Vis\Builder\Handlers\CustomHandler;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
 use Vis\Builder\System\AbstractDefinition;
 
 abstract class AbstractField
 {
     protected $fieldName;
-    protected $attributes;
     protected $definition;
     protected $handler;
+    protected $attributes = [
+        'fast-edit' => false,
+        'filter'    => false,
+        'hide'      => false,
+        'is_null'   => false
+    ];
 
-    public static function make(string $column, AbstractDefinition $def, array $attr = [], CustomHandler $handler = null)
+    public static function make(string $column, string $caption, AbstractDefinition $def, array $attr = [])
     {
-        return new static($column, $def, $attr, $handler);
+        return new static($column, $caption, $def, $attr);
     }
 
-    public function __construct(string $column, AbstractDefinition $def, array $attr = [], CustomHandler $handler = null)
+    public function __construct(string $column, string $caption, AbstractDefinition $def, array $attr = [])
     {
-        $this->attributes = $this->prepareAttributes($attr);
         $this->definition = $def;
         $this->fieldName = $column;
-        $this->handler = &$handler;
+        $this->handler = $def->getCustomHandler();
+        $this->attributes['caption'] = $caption;
+        $this->attributes = array_merge($this->attributes, $attr);
     }
 
     public function isPattern()
@@ -45,19 +49,9 @@ abstract class AbstractField
         return '/admin/handle/'.$this->definition->getName();
     }
 
-    private function prepareAttributes($attributes)
-    {
-        $attributes['fast-edit'] = isset($attributes['fast-edit']) && $attributes['fast-edit'];
-        $attributes['filter'] = isset($attributes['filter']) ? $attributes['filter'] : false;
-        $attributes['hide'] = isset($attributes['hide']) ? $attributes['hide'] : false;
-        $attributes['is_null'] = isset($attributes['is_null']) ? $attributes['is_null'] : false;
-
-        return $attributes;
-    }
-
     protected function getOption($ident)
     {
-        throw new \Exception('debug getOption');
+        throw new \Exception('debug getOption in abstract field');
     }
 
     public function getAttribute($ident, $default = false)
@@ -83,6 +77,7 @@ abstract class AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
+
             if ($res) {
                 return $res;
             }
@@ -237,9 +232,9 @@ abstract class AbstractField
             return '';
         }
 
-        $definitionName = $this->getOption('def_name');
+        $definitionName = $this->definition->getName();
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
-        $filter = Session::get($sessionPath, '');
+        $filter = session($sessionPath, '');
 
         $type = $this->getAttribute('filter');
 
@@ -268,7 +263,7 @@ abstract class AbstractField
         return $value;
     }
 
-    public function onSelectValue(&$db)
+    public function onSelectValue(Builder &$db)
     {
         if ($this->hasCustomHandlerMethod('onAddSelectField')) {
             $res = $this->handler->onAddSelectField($this, $db);
@@ -277,15 +272,14 @@ abstract class AbstractField
             }
         }
 
-        $tabs = $this->getAttribute('tabs');
+        $tabs = $this->getAttribute('tabs', []);
 
         $tableName = $this->getAttribute('extends_table', $this->definition->getModel()->getTable());
         $fieldName = $this->getFieldName();
 
         if ($tabs) {
             foreach ($tabs as $tab) {
-                $name = $tableName.'.'.$this->getFieldName().$tab['postfix'];
-                $db->addSelect($name);
+                $db->addSelect($tableName.'.'.$fieldName.$tab['postfix']);
             }
         } else {
             $db->addSelect($tableName.'.'.$fieldName);
@@ -393,59 +387,29 @@ abstract class AbstractField
         return '';
     }
 
-    public function onSearchFilter(&$db, $value)
+    public function onSearchFilter(Builder $db, $value)
     {
-        $table = $this->definition['db']['table'];
+        $table = $this->definition->getTable();
+        $field = "$table.{$this->getFieldName()}";
 
         if ($this->getAttribute('filter') == 'integer') {
-            $db->where($table.'.'.$this->getFieldName(), $value);
-
-            return;
+            return $db->where($field, $value);
         }
 
         if ($this->getAttribute('filter') == 'date_range') {
             if (! isset($value['to'])) {
-                $db->where($table.'.'.$this->getFieldName(), '>', $value['from']);
-
-                return;
+                return $db->where($field, '>', $value['from']);
             }
 
             if (! isset($value['from'])) {
-                $db->where($table.'.'.$this->getFieldName(), '<', $value['to']);
-
-                return;
+                return $db->where($field, '<', $value['to']);
             }
 
-            $db->whereBetween($table.'.'.$this->getFieldName(), [$value['from'], $value['to']]);
-
-            return;
+            return $db->whereBetween($field, [$value['from'], $value['to']]);
         }
 
-        $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
+        return $db->where($field, 'LIKE', '%'.$value.'%');
     }
-
-    /*
-        public function onSearchFilterDate(&$db, $value)
-        {
-            $table = $this->definition['db']['table'];
-
-            if ($this->getAttribute('filter') == 'date_range') {
-
-                if (!isset($value['to'])) {
-                    $db->where($table.'.'.$this->getFieldName(), '>' , $value['from']);
-                    return;
-                }
-
-                if (!isset($value['from'])) {
-                    $db->where($table.'.'.$this->getFieldName(), '<' , $value['to']);
-                    return;
-                }
-
-                $db->whereBetween($table.'.'.$this->getFieldName(), [$value['from'], $value['to']]);
-
-                return;
-            }
-        }*/
 
     public function getListValueDefinitionPopup($row)
     {
@@ -462,6 +426,13 @@ abstract class AbstractField
         $order = $controller->getOrderDefinition();
 
         return $order && $order['field'] == $this->getFieldName() ? 'sorting_'.$order['direction'] : '';
+    }
+
+    public function nullable(bool $is = true)
+    {
+        $this->attributes['is_null'] = $is;
+
+        return $this;
     }
 
     public function caption(string $caption)
@@ -491,9 +462,16 @@ abstract class AbstractField
         return $this;
     }
 
-    public function hide(bool $hide = true)
+    public function hide(bool $is = true)
     {
-        $this->attributes['hide'] = $hide;
+        $this->attributes['hide'] = $is;
+
+        return $this;
+    }
+
+    public function hideList(bool $is = true)
+    {
+        $this->attributes['hide_list'] = $is;
 
         return $this;
     }
@@ -512,7 +490,14 @@ abstract class AbstractField
         return $this;
     }
 
-    public function getType()
+    public function extendsTable(string $table)
+    {
+        $this->attributes['extends_table'] = $table;
+
+        return $this;
+    }
+
+    public function getType() : string
     {
         return substr(Str::snake(class_basename($this)), -6);
     }

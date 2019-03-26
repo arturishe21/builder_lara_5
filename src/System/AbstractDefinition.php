@@ -15,6 +15,7 @@ abstract class AbstractDefinition
     protected $position;
     protected $cards = [];
     protected $sortable = false;
+    protected $extends;
     protected $actions = [
         'insert' => [
             'caption' => 'Добавить'
@@ -139,6 +140,16 @@ abstract class AbstractDefinition
         return $this->cache['keys'] ?? [];
     }
 
+    final public function getTable() : string
+    {
+        return $this->getModel()->getTable();
+    }
+
+    final public function getExtendsTable() : array
+    {
+        return $this->extends;
+    }
+
     public function getActions() : array
     {
         return $this->actions;
@@ -150,11 +161,6 @@ abstract class AbstractDefinition
     }
 
     public function getPaginationQuantityButtons() : array
-    {
-        return [];
-    }
-
-    public function getExtendsTable() : array
     {
         return [];
     }

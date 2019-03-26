@@ -135,7 +135,7 @@ class QueryHandler
             return $info;
         }
 
-        return session('table_builder.'.$this->definitionName.'.per_page', array_keys($info)[0]);
+        return session('table_builder.'.$this->definitionName.'.per_page', array_keys($info)[0] ?? 20);
     }
 
     protected function prepareFilterValues()

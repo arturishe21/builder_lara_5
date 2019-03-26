@@ -96,9 +96,9 @@ class DatetimeField extends AbstractField
             return '';
         }
 
-        $definitionName = $this->getOption('def_name');
+        $definitionName = $this->definition->getName();
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
-        $filter = Session::get($sessionPath, '');
+        $filter = session($sessionPath, '');
 
         $input = view('admin::tb.filter_'.$this->getAttribute('filter'));
         $input->name = $this->getFieldName();
