@@ -12,6 +12,7 @@ abstract class AbstractDefinition
     protected $handler;
     protected $caption;
     protected $perPage;
+    protected $position;
     protected $cards = [];
     protected $sortable = false;
     protected $actions = [
@@ -33,6 +34,10 @@ abstract class AbstractDefinition
         'delete' => [
             'caption' => 'Удалить'
         ],
+    ];
+    protected $cache = [
+        'tags' => [],
+        'keys' => []
     ];
 
     abstract public function getModel() : Model;
@@ -108,6 +113,32 @@ abstract class AbstractDefinition
         return $this->cards;
     }
 
+    final public function getFieldsByName() : array
+    {
+        $fields = [];
+
+        foreach ($this->getFields() as $field) {
+            $fields[$field->getFieldName()] = $field;
+        }
+
+        return $fields;
+    }
+
+    final public function getPosition() : ?array
+    {
+        return $this->position;
+    }
+
+    final public function getCacheTags() : array
+    {
+        return $this->cache['tags'] ?? [];
+    }
+
+    final public function getCacheKeys() : array
+    {
+        return $this->cache['keys'] ?? [];
+    }
+
     public function getActions() : array
     {
         return $this->actions;
@@ -119,11 +150,6 @@ abstract class AbstractDefinition
     }
 
     public function getPaginationQuantityButtons() : array
-    {
-        return [];
-    }
-
-    public function getCacheTags() : array
     {
         return [];
     }
@@ -172,9 +198,9 @@ abstract class AbstractDefinition
     {
         $result = [];
 
-        foreach ($this->getFields() as $field) {
+        foreach ($this->getFieldsByName() as $name => $field) {
             if ($this->checkShowList($field)) {
-                $result[$field->getFieldName()] = $field;
+                $result[$name] = $field;
             }
         }
 

@@ -9,6 +9,25 @@ class ActionsHandler
     protected $def;
     protected $controller;
 
+    public static function canDisplayAction(string $actionName, array $actionData) : bool
+    {
+        if ($actionName == 'insert' || $actionName == 'filter' || $actionName == 'custom') {
+            return false;
+        }
+
+        if (!isset($actionData['check'])) {
+            return true;
+        }
+
+        $check = $actionData['check'];
+
+        if (is_callable($check)) {
+            return $check();
+        }
+
+        return (bool)$check;
+    }
+
     public function __construct(array $actionsDefinition, &$controller)
     {
         $this->def = $actionsDefinition;
@@ -25,7 +44,7 @@ class ActionsHandler
                 return $this->onUpdateButton($row);
 
             case 'clone':
-                return $this->onСloneButton($row);
+                return $this->onCloneButton($row);
 
             case 'revisions':
                 return $this->onRevisionsButton($row);
@@ -103,7 +122,7 @@ class ActionsHandler
         return $action;
     }
 
-    private function onСloneButton($row)
+    private function onCloneButton($row)
     {
         if ($this->controller->hasCustomHandlerMethod('onCloneButtonFetch')) {
             $res = $this->controller->getCustomHandler()->onUpdateButtonFetch($this->def['clone']);

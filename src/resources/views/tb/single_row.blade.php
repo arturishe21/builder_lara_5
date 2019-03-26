@@ -16,17 +16,16 @@
 @foreach($def->getFields() as $field)
     @php $field = $controller->getField($field->getFieldName()) @endphp
     @if(!$field->getAttribute('hide_list'))
-        <td  width="{{ $field->getAttribute('width') }}" class="{{ $field->getAttribute('class') }} unselectable">
-            @if ($field->getAttribute('fast-edit'))
+        <td width="{{ $field->getAttribute('width') }}" class="{{ $field->getAttribute('class') }} unselectable">
+            @if($field->getAttribute('fast-edit'))
                 {!! $field->getListValueFastEdit($row, $ident) !!}
             @elseif($field->getAttribute('result_show'))
-                  {!! strip_tags($field->getReplaceStr($row), "<a><span><img><br>") !!}
+                {!! strip_tags($field->getReplaceStr($row), "<a><span><img><br>") !!}
             @else
                 <span>{!! strip_tags($field->getListValue($row), "<a><span><img><br>") !!}</span>
             @endif
         </td>
     @endif
 @endforeach
-
     {!! $controller->view->fetchActions($row) !!}
 </tr>

@@ -13,11 +13,9 @@
                     @endif
 
                     @foreach($def->getActions() as $actionName => $actionArray)
-                        @if($actionName == 'insert' || $actionName == 'filter' || $actionName == 'custom' ||
-                         (isset($actionArray['check']) && !$actionArray['check']()))
-                            @continue
+                        @if(\Vis\Builder\Handlers\ActionsHandler::canDisplayAction($actionName, $actionArray))
+                            {!! $actions->fetch($actionName, $row) !!}
                         @endif
-                        {!! $actions->fetch($actionName, $row) !!}
                     @endforeach
                 </ul>
             </div>

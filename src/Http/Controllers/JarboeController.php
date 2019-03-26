@@ -209,15 +209,11 @@ class JarboeController
 
     public function getFiltersDefinition()
     {
-        $defName = $this->getDefinition()->getName();
-
-        return session('table_builder.'.$defName.'.filters', []);
+        return session('table_builder.'.$this->getDefinition()->getName().'.filters', []);
     }
 
     public function getOrderDefinition()
     {
-        $defName = $this->getDefinition()->getName();
-
-        return session('table_builder.'.$defName.'.order', []);
+        return session('table_builder.'.$this->getDefinition()->getName().'.order', []);
     }
 }
