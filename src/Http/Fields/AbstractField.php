@@ -429,6 +429,11 @@ abstract class AbstractField
         return $order && $order['field'] == $this->getFieldName() ? 'sorting_'.$order['direction'] : '';
     }
 
+    public function getType() : string
+    {
+        return substr(Str::snake(class_basename($this)), -6);
+    }
+
     public function nullable(bool $is = true)
     {
         $this->attributes['is_null'] = $is;
@@ -512,8 +517,17 @@ abstract class AbstractField
         return $this;
     }
 
-    public function getType() : string
+    public function readonlyForEdit(bool $is = true)
     {
-        return substr(Str::snake(class_basename($this)), -6);
+        $this->attributes['readonly_for_edit'] = $is;
+
+        return $this;
+    }
+
+    public function disabled(bool $is = true)
+    {
+        $this->attributes['disabled'] = $is;
+
+        return $this;
     }
 }

@@ -105,18 +105,4 @@ class TextField extends AbstractField
 
         return $this;
     }
-
-    public function readonlyForEdit(bool $is = true)
-    {
-        $this->attributes['readonly_for_edit'] = $is;
-
-        return $this;
-    }
-
-    public function disabled(bool $is = true)
-    {
-        $this->attributes['disabled'] = $is;
-
-        return $this;
-    }
 }
