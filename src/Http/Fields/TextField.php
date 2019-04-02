@@ -84,4 +84,39 @@ class TextField extends AbstractField
 
         return $this->getValue($row);
     }
+
+    public function mask(string $value)
+    {
+        $this->attributes['mask'] = $value;
+
+        return $this;
+    }
+
+    public function customType(string $type)
+    {
+        $this->attributes['custom_type'] = $type;
+
+        return $this;
+    }
+
+    public function onlyNumeric(bool $is = true)
+    {
+        $this->attributes['only_numeric'] = $is;
+
+        return $this;
+    }
+
+    public function readonlyForEdit(bool $is = true)
+    {
+        $this->attributes['readonly_for_edit'] = $is;
+
+        return $this;
+    }
+
+    public function disabled(bool $is = true)
+    {
+        $this->attributes['disabled'] = $is;
+
+        return $this;
+    }
 }

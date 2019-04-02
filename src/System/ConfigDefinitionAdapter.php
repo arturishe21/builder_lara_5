@@ -30,11 +30,6 @@ class ConfigDefinitionAdapter extends AbstractDefinition
         return $this->model;
     }
 
-    public function getCaption() : string
-    {
-        return $this->caption;
-    }
-
     public function getFields() : array
     {
         return $this->fields;

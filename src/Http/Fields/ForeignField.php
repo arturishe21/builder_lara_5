@@ -5,7 +5,6 @@ namespace Vis\Builder\Fields;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class ForeignField extends AbstractField
 {
@@ -13,6 +12,10 @@ class ForeignField extends AbstractField
     private $treeOptions;
     private $recursiveOnlyLastLevel = false;
     private $selectOption;
+
+    protected $defaultAttributes = [
+        'select_type' => 'select2'
+    ];
 
     public function isEditable()
     {
@@ -471,7 +474,7 @@ class ForeignField extends AbstractField
         return explode(' ', $this->getAttribute('foreign_value_field'));
     }
 
-    public function selectType(string $type = 'select2')
+    public function selectType(string $type)
     {
         $this->attributes['select_type'] = $type;
 

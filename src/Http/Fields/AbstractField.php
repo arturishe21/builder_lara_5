@@ -13,6 +13,7 @@ abstract class AbstractField
     protected $fieldName;
     protected $definition;
     protected $handler;
+    protected $defaultAttributes = [];
     protected $attributes = [
         'fast-edit' => false,
         'filter'    => false,
@@ -493,6 +494,20 @@ abstract class AbstractField
     public function extendsTable(string $table)
     {
         $this->attributes['extends_table'] = $table;
+
+        return $this;
+    }
+
+    public function placeholder(string $text)
+    {
+        $this->attributes['placeholder'] = $text;
+
+        return $this;
+    }
+
+    public function default(string $text)
+    {
+        $this->attributes['placeholder'] = $text;
 
         return $this;
     }
