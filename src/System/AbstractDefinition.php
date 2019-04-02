@@ -13,9 +13,10 @@ abstract class AbstractDefinition
     protected $caption;
     protected $perPage;
     protected $position;
+    protected $extends;
+    protected $action_url_tree;
     protected $cards = [];
     protected $sortable = false;
-    protected $extends;
     protected $actions = [
         'insert' => [
             'caption' => 'Добавить'
@@ -148,6 +149,11 @@ abstract class AbstractDefinition
     final public function getExtendsTable() : array
     {
         return $this->extends;
+    }
+
+    final public function getActionUrlTree()
+    {
+        return $this->action_url_tree;
     }
 
     public function getActions() : array

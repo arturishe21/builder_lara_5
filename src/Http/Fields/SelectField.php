@@ -112,13 +112,6 @@ class SelectField extends AbstractField
         return $this;
     }
 
-    public function comment(string $comment)
-    {
-        $this->attributes['comment'] = $comment;
-
-        return $this;
-    }
-
     public function isTRColor(bool $is = true)
     {
         $this->attributes['is_tr_color'] = $is;

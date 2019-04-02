@@ -32,7 +32,7 @@ abstract class AbstractField
         $this->fieldName = $column;
         $this->handler = $def->getCustomHandler();
         $this->attributes['caption'] = $caption;
-        $this->attributes = array_merge($this->attributes, $attr);
+        $this->attributes = array_merge($this->attributes, $this->defaultAttributes, $attr);
     }
 
     public function isPattern()
@@ -527,6 +527,13 @@ abstract class AbstractField
     public function disabled(bool $is = true)
     {
         $this->attributes['disabled'] = $is;
+
+        return $this;
+    }
+
+    public function comment(string $comment)
+    {
+        $this->attributes['comment'] = $comment;
 
         return $this;
     }
