@@ -2,50 +2,29 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
+use Illuminate\Database\Eloquent\Builder;
 
-/**
- * Class SelectField.
- */
 class SelectField extends AbstractField
 {
-    /**
-     * @return bool
-     */
     public function isEditable()
     {
         return true;
     }
 
-    // end isEditable
-
-    /**
-     * @param $db
-     * @param $value
-     */
-    public function onSearchFilter(&$db, $value)
+    public function onSearchFilter(Builder $builder, $value)
     {
-        $table = $this->definition['db']['table'];
-        $db->where($table.'.'.$this->getFieldName(), '=', $value);
+        $builder->where($this->definition->getTable().'.'.$this->getFieldName(), '=', $value);
     }
 
-    // end onSearchFilter
-
-    /**
-     * @throws \Throwable
-     *
-     * @return string
-     */
     public function getFilterInput()
     {
         if (! $this->getAttribute('filter')) {
             return '';
         }
 
-        $definitionName = $this->getOption('def_name');
+        $definitionName = $this->definition->getName();
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
-        $filter = Session::get($sessionPath, '');
+        $filter = session($sessionPath, '');
 
         $table = view('admin::tb.filter_select');
         $table->filter = $filter;
@@ -55,19 +34,11 @@ class SelectField extends AbstractField
         return $table->render();
     }
 
-    // end getFilterInput
-
-    /**
-     * @param array $row
-     *
-     * @throws \Throwable
-     *
-     * @return string
-     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
+
             if ($res) {
                 return $res;
             }
@@ -76,31 +47,27 @@ class SelectField extends AbstractField
         $table = view('admin::tb.input_select');
         $table->selected = $this->getValue($row);
         $table->name = $this->getFieldName();
+        $table->disabled = $this->getAttribute('disabled');
+        $table->action = $this->getAttribute('action');
+        $table->readonly_for_edit = $this->getAttribute('readonly_for_edit');
+        $table->comment = $this->getAttribute('comment', null);
+
         $options = $this->getAttribute('options');
+
         if (is_callable($options)) {
             $table->options = $options();
         } else {
             $table->options = $this->getAttribute('options');
         }
-        $table->disabled = $this->getAttribute('disabled');
-
-        $table->action = $this->getAttribute('action');
-        $table->readonly_for_edit = $this->getAttribute('readonly_for_edit');
 
         return $table->render();
     }
 
-    // end getEditInput
-
-    /**
-     * @param $row
-     *
-     * @return bool
-     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
+
             if ($res) {
                 return $res;
             }
@@ -122,18 +89,40 @@ class SelectField extends AbstractField
         }
     }
 
-    // end getListValue
-
-    /**
-     * @param $row
-     *
-     * @return string
-     */
     public function getRowColor($row)
     {
         $colors = $this->getAttribute('colors');
+
         if ($colors) {
             return isset($colors[$this->getValue($row)]) ? $colors[$this->getValue($row)] : '';
         }
+    }
+
+    public function options($options)
+    {
+        $this->attributes['options'] = $options;
+
+        return $this;
+    }
+
+    public function colors(array $colors)
+    {
+        $this->attributes['colors'] = $colors;
+
+        return $this;
+    }
+
+    public function isTRColor(bool $is = true)
+    {
+        $this->attributes['is_tr_color'] = $is;
+
+        return $this;
+    }
+
+    public function action(bool $is = true)
+    {
+        $this->attributes['action'] = $is;
+
+        return $this;
     }
 }

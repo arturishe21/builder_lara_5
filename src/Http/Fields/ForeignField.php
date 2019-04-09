@@ -2,9 +2,9 @@
 
 namespace Vis\Builder\Fields;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class ForeignField extends AbstractField
 {
@@ -12,6 +12,10 @@ class ForeignField extends AbstractField
     private $treeOptions;
     private $recursiveOnlyLastLevel = false;
     private $selectOption;
+
+    protected $defaultAttributes = [
+        'select_type' => 'select2'
+    ];
 
     public function isEditable()
     {
@@ -33,11 +37,11 @@ class ForeignField extends AbstractField
 
     public function getFilterInput()
     {
-        if (! $this->getAttribute('filter')) {
+        if (!$this->getAttribute('filter')) {
             return;
         }
 
-        $definitionName = $this->getOption('def_name');
+        $definitionName = $this->definition->getName();
         $sessionPath = 'table_builder.'.$definitionName.'.filters.'.$this->getFieldName();
         $filter = session($sessionPath, '');
         $type = $this->getAttribute('filter');
@@ -84,12 +88,14 @@ class ForeignField extends AbstractField
         return (array) DB::table($this->getAttribute('foreign_table'))->select($this->getForeignValueFields())->find($id);
     }
 
-    public function onSearchFilter(&$db, $value)
+    public function onSearchFilter(Builder $db, $value)
     {
         $foreignTable = $this->getAttribute('foreign_table');
+
         if ($this->getAttribute('alias')) {
             $foreignTable = $this->getAttribute('alias');
         }
+
         $foreignValueField = $foreignTable.'.'.$this->getAttribute('foreign_value_field');
 
         if ($this->getAttribute('filter') == 'text') {
@@ -111,6 +117,7 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onAddSelectField')) {
             $res = $this->handler->onAddSelectField($this, $db);
+
             if ($res) {
                 return $res;
             }
@@ -120,12 +127,12 @@ class ForeignField extends AbstractField
             $joins = $db instanceof \Illuminate\Database\Eloquent\Builder ? $db->getQuery()->joins : $db->joins;
 
             if (! collect($joins)->pluck('table')->contains($extendTable)) {
-                $extendColumn = collect($this->definition['options']['extends'])->keyBy('table')->get($extendTable)['id'];
-                $db->leftJoin($extendTable, "$extendTable.$extendColumn", $this->definition['db']['table'].'.id');
+                $extendColumn = collect($this->definition->getExtendsTable())->keyBy('table')->get($extendTable)['id'];
+                $db->leftJoin($extendTable, "$extendTable.$extendColumn", $this->definition->getTable().'.id');
             }
         }
 
-        $tableName = $this->getAttribute('extends_table', $this->definition['db']['table']);
+        $tableName = $this->getAttribute('extends_table', $this->definition->getTable());
         $internalSelect = $tableName.'.'.$this->getFieldName();
         $db->addSelect($internalSelect);
         $foreignTable = $this->getAttribute('foreign_table');
@@ -169,7 +176,8 @@ class ForeignField extends AbstractField
             $foreignValueField = $this->getAttribute('foreign_value_field');
 
             $first = DB::table($foreignTable)->where($foreignValueField, '=', $input)->first();
-            if (! $first) {
+
+            if (!$first) {
                 $new_id = DB::table($foreignTable)->insertGetId([$foreignValueField => $input]);
             }
         }
@@ -181,6 +189,7 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetValue')) {
             $res = $this->handler->onGetValue($this, $row, $postfix);
+
             if ($res) {
                 return $res;
             }
@@ -194,7 +203,7 @@ class ForeignField extends AbstractField
             return $foreignTableName.'_'.$v;
         }, $foreignValueFields);
 
-        $needsField = array_only($row, $resultArray);
+        $needsField = method_exists($row, 'only') ? $row->only($resultArray) : array_only($row, $resultArray);
 
         $value = trim(implode(' ', $needsField));
         if (! $value && $this->getAttribute('is_null')) {
@@ -208,6 +217,7 @@ class ForeignField extends AbstractField
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
             $res = $this->handler->onGetEditInput($this, $row);
+
             if ($res) {
                 return $res;
             }
@@ -462,5 +472,25 @@ class ForeignField extends AbstractField
     private function getForeignValueFields()
     {
         return explode(' ', $this->getAttribute('foreign_value_field'));
+    }
+
+    public function selectType(string $type)
+    {
+        $this->attributes['select_type'] = $type;
+
+        return $this;
+    }
+
+    public function foreign($foreignTable, $foreignValue, $foreignKey = 'id', $alias = null)
+    {
+        $this->attributes['foreign_table']       = $foreignTable;
+        $this->attributes['foreign_value_field'] = $foreignValue;
+        $this->attributes['foreign_key_field']   = $foreignKey;
+
+        if ($alias) {
+            $this->attributes['alias'] = $alias;
+        }
+
+        return $this;
     }
 }

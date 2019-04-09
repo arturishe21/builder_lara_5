@@ -6,77 +6,36 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Vis\Builder\Fields\AbstractField;
 use Vis\Builder\JarboeController;
 
-/**
- * Class QueryHandler.
- */
 class QueryHandler
 {
-    /**
-     * @var JarboeController
-     */
-    protected $controller;
-    /**
-     * @var
-     */
-    protected $dbName;
-    /**
-     * @var
-     */
-    protected $dbOptions;
-    /**
-     * @var
-     */
+    protected $cache;
     protected $model;
-    /**
-     * @var mixed
-     */
+    protected $table;
+    protected $query;
+    protected $controller;
     protected $definition;
-    /**
-     * @var mixed
-     */
-    protected $definitionName;
-    /**
-     * @var
-     */
-    protected $db;
-    /**
-     * @var
-     */
     protected $extendsTable;
-    /**
-     * @var
-     */
+    protected $definitionName;
     protected $extendsTableId;
-    /**
-     * @var array
-     */
     protected $extendsFields = [];
-
     protected $extendsFieldsModel = [];
 
-    /**
-     * QueryHandler constructor.
-     *
-     * @param JarboeController $controller
-     */
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
         $this->definition = $controller->getDefinition();
-        $this->definitionName = $controller->getOption('def_name');
+        $this->definitionName = $this->definition->getName();
 
-        $this->cache = isset($this->definition['cache']['tags']) ? $this->definition['cache']['tags'] : '';
+        $this->cache = $this->definition->getCacheTags() ?: '';
+        $this->model = $this->definition->getModel();
+        $this->table = $this->model->getTable();
 
-        $this->dbOptions = $this->definition['db'];
-        $this->model = $this->definition['options']['model'] ?? '';
-        $this->dbName = $this->definition['db']['table'] ?? '';
-
-        if (isset($this->definition['options']['extends']) && count($this->definition['options']['extends'])) {
-            foreach ($this->definition['options']['extends'] as $extend) {
+        if (!empty($this->definition->getExtendsTable())) {
+            foreach ($this->definition->getExtendsTable() as $extend) {
                 $table = $extend['table'];
                 $this->extendsTable[$table] = $table;
 
@@ -89,48 +48,20 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $ident
-     *
-     * @return mixed
-     */
-    protected function getOptionDB($ident)
-    {
-        return $this->dbOptions[$ident];
-    }
-
-    /**
-     * @param $ident
-     *
-     * @return bool
-     */
-    protected function hasOptionDB($ident)
-    {
-        return isset($this->dbOptions[$ident]);
-    }
-
-    /**
-     * @param bool  $isPagination
-     * @param bool  $isUserFilters
-     * @param array $betweenWhere
-     * @param bool  $isSelectAll
-     *
-     * @return mixed
-     */
     public function getRows($isPagination = true, $isUserFilters = true, $betweenWhere = [], $isSelectAll = false)
     {
         $modelName = $this->model;
 
-        if (! $modelName) {
+        if (!$modelName) {
             return [];
         }
 
-        $this->db = new $modelName();
+        $this->query = $modelName->newQuery();
 
         $this->prepareSelectValues();
 
         if ($isSelectAll) {
-            $this->db->addSelect($this->dbName.'.*');
+            $this->query->addSelect($this->table.'.*');
         }
 
         $this->prepareFilterValues();
@@ -140,17 +71,17 @@ class QueryHandler
         }
 
         if ($this->extendsTable) {
-            $joinedTables = collect($this->db->getQuery()->joins)->pluck('table');
+            $joinedTables = collect($this->query->getQuery()->joins)->pluck('table');
             foreach ($this->extendsTable as $table) {
                 if ($joinedTables->contains($table)) {
                     continue;
                 }
 
-                $this->db->leftJoin($table, function ($q) use ($table) {
-                    $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+                $this->query->leftJoin($table, function ($q) use ($table) {
+                    $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->table}.id");
 
                     if (isset($this->extendsFieldsModel[$table])) {
-                        $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', $this->model);
+                        $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', get_class($this->model));
                     }
                 });
             }
@@ -162,84 +93,66 @@ class QueryHandler
         $order = Session::get($sessionPath, []);
 
         if ($order && $isUserFilters) {
-            $this->db->orderBy($this->dbName.'.'.$order['field'], $order['direction']);
-        } elseif ($this->hasOptionDB('order')) {
-            $order = $this->getOptionDB('order');
+            $this->query->orderBy($this->table.'.'.$order['field'], $order['direction']);
+        } else {
+            $order = $this->definition->getOrder();
 
-            foreach ($order as $field => $direction) {
-                $this->db->orderBy($this->dbName.'.'.$field, $direction);
-            }
+            $this->query->orderBy($this->table.'.'.$order[0], $order[1] ?? 'asc');
         }
 
         if ($betweenWhere) {
             $betweenField = $betweenWhere['field'];
             $betweenValues = $betweenWhere['values'];
 
-            $this->db->whereBetween($betweenField, $betweenValues);
+            $this->query->whereBetween($betweenField, $betweenValues);
         }
 
-        if ($this->hasOptionDB('pagination') && $isPagination) {
-            $pagination = $this->getOptionDB('pagination');
-            $perPage = $this->getPerPageAmount($pagination['per_page']);
+        if ($isPagination) {
+            $perPage = $this->getPerPageAmount($this->definition->getPaginationQuantityButtons());
 
-            return $this->db->paginate($perPage);
+            return $this->query->paginate($perPage);
         }
 
-        return $this->db->get();
+        return $this->query->get();
     }
 
     private function dofilter()
     {
-        if (Input::has('filter')) {
+        if (request()->has('filter')) {
             $filters = request('filter');
 
             foreach ($filters as $nameField => $valueField) {
                 if ($valueField) {
-                    $this->db->where($nameField, $valueField);
+                    $this->query->where($nameField, $valueField);
                 }
             }
         }
     }
 
-    /**
-     * @param $info
-     *
-     * @return mixed
-     */
     public function getPerPageAmount($info)
     {
-        if (! is_array($info)) {
+        if (!is_array($info)) {
             return $info;
         }
 
-        $sessionPath = 'table_builder.'.$this->definitionName.'.per_page';
-        $perPage = Session::get($sessionPath);
-
-        if (! $perPage) {
-            $keys = array_keys($info);
-            $perPage = $keys[0];
-        }
-
-        return $perPage;
+        return session('table_builder.'.$this->definitionName.'.per_page', array_keys($info)[0] ?? 20);
     }
 
     protected function prepareFilterValues()
     {
-        $filters = isset($this->definition['filters']) ? $this->definition['filters'] : [];
+        $filters = $this->definition->getFilters();
+
         if (is_callable($filters)) {
-            $filters($this->db);
+            $filters($this->query);
 
             return;
         }
 
         foreach ($filters as $name => $field) {
-            $this->db->where($name, $field['sign'], $field['value']);
+            $this->query->where($name, $field['sign'], $field['value']);
         }
     }
 
-    /**
-     * @param $values
-     */
     protected function doPrependFilterValues(&$values)
     {
         $filters = isset($this->definition['filters']) ? $this->definition['filters'] : [];
@@ -254,35 +167,30 @@ class QueryHandler
 
     protected function prepareSelectValues()
     {
-        $this->db = $this->db->select($this->dbName.'.id');
+        $this->query->select($this->table.'.id');
 
-        if (isset($this->definition['options']['is_sortable']) && $this->definition['options']['is_sortable']) {
-            $this->db = $this->db->addSelect($this->dbName.'.priority');
+        if ($this->definition->isSortable()) {
+            $this->query->addSelect($this->table.'.priority');
         }
 
         $fields = $this->controller->getFields();
 
         foreach ($fields as $field) {
-            $field->onSelectValue($this->db);
+            $field->onSelectValue($this->query);
         }
     }
 
-    /**
-     * @param $id
-     *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
-     */
     public function getRow($id)
     {
-        $this->db = DB::table($this->dbName);
+        $this->query = $this->model->newQuery();
 
         if ($this->extendsTable) {
             foreach ($this->extendsTable as $table) {
-                $this->db->leftJoin($table, function ($q) use ($table) {
-                    $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->dbName}.id");
+                $this->query->leftJoin($table, function ($q) use ($table) {
+                    $q->on("{$table}.{$this->extendsTableId[$table]}", '=', "{$this->table}.id");
 
                     if (isset($this->extendsFieldsModel[$table])) {
-                        $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', $this->model);
+                        $q->where("{$table}.{$this->extendsFieldsModel[$table]}", '=', get_class($this->model));
                     }
                 });
             }
@@ -290,39 +198,31 @@ class QueryHandler
 
         $this->prepareSelectValues();
 
-        $this->db->where($this->dbName.'.id', $id);
-
-        return $this->db->first();
+        return $this->query->where($this->table.'.id', $id)->first();
     }
 
     protected function onSearchFilterQuery()
     {
-        $sessionPath = 'table_builder.'.$this->definitionName.'.filters';
-
-        $filters = Session::get($sessionPath, []);
-        foreach ($filters as $name => $value) {
+        foreach (session('table_builder.'.$this->definitionName.'.filters', []) as $name => $value) {
             if ($this->controller->hasCustomHandlerMethod('onSearchFilter')) {
-                $res = $this->controller->getCustomHandler()->onSearchFilter($this->db, $name, $value);
+                $res = $this->controller->getCustomHandler()->onSearchFilter($this->query, $name, $value);
+
                 if ($res) {
                     continue;
                 }
             }
 
-            $this->controller->getField($name)->onSearchFilter($this->db, $value);
+            $this->controller->getField($name)->onSearchFilter($this->query, $value);
         }
     }
 
-    /**
-     * @param $values
-     *
-     * @return array|mixed
-     */
     public function updateRow($values)
     {
         $this->clearCache();
 
         if ($this->controller->hasCustomHandlerMethod('handleUpdateRow')) {
             $res = $this->controller->getCustomHandler()->handleUpdateRow($values);
+
             if ($res) {
                 return $res;
             }
@@ -337,6 +237,7 @@ class QueryHandler
         if ($this->controller->hasCustomHandlerMethod('onUpdateRowData')) {
             $this->controller->getCustomHandler()->onUpdateRowData($updateData, $values);
         }
+
         $this->doValidate($updateData);
 
         $modelObj = $model::find($values['id']);
@@ -381,11 +282,6 @@ class QueryHandler
         return $res;
     }
 
-    /**
-     * @param $data
-     *
-     * @return false|string
-     */
     private function getData($data)
     {
         if (is_array($data)) {
@@ -395,11 +291,6 @@ class QueryHandler
         return $data;
     }
 
-    /**
-     * @param $updateDataRes
-     * @param $updateData
-     * @param $field
-     */
     private function getDataTabs(&$updateDataRes, $updateData, $field)
     {
         if (isset($this->definition['fields'][$field]['tabs'])) {
@@ -409,13 +300,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $updateData
-     * @param $field
-     * @param $tab
-     *
-     * @return string
-     */
     private function getTabsDataField($updateData, $field, $tab)
     {
         if ($updateData[$field.$tab['postfix']]) {
@@ -435,12 +319,6 @@ class QueryHandler
         return '';
     }
 
-    /**
-     * @param $phrase
-     * @param $thisLang
-     *
-     * @return mixed
-     */
     private function generateTranslation($phrase, $thisLang)
     {
         try {
@@ -459,10 +337,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $field
-     * @param $id
-     */
     private function updateGroupIfUseTable($field, $id)
     {
         if ($field->getAttribute('use_table') && $field->getAttribute('type') == 'group') {
@@ -485,9 +359,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $id
-     */
     public function updateExtendsTable($id)
     {
         if (count($this->extendsFields)) {
@@ -517,28 +388,25 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $id
-     *
-     * @return array
-     */
     public function cloneRow($id)
     {
         $this->clearCache();
 
         if ($this->controller->hasCustomHandlerMethod('handleCloneRow')) {
             $res = $this->controller->getCustomHandler()->handleCloneRow($id);
+
             if ($res) {
                 return $res;
             }
         }
-        $this->db = DB::table($this->dbName);
-        $page = (array) $this->db->where('id', $id)->select('*')->first();
-        Event::fire('table.clone', [$this->dbName, $id]);
+
+        $page = (array) $this->model->newQuery()->where('id', $id)->first(['*']);
+
+        Event::fire('table.clone', [$this->table, $id]);
 
         unset($page['id']);
 
-        $newId = $this->db->insertGetId($page);
+        $newId = $this->model->newQuery()->insertGetId($page);
 
         $this->cloneExtendsTables($id, $newId);
 
@@ -548,10 +416,6 @@ class QueryHandler
         ];
     }
 
-    /**
-     * @param $id
-     * @param $newId
-     */
     private function cloneExtendsTables($id, $newId)
     {
         if (isset($this->extendsTable) && count($this->extendsTable)) {
@@ -564,11 +428,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $id
-     *
-     * @return array|mixed
-     */
     public function deleteRow($id)
     {
         $this->clearCache();
@@ -600,9 +459,6 @@ class QueryHandler
         return $res;
     }
 
-    /**
-     * @param $id
-     */
     private function deleteExtendsTables($id)
     {
         if (isset($this->extendsTable) && count($this->extendsTable)) {
@@ -612,9 +468,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $input
-     */
     public function fastSave($input)
     {
         $this->clearCache();
@@ -634,11 +487,6 @@ class QueryHandler
         $modelObj->save();
     }
 
-    /**
-     * @param $values
-     *
-     * @return array|mixed
-     */
     public function insertRow($values)
     {
         $this->clearCache();
@@ -708,11 +556,6 @@ class QueryHandler
         return $res;
     }
 
-    /**
-     * @param $ident
-     * @param $values
-     * @param $id
-     */
     private function onManyToManyValues($ident, $values, $id)
     {
         $field = $this->controller->getField($ident);
@@ -720,9 +563,6 @@ class QueryHandler
         $field->onPrepareRowValues($vals, $id);
     }
 
-    /**
-     * @param $values
-     */
     private function doValidate($values)
     {
         $errors = [];
@@ -761,11 +601,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $values
-     *
-     * @return mixed
-     */
     private function getRowQueryValues($values)
     {
         $values = $this->unsetFutileFields($values);
@@ -812,11 +647,6 @@ class QueryHandler
         return $values;
     }
 
-    /**
-     * @param $values
-     *
-     * @return mixed
-     */
     private function unsetFutileFields($values)
     {
         unset($values['id']);
@@ -838,9 +668,6 @@ class QueryHandler
         return $values;
     }
 
-    /**
-     * @param $values
-     */
     private function checkFields(&$values)
     {
         $fields = $this->definition['fields'];
@@ -873,11 +700,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @param $values
-     * @param $ident
-     * @param $field
-     */
     private function checkField($values, $ident, $field)
     {
         if (! $field->isEditable()) {
@@ -885,9 +707,6 @@ class QueryHandler
         }
     }
 
-    /**
-     * @return bool
-     */
     public function clearOrderBy()
     {
         $sessionPath = 'table_builder.'.$this->definitionName.'.order';
@@ -898,27 +717,21 @@ class QueryHandler
 
     public function clearCache()
     {
-        if (isset($this->definition['cache'])) {
-            $cache = $this->definition['cache'];
+        $tags = $this->definition->getCacheTags();
+        $keys = $this->definition->getCallbacks();
 
-            if (isset($cache['tags'])) {
-                Cache::tags($cache['tags'])->flush();
-            }
+        if (!empty($tags)) {
+            Cache::tags($tags)->flush();
+        }
 
-            if (isset($cache['keys'])) {
-                Cache::forget($cache['keys']);
-            }
+        if (!empty($keys)) {
+            Cache::forget($keys);
         }
     }
 
-    /**
-     * @throws \Throwable
-     *
-     * @return array
-     */
     public function getUploadedFiles()
     {
-        $list = File::files(public_path().'/storage/files');
+        $list = File::files(public_path('storage/files'));
 
         return [
             'status' => 'success',
@@ -926,12 +739,7 @@ class QueryHandler
         ];
     }
 
-    /**
-     * @param $field
-     *
-     * @return array
-     */
-    public function getUploadedImages($field)
+    public function getUploadedImages(AbstractField $field)
     {
         if ($field->getAttribute('use_image_storage')) {
             return $this->getImagesWithImageStorage();
@@ -940,11 +748,6 @@ class QueryHandler
         return $this->getImagesWithDefaultPath();
     }
 
-    /**
-     * @throws \Throwable
-     *
-     * @return array
-     */
     private function getImagesWithImageStorage()
     {
         if (class_exists('\Vis\ImageStorage\Image')) {
@@ -981,11 +784,6 @@ class QueryHandler
         return $data;
     }
 
-    /**
-     * @throws \Throwable
-     *
-     * @return array
-     */
     private function getImagesWithDefaultPath()
     {
         $files = collect(File::files(public_path('storage/editor/fotos')))->sortBy(function ($file) {

@@ -1,11 +1,11 @@
 <tr>
-    @if ($controller->definitionClass->isSortable())
+    @if($controller->getDefinition()->isSortable())
         <th style="width: 1%; padding: 0;">
             <i style="margin-left: -10px;" class="fa fa-reorder"></i>
         </th>
     @endif
     
-    @if ($controller->definitionClass->isMultiActions())
+    @if($controller->getDefinition()->hasMultiActions())
         <th style="width: 1%; padding: 0;">
             <label class="checkbox multi-checkbox multi-main-checkbox" onclick="TableBuilder.doSelectAllMultiCheckboxes(this);">
                 <input type="checkbox" /><i></i>
@@ -13,11 +13,9 @@
         </th>
     @endif
 
-    @foreach ($fieldsList as $field)
-        @if ($field->getAttribute('is_sorting'))
-                <th
-                        style="position: relative"
-                        class="sorting
+    @foreach($fieldsList as $field)
+        @if($field->getAttribute('is_sorting'))
+                <th style="position: relative" class="sorting
                 {!! $field->isOrder($controller) !!}
                 "
                     onclick="TableBuilder.doChangeSortingDirection('{{$field->getFieldName()}}', this);"
@@ -34,7 +32,7 @@
         @endif
     @endforeach
 
-    @if ($controller->definitionClass->isShowInsert())
+    @if ($controller->getDefinition()->isShowInsert())
         <th class="e-insert_button-cell" style="min-width: 69px;">
             {!! $controller->actions->fetch('insert') !!}
         </th>
@@ -42,13 +40,13 @@
         <th></th>
     @endif
 </tr>
-@if ($controller->definitionClass->isFilterPresent())
+@if ($controller->getDefinition()->isFilterPresent())
     <tr class="filters-row">
-        @if ($controller->definitionClass->isSortable())
+        @if ($controller->getDefinition()->isSortable())
             <th></th>
         @endif
 
-        @if ($controller->definitionClass->isMultiActions())
+        @if ($controller->getDefinition()->hasMultiActions())
             <th></th>
         @endif
 

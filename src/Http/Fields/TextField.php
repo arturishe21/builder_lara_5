@@ -2,32 +2,23 @@
 
 namespace Vis\Builder\Fields;
 
-/**
- * Class TextField
- * for text field.
- */
+use Illuminate\Database\Eloquent\Builder;
+
 class TextField extends AbstractField
 {
-    /**
-     * @return bool
-     */
     public function isEditable()
     {
         return true;
     }
 
-    /**
-     * @param $db
-     * @param $value
-     */
-    public function onSearchFilter(&$db, $value)
+    public function onSearchFilter(Builder $db, $value)
     {
         $tabs = $this->getAttribute('tabs');
         $table = $this->getAttribute('extends_table') ?: $this->definition['db']['table'];
 
         if ($tabs) {
             $field = $table.'.'.$this->getFieldName();
-            $db->where(function ($query) use ($field, $value, $tabs) {
+            $db->where(function (Builder $query) use ($field, $value, $tabs) {
                 foreach ($tabs as $tab) {
                     $query->orWhere($field.$tab['postfix'], 'LIKE', '%'.$value.'%');
                 }
@@ -45,13 +36,6 @@ class TextField extends AbstractField
         $db->where($table.'.'.$this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
 
-    /**
-     * @param array $row
-     *
-     * @throws \Throwable
-     *
-     * @return string
-     */
     public function getEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetEditInput')) {
@@ -84,15 +68,11 @@ class TextField extends AbstractField
         return $input->render();
     }
 
-    /**
-     * @param $row
-     *
-     * @return bool|string
-     */
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
+
             if ($res) {
                 return $res;
             }
@@ -103,5 +83,26 @@ class TextField extends AbstractField
         }
 
         return $this->getValue($row);
+    }
+
+    public function mask(string $value)
+    {
+        $this->attributes['mask'] = $value;
+
+        return $this;
+    }
+
+    public function customType(string $type)
+    {
+        $this->attributes['custom_type'] = $type;
+
+        return $this;
+    }
+
+    public function onlyNumeric(bool $is = true)
+    {
+        $this->attributes['only_numeric'] = $is;
+
+        return $this;
     }
 }

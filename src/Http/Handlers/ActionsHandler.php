@@ -3,41 +3,37 @@
 namespace Vis\Builder\Handlers;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\View;
 
-/**
- * Class ActionsHandler.
- */
 class ActionsHandler
 {
-    /**
-     * @var array
-     */
     protected $def;
-    /**
-     * @var
-     */
     protected $controller;
 
-    /**
-     * ActionsHandler constructor.
-     *
-     * @param array $actionsDefinition
-     * @param $controller
-     */
+    public static function canDisplayAction(string $actionName, array $actionData) : bool
+    {
+        if ($actionName == 'insert' || $actionName == 'filter' || $actionName == 'custom') {
+            return false;
+        }
+
+        if (!isset($actionData['check'])) {
+            return true;
+        }
+
+        $check = $actionData['check'];
+
+        if (is_callable($check)) {
+            return $check();
+        }
+
+        return (bool)$check;
+    }
+
     public function __construct(array $actionsDefinition, &$controller)
     {
         $this->def = $actionsDefinition;
         $this->controller = $controller;
     }
 
-    /**
-     * @param $type
-     * @param array $row
-     * @param array $buttonDefinition
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
-     */
     public function fetch($type, $row = [], $buttonDefinition = [])
     {
         switch ($type) {
@@ -48,7 +44,7 @@ class ActionsHandler
                 return $this->onUpdateButton($row);
 
             case 'clone':
-                return $this->onСloneButton($row);
+                return $this->onCloneButton($row);
 
             case 'revisions':
                 return $this->onRevisionsButton($row);
@@ -73,12 +69,6 @@ class ActionsHandler
         }
     }
 
-    /**
-     * @param $row
-     * @param $button
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onCustomButton($row, $button)
     {
         $action = view('admin::tb.action_custom');
@@ -89,9 +79,6 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onInsertButton()
     {
         if ($this->controller->hasCustomHandlerMethod('onInsertButtonFetch')) {
@@ -108,11 +95,6 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onUpdateButton($row)
     {
         if ($this->controller->hasCustomHandlerMethod('onUpdateButtonFetch')) {
@@ -130,11 +112,6 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onRevisionsButton($row)
     {
         $action = view('admin::tb.action_revisions');
@@ -145,12 +122,7 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    private function onСloneButton($row)
+    private function onCloneButton($row)
     {
         if ($this->controller->hasCustomHandlerMethod('onCloneButtonFetch')) {
             $res = $this->controller->getCustomHandler()->onUpdateButtonFetch($this->def['clone']);
@@ -167,11 +139,6 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onViewStatisticButton($row)
     {
         $action = view('admin::tb.action_views_statistic');
@@ -182,18 +149,13 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onPreviewButton($row)
     {
         $action = view('admin::tb.action_preview');
         $action->row = $row;
         $action->def = $this->def['preview'];
         $action->definition = $this->controller->getDefinition();
-        $model = $action->definition['options']['model'];
+        $model = $action->definition->getModel();
         $action->model = $model;
         $action->url = $this->getUrl($action, $model, $row['id']);
 
@@ -204,35 +166,23 @@ class ActionsHandler
         return $action;
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onConstructorButton($row)
     {
         $action = view('admin::tb.action_constructor');
         $action->row = $row;
         $action->def = $this->def['constructor'];
         $action->definition = $this->controller->getDefinition();
-        $model = $action->definition['options']['model'];
+        $model = $action->definition->getModel();
         $action->model = $model;
         $action->url = $this->getUrl($action, $model, $row['id']).'?mode=construct';
 
         return $action;
     }
 
-    /**
-     * @param $action
-     * @param $model
-     * @param $id
-     *
-     * @return mixed
-     */
     private function getUrl($action, $model, $id)
     {
-        if (isset($action->definition['cache']['tags'])) {
-            return Cache::tags($action->definition['cache']['tags'])
+        if (!empty($action->definition->getCacheTags())) {
+            return Cache::tags($action->definition->getCacheTags())
                 ->rememberForever('url'.$model.$id, function () use ($model, $id) {
                     return $model::find($id)->getUrl();
                 });
@@ -241,11 +191,6 @@ class ActionsHandler
         return $model::find($id)->getUrl();
     }
 
-    /**
-     * @param $row
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     private function onDeleteButton($row)
     {
         if ($this->controller->hasCustomHandlerMethod('onDeleteButtonFetch')) {

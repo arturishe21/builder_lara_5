@@ -38,14 +38,12 @@ class PatternField extends AbstractField
      *
      * @param $fieldName
      * @param $attributes
-     * @param $options
      * @param $definition
      * @param $handler
      */
-    public function __construct($fieldName, $attributes, $options, $definition, $handler)
+    public function __construct($fieldName, $attributes, $definition, $handler)
     {
         $this->attributes = $attributes;
-        $this->options = $options;
         $this->definition = $definition;
         $this->fieldName = $fieldName;
 

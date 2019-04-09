@@ -35,8 +35,8 @@ class RequestHandler
     public function __construct(JarboeController $controller)
     {
         $this->controller = $controller;
-        $this->definitionName = $controller->getOption('def_name');
         $this->definition = $controller->getDefinition();
+        $this->definitionName = $this->definition->getName();
     }
 
     /**

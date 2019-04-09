@@ -2,10 +2,8 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Facades\App;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\View;
 use Vis\Builder\Facades\Jarboe;
 
 class ImageField extends AbstractField
@@ -15,12 +13,11 @@ class ImageField extends AbstractField
         return true;
     }
 
-    // end isEditable
-
     public function getListValue($row)
     {
         if ($this->hasCustomHandlerMethod('onGetListValue')) {
             $res = $this->handler->onGetListValue($this, $row);
+
             if ($res) {
                 return $res;
             }
@@ -33,60 +30,38 @@ class ImageField extends AbstractField
         return $this->getListSingle($row);
     }
 
-    // end getListValue
-
     private function getListSingle($row)
     {
         $pathPhoto = $this->getValue($row);
 
-        if (! $pathPhoto) {
+        if (!$pathPhoto) {
             return '';
         }
 
-        $html = '<a class="screenshot"  rel="'.glide($pathPhoto, ['w' => '350']).'">
-                    <img src="'.glide($pathPhoto, ['w' => '50']).'" /></a>';
-
-        return $html;
+        return view('admin::fields.image.list_single', compact('pathPhoto'))->render();
     }
-
-    // end getListSingle
 
     private function getListMultiple($row)
     {
-        if (! $this->getValue($row)) {
+        if (!$this->getValue($row)) {
             return '';
         }
 
         $images = json_decode($this->getValue($row), true);
 
-        $html = '<div style="cursor:pointer;height: 50px;overflow: hidden;" onclick="$(this).css(\'height\', \'auto\').css(\'overflow\', \'auto\');">';
-        foreach ($images as $source) {
-            $src = $source;
-
-            $src = $this->getAttribute('is_remote') ? $src : URL::asset($src);
-            $html .= '<img height="'.$this->getAttribute('img_height', '50px').'" src="'
-                .$src
-                .'" /><br>';
-        }
-
-        $html .= '</div>';
-
-        return $html;
+        return view('admin::fields.image.list_multiple', compact('images'))->render();
     }
 
-    // end getListMultiple
-
-    public function onSearchFilter(&$db, $value)
+    public function onSearchFilter(Builder $db, $value)
     {
         $db->where($this->getFieldName(), 'LIKE', '%'.$value.'%');
     }
-
-    // end onSearchFilter
 
     public function getTabbedEditInput($row = [])
     {
         if ($this->hasCustomHandlerMethod('onGetTabbedEditInput')) {
             $res = $this->handler->onGetTabbedEditInput($this, $row);
+
             if ($res) {
                 return $res;
             }
@@ -109,8 +84,6 @@ class ImageField extends AbstractField
         return $input->render();
     }
 
-    // end getTabbedEditInput
-
     protected function getPreparedTabs($row)
     {
         $tabs = $this->getAttribute('tabs');
@@ -121,8 +94,6 @@ class ImageField extends AbstractField
 
         return $tabs;
     }
-
-    // end getPreparedTabs
 
     public function getEditInput($row = [])
     {
@@ -147,8 +118,6 @@ class ImageField extends AbstractField
 
         return $input->render();
     }
-
-    // end getEditInput
 
     public function doUpload($file)
     {
@@ -243,16 +212,51 @@ class ImageField extends AbstractField
         $limitMb = $this->getAttribute('limit_mb') * 1000000;
 
         if ($file->getSize() > $limitMb) {
-            App::abort(500, 'Ошибка загрузки файла. Файл больше чем '.$this->getAttribute('limit_mb').' МБ');
+            app()->abort(500, 'Ошибка загрузки файла. Файл больше чем '.$this->getAttribute('limit_mb').' МБ');
         }
     }
 
     public function prepareQueryValue($value)
     {
-        if (! $value) {
+        if (!$value) {
             return '';
         }
 
         return $value;
+    }
+
+    public function multiple(bool $is = true)
+    {
+        $this->attributes['is_multiple'] = $is;
+
+        return $this;
+    }
+
+    public function upload(bool $is = true)
+    {
+        $this->attributes['is_upload'] = $is;
+
+        return $this;
+    }
+
+    public function remote(bool $is = true)
+    {
+        $this->attributes['is_remote'] = $is;
+
+        return $this;
+    }
+
+    public function storage(string $storageType = 'image')
+    {
+        $this->attributes['storage_type'] = $storageType;
+
+        return $this;
+    }
+
+    public function imgHeight(string $height = '50px')
+    {
+        $this->attributes['img_height'] = $height;
+
+        return $this;
     }
 }

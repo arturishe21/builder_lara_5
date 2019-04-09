@@ -4,47 +4,22 @@ namespace Vis\Builder\Handlers;
 
 use Vis\Builder\JarboeController;
 
-/**
- * Class CustomClosureHandler.
- */
 class CustomClosureHandler
 {
-    /**
-     * @var JarboeController
-     */
     public $controller;
-    /**
-     * @var array
-     */
     private $functions = [];
 
-    /**
-     * CustomClosureHandler constructor.
-     *
-     * @param $functions
-     * @param JarboeController $controller
-     */
     public function __construct($functions, JarboeController $controller)
     {
         $this->functions = $functions;
         $this->controller = $controller;
     }
 
-    // end __construct
-
-    /**
-     * @param string $name
-     *
-     * @return bool|mixed
-     */
     private function getClosure($name)
     {
         return isset($this->functions[$name]) ? $this->functions[$name] : false;
     }
 
-    /**
-     * @return mixed
-     */
     public function handle()
     {
         $closure = $this->getClosure('handle');
@@ -55,13 +30,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param array $row
-     * @param $postfix
-     *
-     * @return mixed
-     */
     public function onGetValue($formField, array &$row, &$postfix)
     {
         $closure = $this->getClosure('onGetValue');
@@ -72,14 +40,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param $type
-     * @param array $row
-     * @param $postfix
-     *
-     * @return mixed
-     */
     public function onGetExportValue($formField, $type, array &$row, &$postfix)
     {
         $closure = $this->getClosure('onGetExportValue');
@@ -90,12 +50,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param array $row
-     *
-     * @return mixed
-     */
     public function onGetEditInput($formField, array &$row)
     {
         $closure = $this->getClosure('onGetEditInput');
@@ -106,12 +60,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param array $row
-     *
-     * @return mixed
-     */
     public function onGetListValue($formField, array &$row)
     {
         $closure = $this->getClosure('onGetListValue');
@@ -122,12 +70,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param $db
-     *
-     * @return mixed
-     */
     public function onSelectField($formField, &$db)
     {
         $closure = $this->getClosure('onSelectField');
@@ -138,11 +80,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $filters
-     *
-     * @return mixed
-     */
     public function onPrepareSearchFilters(array &$filters)
     {
         $closure = $this->getClosure('onPrepareSearchFilters');
@@ -153,13 +90,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $db
-     * @param $name
-     * @param $value
-     *
-     * @return mixed
-     */
     public function onSearchFilter(&$db, $name, $value)
     {
         $closure = $this->getClosure('onSearchFilter');
@@ -170,9 +100,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function onViewFilter()
     {
         $closure = $this->getClosure('onViewFilter');
@@ -183,11 +110,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $response
-     *
-     * @return mixed
-     */
     public function onUpdateRowResponse(array &$response)
     {
         $closure = $this->getClosure('onUpdateRowResponse');
@@ -198,11 +120,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $response
-     *
-     * @return mixed
-     */
     public function onInsertRowResponse(array &$response)
     {
         $closure = $this->getClosure('onInsertRowResponse');
@@ -213,11 +130,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $response
-     *
-     * @return mixed
-     */
     public function onDeleteRowResponse(array &$response)
     {
         $closure = $this->getClosure('onDeleteRowResponse');
@@ -228,11 +140,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $id
-     *
-     * @return mixed
-     */
     public function handleDeleteRow($id)
     {
         $closure = $this->getClosure('handleDeleteRow');
@@ -243,11 +150,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $values
-     *
-     * @return mixed
-     */
     public function handleInsertRow($values)
     {
         $closure = $this->getClosure('handleInsertRow');
@@ -258,11 +160,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $values
-     *
-     * @return mixed
-     */
     public function handleUpdateRow($values)
     {
         $closure = $this->getClosure('handleUpdateRow');
@@ -273,11 +170,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $response
-     *
-     * @return mixed
-     */
     public function onUpdateFastRowResponse(array &$response)
     {
         $closure = $this->getClosure('onUpdateFastRowResponse');
@@ -288,11 +180,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $data
-     *
-     * @return mixed
-     */
     public function onInsertRowData(array &$data)
     {
         $closure = $this->getClosure('onInsertRowData');
@@ -303,11 +190,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param array $data
-     *
-     * @return mixed
-     */
     public function onUpdateRowData(array &$data)
     {
         $closure = $this->getClosure('onUpdateRowData');
@@ -318,13 +200,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param $db
-     * @param $value
-     *
-     * @return mixed
-     */
     public function onSearchCustomFilter($formField, &$db, $value)
     {
         $closure = $this->getClosure('onSearchCustomFilter');
@@ -335,13 +210,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param array $row
-     * @param $postfix
-     *
-     * @return mixed
-     */
     public function onGetCustomValue($formField, array &$row, &$postfix)
     {
         $closure = $this->getClosure('onGetCustomValue');
@@ -352,12 +220,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param array $row
-     *
-     * @return mixed
-     */
     public function onGetCustomEditInput($formField, array &$row)
     {
         $closure = $this->getClosure('onGetCustomEditInput');
@@ -368,12 +230,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param array $row
-     *
-     * @return mixed
-     */
     public function onGetCustomListValue($formField, array &$row)
     {
         $closure = $this->getClosure('onGetCustomListValue');
@@ -384,11 +240,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $db
-     *
-     * @return mixed
-     */
     public function onSelectCustomValue(&$db)
     {
         $closure = $this->getClosure('onSelectCustomValue');
@@ -399,11 +250,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $file
-     *
-     * @return mixed
-     */
     public function onFileUpload($file)
     {
         $closure = $this->getClosure('onFileUpload');
@@ -414,12 +260,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $formField
-     * @param $file
-     *
-     * @return mixed
-     */
     public function onPhotoUpload($formField, $file)
     {
         $closure = $this->getClosure('onPhotoUpload');
@@ -430,11 +270,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $file
-     *
-     * @return mixed
-     */
     public function onPhotoUploadFromWysiwyg($file)
     {
         $closure = $this->getClosure('onPhotoUploadFromWysiwyg');
@@ -445,11 +280,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $def
-     *
-     * @return mixed
-     */
     public function onInsertButtonFetch($def)
     {
         $closure = $this->getClosure('onInsertButtonFetch');
@@ -460,11 +290,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $def
-     *
-     * @return mixed
-     */
     public function onUpdateButtonFetch($def)
     {
         $closure = $this->getClosure('onUpdateButtonFetch');
@@ -475,11 +300,6 @@ class CustomClosureHandler
         }
     }
 
-    /**
-     * @param $def
-     *
-     * @return mixed
-     */
     public function onDeleteButtonFetch($def)
     {
         $closure = $this->getClosure('onDeleteButtonFetch');

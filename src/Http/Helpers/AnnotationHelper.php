@@ -41,4 +41,9 @@ class AnnotationHelper
             }
         }
     }
+
+    public static function staticHandler($annotation)
+    {
+        return (new static($annotation))->handle();
+    }
 }
