@@ -20,6 +20,10 @@
         <link rel="icon" href="{{ config('builder.admin.favicon_url') }}" type="image/x-icon">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
 
+        @if (config('builder.login.css'))
+            <link rel="stylesheet" type="text/css" href="{{config('builder.login.css')}}">
+        @endif
+
     </head>
     <body id="login" class="animated fadeInDown">
         @yield('main')
