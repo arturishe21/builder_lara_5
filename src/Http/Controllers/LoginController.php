@@ -98,7 +98,7 @@ class LoginController extends Controller
             'password' => 'required|min:6|max:20',
         ];
 
-        $validator = Validator::make(Input::all(), $rules);
+        $validator = Validator::make(request()->all(), $rules);
 
         return ! $validator->fails();
     }

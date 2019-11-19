@@ -190,8 +190,9 @@ class QueryHandler
 
     private function dofilter()
     {
-        if (Input::has('filter')) {
-            $filters = request('filter');
+        $filters = request('filter');
+
+        if ($filters) {
 
             foreach ($filters as $nameField => $valueField) {
                 if ($valueField) {

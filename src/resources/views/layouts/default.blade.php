@@ -36,7 +36,11 @@
         <script type="text/javascript" src="/packages/vis/builder/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="/packages/vis/builder/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.js"></script>
-
+        <style>
+            .smart-style-4 .tb-pagination nav>ul>li>a {
+                padding:6px 12px;
+            }
+        </style>
     </head>
     <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin }}">
         <div id="modal_wrapper" class="modal_popup_first"></div>

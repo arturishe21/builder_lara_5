@@ -16,7 +16,7 @@
                           <span>{{__cms('Все')}}</span>  <i class="fa fa-caret-down"></i>
                        </button>
                        <ul class="dropdown-menu js-status-update pull-right">
-                            <li {{!Input::has('group')?'class="active"':''}}><a href="{{route('m.show_settings')}}">{{__cms('Все')}}</a></li>
+                            <li {{!request('group')?'class="active"':''}}><a href="{{route('m.show_settings')}}">{{__cms('Все')}}</a></li>
                         @foreach($groups as $k=>$el)
                             <li {{request('group')=="$k" ? 'class="active"' : ''}} >
                               <a href="{{route('m.show_settings',["group"=>$k])}}">{{__cms($el)}}</a>

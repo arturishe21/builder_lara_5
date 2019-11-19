@@ -1,7 +1,7 @@
 <label class="select">
     <select
 
-    @if (Input::has("id") && $readonly_for_edit)
+    @if (request("id") && $readonly_for_edit)
         disabled
     @endif
 

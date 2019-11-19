@@ -19,7 +19,7 @@
 
 <label class="select">
     <select
-     {{Input::has("id") && $readonly_for_edit ? 'disabled' : ''}}
+     {{request("id") && $readonly_for_edit ? 'disabled' : ''}}
 
      name="{{ $name }}" class="dblclick-edit-input form-control input-small unselectable {{ $name }}_foreign">
         @if ($is_null)

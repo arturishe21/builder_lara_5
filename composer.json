@@ -9,18 +9,15 @@
         }
     ],
     "require": {
-        "cartalyst/sentinel" : "2.0.*",
-        "devfactory/minify": "1.0.*",
-        "baum/baum": "~1.1",
+        "cartalyst/sentinel": "^3.0",
+        "mcamara/laravel-localization": "1.4.*",
+        "baum/baum": "v2.x-dev",
         "venturecraft/revisionable": "1.*",
-        "radic/blade-extensions": "~6.2",
         "yandex/translate-api": "1.5.x",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
-        "mcamara/laravel-localization": "1.2.*",
-        "predis/predis" : "~1.0",
-        "barryvdh/laravel-ide-helper": "2.*",
-        "maatwebsite/excel": "~2.1.0"
+        "predis/predis" : "v1.1.1",
+        "maatwebsite/excel": "3.*"
     },
     "autoload": {
         "classmap": [

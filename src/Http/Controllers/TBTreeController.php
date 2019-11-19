@@ -3,7 +3,6 @@
 namespace Vis\Builder;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
 /**
@@ -105,7 +104,7 @@ class TBTreeController extends \Controller
 
         $controller = new JarboeController($options);
 
-        $result = $controller->query->updateRow(Input::all());
+        $result = $controller->query->updateRow(request()->all());
         $item = Tree::find($idNode);
         $result['html'] = view('admin::tree.content_row', compact('item'))->render();
 

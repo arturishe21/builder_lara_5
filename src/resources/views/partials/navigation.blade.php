@@ -3,7 +3,7 @@
     <div class="login-info">
         <span>
             <a>
-                <img src="{{$user->getAvatar(['w' => 35, 'h' => 35])}}" class="online">
+                <img src="" class="online">
                 <span>
                     {{$user->getFullName()}}
                 </span>
