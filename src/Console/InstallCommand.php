@@ -276,7 +276,8 @@ class InstallCommand extends Command
         File::deleteDirectory(app_path().'/Http/Controllers/Auth');
         @unlink(base_path().'/resources/views/welcome.blade.php');
 
-        @unlink(base_path().'/database/migrations/welcome.blade.php');
+        @unlink(base_path().'/database/migrations/2014_07_02_230147_migration_cartalyst_sentinel.php');
+        @unlink(base_path().'/database/migrations/2014_10_12_000000_create_users_table.php');
     }
 
     /*
