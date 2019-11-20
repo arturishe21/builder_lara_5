@@ -96,6 +96,13 @@ return [
                         return true;
                     },
                 ],
+                [
+                    'title' => 'Логи',
+                    'link'  => '/logs',
+                    'check' => function () {
+                        return true;
+                    },
+                ],
             ],
         ],
 
