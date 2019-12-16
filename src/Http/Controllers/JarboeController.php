@@ -11,6 +11,7 @@ use Vis\Builder\Handlers\ImportHandler;
 use Vis\Builder\Handlers\QueryHandler;
 use Vis\Builder\Handlers\RequestHandler;
 use Vis\Builder\Handlers\ViewHandler;
+use Illuminate\Support\Str;
 
 /**
  * Class JarboeController.
@@ -433,7 +434,7 @@ class JarboeController
      */
     protected function createFieldInstance($name, $info)
     {
-        $className = 'Vis\\Builder\\Fields\\'.ucfirst(camel_case($info['type'])).'Field';
+        $className = 'Vis\\Builder\\Fields\\'.ucfirst(Str::camel($info['type'])).'Field';
 
         if (isset($info['handler'])) {
             $className = $info['handler'];

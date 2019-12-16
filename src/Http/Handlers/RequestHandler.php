@@ -2,7 +2,6 @@
 
 namespace Vis\Builder\Handlers;
 
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
@@ -283,7 +282,7 @@ class RequestHandler
      */
     protected function handleImport()
     {
-        $file = Input::file('file');
+        $file = request()->file('file');
         $type = request('type');
         $method = 'doImport'.ucfirst($type);
 
@@ -335,7 +334,7 @@ class RequestHandler
      */
     protected function handleFileUpload()
     {
-        $file = Input::file('file');
+        $file = request()->file('file');
         $prefixPath = 'storage/files/';
 
         if ($this->controller->hasCustomHandlerMethod('onFileUpload')) {
@@ -375,7 +374,7 @@ class RequestHandler
         $this->controller->query->clearCache();
 
         $baseIdent = request('baseIdent');
-        $file = Input::file('image');
+        $file = request()->file('image');
 
         $field = $this->controller->getField($baseIdent);
 
@@ -409,7 +408,7 @@ class RequestHandler
      */
     protected function handleFastSaveAction()
     {
-        $result = $this->controller->query->fastSave(Input::all());
+        $result = $this->controller->query->fastSave(request()->all());
         $result['status'] = 'ok';
 
         return Response::json($result);
@@ -444,7 +443,7 @@ class RequestHandler
      */
     protected function handleSaveAddFormAction()
     {
-        $result = $this->controller->query->insertRow(Input::all());
+        $result = $this->controller->query->insertRow(request()->all());
         $result['html'] = $this->controller->view->getRowHtml($result);
 
         return Response::json($result);
@@ -458,7 +457,7 @@ class RequestHandler
         $idRow = $this->getRowID();
         $this->checkEditPermission($idRow);
 
-        $result = $this->controller->query->updateRow(Input::all());
+        $result = $this->controller->query->updateRow(request()->all());
         $result['html'] = $this->controller->view->getRowHtml($result);
 
         return Response::json($result);

@@ -4,6 +4,10 @@
 ```json
  composer require "vis/builder_lara_5":"1.*"
 ```
+Подкючаем для laravel 6.*
+```json
+ composer require "vis/builder_lara_5":"2.*"
+```
 Добавляем в файле app.php в блок providers
 ```php
   Vis\Builder\BuilderServiceProvider::class,

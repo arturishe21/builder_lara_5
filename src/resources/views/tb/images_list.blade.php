@@ -19,7 +19,7 @@
     @endforeach
 
     <div style="text-align: center" class="paginator_pictures">
-        {{ $list->appends(Input::all())->render() }}
+        {{ $list->appends(request()->all())->render() }}
     </div>
 
 

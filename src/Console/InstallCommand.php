@@ -63,6 +63,8 @@ class InstallCommand extends Command
             'DB_PASSWORD'  => $this->ask('Database password'),
             'CACHE_DRIVER' => 'redis',
             'MAIL_DRIVER'  => 'sendmail',
+            'DB_HOST' => 'mysql',
+            'REDIS_HOST' => 'redis'
         ];
 
         $envFile = $this->laravel->environmentFilePath();
@@ -128,12 +130,6 @@ class InstallCommand extends Command
         $this->info('Created '.app_path().'/Exceptions/Handler.php - OK');
 
         copy(
-            $this->installPath.'/files/app/Providers/AppServiceProvider.php',
-            app_path().'/Providers/AppServiceProvider.php'
-        );
-        $this->info('Created '.app_path().'/Providers/AppServiceProvider.php - OK');
-
-        copy(
             $this->installPath.'/files/app/Providers/ComposerServiceProvider.php',
             app_path().'/Providers/ComposerServiceProvider.php'
         );
@@ -144,12 +140,6 @@ class InstallCommand extends Command
 
         copy($this->installPath.'/files/routes/web.php', base_path().'/routes/web.php');
         $this->info('Created '.base_path().'/routes/web.php - OK');
-
-        copy($this->installPath.'/files/app.php', config_path().'/app.php');
-        $this->info('Replace app.php - OK');
-
-        copy($this->installPath.'/files/composer.json', base_path().'/composer.json');
-        $this->info('Replace composer.json - OK');
 
         copy($this->installPath.'/files/public/.htaccess', public_path().'/.htaccess');
         $this->info('Replace htaccess - OK');
@@ -180,12 +170,6 @@ class InstallCommand extends Command
 
         copy($this->installPath.'/files/app/Http/ViewComposers/HeaderComposer.php', app_path().'/Http/ViewComposers/HeaderComposer.php');
         $this->info('Created app/Http/ViewComposers/HeaderComposer.php- OK');
-
-        copy($this->installPath.'/files/cache.php', config_path().'/cache.php');
-        $this->info('Replace cache.php - OK');
-
-        copy($this->installPath.'/files/database.php', config_path().'/database.php');
-        $this->info('Replace database.php - OK');
 
         copy($this->installPath.'/files/BaseModel.php', app_path().'/Models/BaseModel.php');
         $this->info('Created app/Models/BaseModel.php - OK');
@@ -283,8 +267,6 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/debugbar.php', config_path().'/debugbar.php');
         $this->info('Replace debugbar.php - OK');
 
-        copy($this->installPath.'/files/minify.config.php', config_path().'/minify.config.php');
-        $this->info('Replace minify.config.php - OK');
     }
 
     private function deleteFiles()
@@ -293,6 +275,9 @@ class InstallCommand extends Command
 
         File::deleteDirectory(app_path().'/Http/Controllers/Auth');
         @unlink(base_path().'/resources/views/welcome.blade.php');
+
+        @unlink(base_path().'/database/migrations/2014_07_02_230147_migration_cartalyst_sentinel.php');
+        @unlink(base_path().'/database/migrations/2014_10_12_000000_create_users_table.php');
     }
 
     /*

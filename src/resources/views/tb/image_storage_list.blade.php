@@ -62,7 +62,7 @@
         <div style="text-align: center; padding: 50px">Нет изображений</div>
     @endforelse
     <div style="text-align: center" class="paginator_pictures">
-        {{ $list->appends(Input::all())->links() }}
+        {{ $list->appends(request()->all())->links() }}
     </div>
 
 

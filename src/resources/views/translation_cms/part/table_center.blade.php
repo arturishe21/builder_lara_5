@@ -55,7 +55,9 @@
 
                     <td style="text-align: left">
 
-                     @set("trans", $el->getTrans())
+                     <?php
+                        $trans = $el->getTrans();
+                        ?>
 
                      @foreach($langs as $lang_key=>$el_lang)
                         <p>

@@ -4,7 +4,6 @@ namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
@@ -96,7 +95,7 @@ class TBController extends Controller
      */
     public function doSaveCropImg()
     {
-        $data = Input::all();
+        $data = request()->all();
         $infoImg = pathinfo($data['originalImg']);
         $fileCrop = '/'.$infoImg['dirname'].'/'.md5($infoImg['filename']).time().'_crop.'.$infoImg['extension'];
         $ifp = fopen(public_path().$fileCrop, 'wb');

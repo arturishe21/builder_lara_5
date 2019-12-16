@@ -87,6 +87,16 @@ class Tree extends \Baum\Node
      * @var string
      */
     protected $parentColumn = 'parent_id';
+
+    // 'lft' column name
+    protected $leftColumnName = 'lft';
+
+    // 'rgt' column name
+    protected $rightColumnName = 'rgt';
+
+    // 'depth' column name
+    protected $depthColumnName = 'depth';
+
     /**
      * @var
      */

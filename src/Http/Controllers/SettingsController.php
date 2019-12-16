@@ -55,7 +55,7 @@ class SettingsController extends Controller
      */
     public function doSave()
     {
-        $file = Input::file('file');
+        $file = request()->file('file');
         parse_str(request('data'), $data);
 
         $validation = Setting::isValid($data, $data['id']);
@@ -133,7 +133,7 @@ class SettingsController extends Controller
      */
     public function doFastSave()
     {
-        if (Input::has('id') && Input::has('value')) {
+        if (request('id') && request('value')) {
             $setting = Setting::find(request('id'));
             $setting->value = trim(request('value'));
             $setting->save();

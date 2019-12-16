@@ -3,7 +3,6 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,13 +16,13 @@ class EditorController extends Controller
      */
     public function uploadFoto()
     {
-        $photo = Input::file('file');
+        $photo = request()->file('file');
 
         $rules = [
             'file'  => 'required|image',
         ];
 
-        $validator = Validator::make(Input::all(), $rules);
+        $validator = Validator::make(request()->ll(), $rules);
 
         if ($validator->fails()) {
             return Response::json([
@@ -40,7 +39,7 @@ class EditorController extends Controller
 
         $fullPathImg = '/'.$destinationPath.'/'.$hashname;
 
-        Input::file('file')->move($destinationPath, $hashname);
+        request()->file('file')->move($destinationPath, $hashname);
 
         return Response::json(['link' => $fullPathImg]);
     }
@@ -50,13 +49,13 @@ class EditorController extends Controller
      */
     public function uploadFile()
     {
-        $file = Input::file('file');
+        $file = request()->file('file');
 
         $rules = [
             'file'  => 'required',
         ];
 
-        $validator = Validator::make(Input::all(), $rules);
+        $validator = Validator::make(request()->all(), $rules);
 
         if ($validator->fails()) {
             return Response::json(['status' => 'error', 'errors_messages' => $validator->messages()]);
@@ -76,7 +75,7 @@ class EditorController extends Controller
             $fullPathImg = '/'.$destinationPath.'/'.$hashname;
         }
 
-        Input::file('file')->move($destinationPath, $hashname);
+        request()->file('file')->move($destinationPath, $hashname);
 
         return Response::json(['link' => $fullPathImg]);
     }
