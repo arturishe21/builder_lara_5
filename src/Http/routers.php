@@ -82,7 +82,7 @@
                 Route::get(
                     '/{page_admin}',
                     'Vis\Builder\TableAdminController@showPage'
-                );
+                )->middleware('permission');
                 if (Request::ajax()) {
                     Route::get(
                         '/{page_admin}',
