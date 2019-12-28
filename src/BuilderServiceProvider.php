@@ -24,6 +24,7 @@ class BuilderServiceProvider extends ServiceProvider
     {
         $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
         $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+        $router->middleware('permission', \Vis\Builder\Permission::class);
 
         require __DIR__.'/../vendor/autoload.php';
         require __DIR__.'/Http/helpers.php';
@@ -78,6 +79,8 @@ class BuilderServiceProvider extends ServiceProvider
                 ->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
             $this->app[\Illuminate\Routing\Router::class]
                 ->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+            $this->app[\Illuminate\Routing\Router::class]
+                ->aliasMiddleware('permission', \Vis\Builder\Permission::class);
         }
 
         $this->app->singleton('jarboe', function () {

@@ -836,12 +836,13 @@ var TableBuilder = {
         $(TableBuilder.form_preloader, context).hide();
     }, // end hidePreloader
 
-    uploadImage: function (context, ident, baseIdent) {
+    uploadImage: function (context, ident, baseIdent, path) {
         var data = new FormData();
         data.append("image", context.files[0]);
         data.append('ident', ident);
         data.append('query_type', 'upload_photo');
         data.append('type', "single_photo");
+        data.append('path', path);
         data.append('baseIdent', baseIdent);
 
 
@@ -1053,10 +1054,11 @@ var TableBuilder = {
 
     },
 
-    uploadFile: function (context, ident) {
+    uploadFile: function (context, ident, path) {
         var data = new FormData();
         data.append("file", context.files[0]);
         data.append('query_type', 'upload_file');
+        data.append('path', path);
         data.append('ident', ident);
         data.append('__node', TableBuilder.getUrlParameter('id_tree'));
 
@@ -1088,12 +1090,13 @@ var TableBuilder = {
     }, // end uploadFile
 
 
-    uploadFileMulti : function (context, ident) {
+    uploadFileMulti : function (context, ident, path) {
         var arr = context.files;
         for (var index = 0; index < arr.length; ++index) {
             var data = new FormData();
             data.append("file", context.files[index]);
             data.append('query_type', 'upload_file');
+            data.append('path', path);
             data.append('ident', ident);
             data.append('__node', TableBuilder.getUrlParameter('id_tree'));
             var $progress = jQuery(context).parent().parent().parent().parent().parent().find('.progress-bar');
@@ -1164,7 +1167,7 @@ var TableBuilder = {
         }
     },
 
-    selectWithUploaded : function (name, type, content) {
+    selectWithUploaded : function (name, type, content, path) {
 
         var section = content.parents('.files_type_fields');
 
@@ -1174,13 +1177,13 @@ var TableBuilder = {
 
         var data = {
             query_type: "select_with_uploaded",
+            path: path
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(
             TableBuilder.getActionUrl(content),
             data,
             function (response) {
-
                 section.find('tbody').html(response.data);
                 section.find('tbody').attr('data-type', type);
             },
@@ -1188,7 +1191,7 @@ var TableBuilder = {
         );
     },
 
-    selectWithUploadedImages : function (name, type, thisFileElement, baseName, pageId) {
+    selectWithUploadedImages : function (name, type, thisFileElement, baseName, pageId, path) {
 
         TableBuilder.thisPictureElementInGroup = thisFileElement;
 
@@ -1200,7 +1203,8 @@ var TableBuilder = {
             query_type: "select_with_uploaded_images",
             ident : name,
             baseName : baseName,
-            page_id : pageId
+            page_id : pageId,
+            path : path
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(

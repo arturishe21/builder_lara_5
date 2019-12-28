@@ -144,6 +144,7 @@ class ImageField extends AbstractField
         $input->height = $this->getAttribute('img_height', 200);
         $input->chooseFromUploaded = $this->getAttribute('choose_from_uploaded', true);
         $input->baseName = $this->getFieldName();
+        $input->path = $this->getAttribute('path', 'storage/editor/fotos/');
 
         return $input->render();
     }
@@ -161,14 +162,19 @@ class ImageField extends AbstractField
         $rawFileName = md5_file($file->getRealPath()).'_'.time();
         $fileName = $rawFileName.'.'.$extension;
 
-        $destinationPath = 'storage/editor/fotos/';
+        $destinationPath =  trim(request('path', 'storage/editor/fotos'), '/');
+        $destinationPath .= '/';
+
+        if (!File::isDirectory(public_path() . '/' . $destinationPath)) {
+            File::makeDirectory(public_path() . '/' . $destinationPath);
+        }
 
         if ($model && request('page_id')) {
             $infoPage = $model::find(request('page_id'));
             $slugPage = isset($infoPage->title) ? Jarboe::urlify(strip_tags($infoPage->title)) : request('page_id');
             $fileName = $slugPage.'.'.$extension;
-            if (File::exists($destinationPath.$fileName)) {
-                $fileName = $slugPage.'_'.time().rand(1, 1000).'.'.$extension;
+            if (File::exists($destinationPath . $fileName)) {
+                $fileName = $slugPage . '_' . time().rand(1, 1000).'.'.$extension;
             }
         }
 
@@ -183,7 +189,7 @@ class ImageField extends AbstractField
         $link = $extension == 'svg' ? $destinationPath.$fileName
                                     : glide($destinationPath.$fileName, ['w' => $width, 'h' => $height]);
 
-        $this->saveInImageStore($fileName, $link);
+        $this->saveInImageStore($fileName, $link, $destinationPath);
 
         $returnView = request('type') == 'single_photo' ? 'admin::tb.html_image_single' : 'admin::tb.html_image';
 
@@ -217,7 +223,7 @@ class ImageField extends AbstractField
         return $guessExtension;
     }
 
-    private function saveInImageStore($fileName, $link)
+    private function saveInImageStore($fileName, $link, $path)
     {
         if (! $this->getAttribute('use_image_storage') || ! class_exists('\Vis\ImageStorage\Image')) {
             return;
@@ -225,10 +231,10 @@ class ImageField extends AbstractField
 
         $fileCmsPreview = strpos($fileName, '.svg') ?
             $fileName :
-            str_replace('/storage/editor/fotos/', '', $link);
+            str_replace('/' . $path, '', $link);
 
         $imgStorage = new \Vis\ImageStorage\Image();
-        $imgStorage->file_folder = '/storage/editor/fotos/';
+        $imgStorage->file_folder = '/' . $path;
         $imgStorage->file_source = $fileName;
         $imgStorage->file_cms_preview = $fileCmsPreview;
         $imgStorage->save();

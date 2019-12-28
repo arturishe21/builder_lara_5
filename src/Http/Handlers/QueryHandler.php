@@ -918,7 +918,13 @@ class QueryHandler
      */
     public function getUploadedFiles()
     {
-        $list = File::files(public_path().'/storage/files');
+        $path = public_path() . request('path', '/storage/files');
+
+        if (!File::isDirectory($path)) {
+           File::makeDirectory($path);
+        }
+
+        $list = File::files($path);
 
         return [
             'status' => 'success',
@@ -988,7 +994,9 @@ class QueryHandler
      */
     private function getImagesWithDefaultPath()
     {
-        $files = collect(File::files(public_path('storage/editor/fotos')))->sortBy(function ($file) {
+        $path = trim(request('path', 'storage/editor/fotos'), '/');
+
+        $files = collect(File::files(public_path($path)))->sortBy(function ($file) {
             return filemtime($file);
         })->reverse();
 
@@ -1001,7 +1009,7 @@ class QueryHandler
 
         return [
             'status' => 'success',
-            'data'   => view('admin::tb.images_list', compact('list'))->render(),
+            'data'   => view('admin::tb.images_list', compact('list', 'path'))->render(),
         ];
     }
 }

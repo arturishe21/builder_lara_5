@@ -2,12 +2,12 @@
     @foreach($list as $img)
         <?php
           $baseImg =  basename($img);
-          $imgParam = getimagesize(public_path('storage/editor/fotos/' . basename($img)));
+          $imgParam = getimagesize(public_path( $path .  '/' . basename($img)));
         ?>
 
         <div class="one_img_uploaded is_wrapper" onclick="TableBuilder.selectImgInStorage($(this))">
             <div class="one_img_uploaded_content">
-                <img src="{{glide('/storage/editor/fotos/'. basename($img), ['w'=>100, 'h' => 100])}}" data-path = 'storage/editor/fotos/{{basename($img)}}'>
+                <img src="{{glide( $path . '/'. basename($img), ['w'=>100, 'h' => 100])}}" data-path = '{{$path}}/{{basename($img)}}'>
             </div>
             <div class="one_img_uploaded_label">
                 @if (isset($imgParam[0]) && $imgParam[1])

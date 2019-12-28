@@ -336,7 +336,8 @@ class RequestHandler
     protected function handleFileUpload()
     {
         $file = Input::file('file');
-        $prefixPath = 'storage/files/';
+        $prefixPath = trim(request('path', '/storage/files'), '/');
+        $prefixPath .= '/';
 
         if ($this->controller->hasCustomHandlerMethod('onFileUpload')) {
             $res = $this->controller->getCustomHandler()->onFileUpload($file);
