@@ -2,10 +2,8 @@
 
 namespace App\Cms\Tree\Templates;
 
-use Vis\Builder\Fields\{
-    Id,
-    Text
-};
+use Vis\Builder\Fields\{Checkbox, Froala, Id, Image, MultiImage, Text, Textarea};
+
 use Vis\Builder\Definitions\ResourceTree;
 
 class Contacts extends ResourceTree
@@ -16,14 +14,20 @@ class Contacts extends ResourceTree
     public function fields()
     {
         return [
-            'test' => [
+            'Общее' => [
                 Id::make('#', 'id')->sortable(),
-
-                Text::make('11', 'slug')
-                    ->comment('sdsds')
-                    ->sortable(),
-
+                Text::make('Заголовок', 'title'),
+                Froala::make('Описание', 'description'),
+                Text::make('Url', 'slug'),
+                Image::make('Картинка', 'picture'),
+                MultiImage::make('Дополнительные картинки', 'additional_pictures'),
+                Checkbox::make('Активно' ,'is_active'),
             ],
+            'SEO' => [
+                Text::make('Seo title', 'seo_title'),
+                Textarea::make('Seo description', 'seo_description')
+            ]
+
         ];
     }
 }
