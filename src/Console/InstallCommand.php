@@ -117,6 +117,8 @@ class InstallCommand extends Command
      */
     private function loadFiles()
     {
+        File::copyDirectory($this->installPath . '/files/app/Cms', app_path('Cms'));
+
         copy(
             $this->installPath.'/files/app/Providers/RouteServiceProvider.php',
             app_path().'/Providers/RouteServiceProvider.php'
