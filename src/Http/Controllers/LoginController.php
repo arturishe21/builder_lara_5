@@ -2,10 +2,9 @@
 
 namespace Vis\Builder;
 
+use App\Cms\Admin;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,24 +15,33 @@ class LoginController extends Controller
 {
     private $sessionError = 'login_not_found';
     private $routeLogin = 'login_show';
+    private $admin;
+    private $login;
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
-     */
+    public function __construct(Admin $admin)
+    {
+        $this->admin = $admin;
+        $classLogin = (new $admin())->login();
+        $this->login = new $classLogin();
+    }
+
     public function showLogin()
     {
         try {
             if (Sentinel::check()) {
-                return Redirect::to(config('builder.admin.uri'));
+                return Redirect::to('/admin');
             }
         } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-            Session::flash($this->sessionError, 'Пользователь не активирован');
+            Session::flash($this->sessionError, __cms('Пользователь не активирован'));
             Sentinel::logout();
 
-            return Redirect::route($this->routeLogin);
+            return redirect()->route($this->routeLogin);
         }
 
-        return view('admin::vis-login');
+        return view('admin::vis-login', [
+            'login' => $this->login,
+            'admin' => $this->admin,
+        ]);
     }
 
     /**
@@ -51,29 +59,29 @@ class LoginController extends Controller
                 );
 
                 if (! $user) {
-                    Session::flash($this->sessionError, 'Пользователь не найден');
+                    Session::flash($this->sessionError, __cms('Пользователь не найден'));
 
-                    return Redirect::route($this->routeLogin);
+                    return redirect()->route($this->routeLogin);
                 }
 
-                if (config('builder.login.on_login') && config('builder.login.on_login')()) {
-                    return config('builder.login.on_login')();
+                if ($this->login->onLogin()) {
+                    return $this->login->onLogin();
                 }
 
-                return Redirect::intended(config('builder.admin.uri'));
+                return Redirect::intended('/admin');
             } catch (\Cartalyst\Sentinel\Checkpoints\ThrottlingException $e) {
-                Session::flash($this->sessionError, 'Превышено количество возможных попыток входа');
+                Session::flash($this->sessionError, __cms('Превышено количество возможных попыток входа'));
 
                 return Redirect::route('login_show');
             } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-                Session::flash($this->sessionError, 'Пользователь не активирован');
+                Session::flash($this->sessionError, __cms('Пользователь не активирован'));
 
-                return Redirect::route($this->routeLogin);
+                return redirect()->route($this->routeLogin);
             }
         } else {
-            Session::flash($this->sessionError, 'Некорректные данные запроса');
+            Session::flash($this->sessionError, __cms('Некорректные данные запроса'));
 
-            return Redirect::route($this->routeLogin);
+            return redirect()->route($this->routeLogin);
         }
     }
 
@@ -85,7 +93,7 @@ class LoginController extends Controller
         Sentinel::logout();
         $this->clearSessionsAdmin();
 
-        return Redirect::route($this->routeLogin);
+        return redirect()->route($this->routeLogin);
     }
 
     /**

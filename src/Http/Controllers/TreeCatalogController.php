@@ -233,6 +233,7 @@ class TreeCatalogController
     private function handleShowCatalog()
     {
         $treeName = $this->nameTree;
+
         $controller = $this->controller;
         $perPage = Session::get('table_builder.'.$treeName.'.node.per_page', 20);
         $current = $this->model::findOrFail(request('node', 1));

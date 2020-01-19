@@ -27,11 +27,11 @@
 
                 Route::any(
                     '/tree',
-                    'Vis\Builder\TableAdminController@showTree'
+                    'Vis\Builder\TableAdminController@showTreeNew'
                 );
                 Route::any(
-                    '/handle/tree',
-                    'Vis\Builder\TableAdminController@handleTree'
+                    '/actions/tree',
+                    'Vis\Builder\TableAdminController@handleTreeNew'
                 );
 
                 Route::any(
@@ -51,6 +51,11 @@
                 Route::post(
                     '/handle/{page_admin}',
                     'Vis\Builder\TableAdminController@handlePage'
+                );
+
+                Route::post(
+                    '/actions/{page_admin}',
+                    'Vis\Builder\TableAdminController@actionsPage'
                 );
 
                 Route::post(

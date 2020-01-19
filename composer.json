@@ -24,15 +24,20 @@
             "src/Models",
             "src/libs",
             "src/Http/Controllers",
+            "src/Http/ControllersNew",
+            "src/Http/Services",
+            "src/Http/Definitions",
             "src/Http/Facades",
             "src/Http/Fields",
+            "src/Http/FieldsNew",
             "src/Http/Handlers",
             "src/Http/Helpers",
             "src/Http/Traits",
             "src/Http/Middleware",
             "src/Console",
             "src/Migrations",
-            "src/Seeds"
+            "src/Seeds",
+            "src/Settings"
         ],
         "psr-4": {
             "Vis\\Builder\\": "src/"

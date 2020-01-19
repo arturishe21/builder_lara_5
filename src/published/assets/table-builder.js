@@ -35,6 +35,7 @@ var TableBuilder = {
     },
 
     optionsInit : function (options) {
+
         TableBuilder.options = TableBuilder.getOptions(options);
     },
 
@@ -53,8 +54,8 @@ var TableBuilder = {
             axis: "y",
             handle: ".tb-sort",
             update: function () {
-
                 var order = $('tbody', '#datatable_fixed_column').sortable("serialize");
+
                 TableBuilder.saveOrder(order);
             }
         });
@@ -230,6 +231,9 @@ var TableBuilder = {
     }, // end search
 
     showProgressBar: function () {
+
+        console.log(TableBuilder.options);
+
         jQuery('#' + TableBuilder.options.ident).find('.ui-overlay').fadeIn();
     }, // end showProgressBar
 
@@ -423,9 +427,10 @@ var TableBuilder = {
             data: data,
             dataType: 'json',
             success: function (response) {
+
                 if (response.status) {
                     $(TableBuilder.form_wrapper).html(response.html);
-                    $(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());;
+                    $(TableBuilder.form_edit).modal('show').css("top", $(window).scrollTop());
 
                     TableBuilder.initFroalaEditor();
 
@@ -647,12 +652,13 @@ var TableBuilder = {
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
 
                     $(document).height($(window).height());
-
+                    /*
                     if (TableBuilder.options.is_page_form) {
                         window.history.back();
                         TableBuilder.doClosePopup(table);
                         return;
                     }
+                    */
 
                     $(TableBuilder.form_edit).modal('hide');
                     $(document).height($(window).height());
@@ -779,11 +785,15 @@ var TableBuilder = {
 
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
 
+
+                    /*
                     if (TableBuilder.options.is_page_form) {
                         //window.location.href = TableBuilder.options.list_url;
                         window.history.back();
                         return;
                     }
+                    */
+
 
                     var form = $(create_form).parents('#modal_form');
 
@@ -1242,7 +1252,7 @@ var TableBuilder = {
         if (type == 'multi') {
             section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').each(function ( index ) {
                 var img = $(this).attr('data-path');
-                var html = '<li><img src="/' + img + '" data_src_original = "' + img + '" width="120px"><div class="tb-btn-delete-wrap"><button class="btn2 btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteImage(this);"><i class="fa fa-times"></i></button></div></li>';
+                var html = '<li><img src="' + img + '" data_src_original = "' + img + '" width="120px"><div class="tb-btn-delete-wrap"><button class="btn2 btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteImage(this);"><i class="fa fa-times"></i></button></div></li>';
                 section.find('.tb-uploaded-image-container_' + name + ' ul').append(html);
 
                 TableBuilder.setInputImages('.tb-uploaded-image-container_' + name);
@@ -1252,7 +1262,7 @@ var TableBuilder = {
             var img = section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').attr('data-path');
             if (img != undefined) {
                 section.find('[type=hidden]').val(img);
-                section.find('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="/' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
+                section.find('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
             }
         }
         section.find('tbody').html('');

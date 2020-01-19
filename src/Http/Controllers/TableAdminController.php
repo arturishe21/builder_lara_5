@@ -2,12 +2,13 @@
 
 namespace Vis\Builder;
 
+use Vis\Builder\Services\Actions;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\View;
 use Vis\Builder\Facades\Jarboe as JarboeFacade;
+use Illuminate\Support\Str;
+use Vis\Builder\ControllersNew\{ListController, TreeController};
+
 
 /**
  * Class TableAdminController.
@@ -24,6 +25,23 @@ class TableAdminController extends Controller
         $controller = JarboeFacade::tree();
 
         return $controller->handle();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function showTreeNew()
+    {
+        $modelDefinition = "App\\Cms\\Tree\\" . Str::title('tree');
+
+        return (new TreeController($modelDefinition))->list();
+    }
+
+    public function handleTreeNew()
+    {
+        $modelDefinition = "App\\Cms\\Tree\\" . Str::title('tree');
+
+        return (new TreeController($modelDefinition))->handle();
     }
 
     /**
@@ -110,12 +128,18 @@ class TableAdminController extends Controller
      */
     public function showPage($page)
     {
-        $options = [
-            'url'      => $this->urlAdmin.$page,
-            'def_name' => $page,
-        ];
+        $modelDefinition = "App\\Cms\\Definitions\\" . Str::title($page);
 
-        $table = JarboeFacade::table($options)['showList'];
+        if (class_exists($modelDefinition)) {
+            $data = (new ListController(new $modelDefinition()))->list();
+
+            return view('admin::new.table', compact('data'));
+        }
+
+        $table = JarboeFacade::table([
+                    'url'      => $this->urlAdmin.$page,
+                    'def_name' => $page,
+                 ])['showList'];
 
         return view('admin::table', compact('table'));
     }
@@ -127,6 +151,12 @@ class TableAdminController extends Controller
      */
     public function showPagePost($page)
     {
+        $modelDefinition = "App\\Cms\\Definitions\\" . Str::title($page);
+
+        if (class_exists($modelDefinition)) {
+            return (new ListController(new $modelDefinition()))->list();
+        }
+
         $options = [
             'url'      => $this->urlAdmin.$page,
             'def_name' => $page,
@@ -148,6 +178,18 @@ class TableAdminController extends Controller
         ];
 
         return JarboeFacade::table($options);
+    }
+
+    /**
+     * @param $page
+     *
+     * @return mixed
+     */
+    public function actionsPage($page)
+    {
+        $modelDefinition = "App\\Cms\\Definitions\\" . Str::title($page);
+
+        return (new Actions(new $modelDefinition()))->router(request('query_type'));
     }
 
     /**

@@ -8,7 +8,6 @@ var ForeignDefinition  = {
         var definition = attributesJson.definition;
         var foreign_field = attributesJson.foreign_field;
 
-
         if (foreign_field_id == undefined) {
             var loader = content.parent().find('.loader_create_definition');
             loader.removeClass('hide').text('Сохранение данных..');
@@ -58,7 +57,7 @@ var ForeignDefinition  = {
 
         jQuery.ajax({
             type: "POST",
-            url: "/admin/handle/" + definition,
+            url: "/admin/actions/" + definition,
             data: {
                 'query_type' :'show_add_form',
                 'foreign_field_id' : foreign_field_id,
@@ -85,9 +84,12 @@ var ForeignDefinition  = {
         TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
+        var url = "/admin/" + url + "/" + attributesJson.definition;
+        var url = '/admin/actions/' + attributesJson.definition_parent;
+
         jQuery.ajax({
             type: "POST",
-            url: "/admin/handle/" + attributesJson.definition,
+            url: url,
             data: {
                 'id' : foreignFieldId,
                 'paramsJson' : foreignAttributes,
@@ -127,7 +129,8 @@ var ForeignDefinition  = {
 
     },
 
-    delete : function (idDelete, idUpdate, jsonParams) {
+    delete : function (idDelete, idUpdate, jsonParams, url = 'handle') {
+
         jQuery.SmartMessageBox({
             title : phrase["Удалить?"],
             content : phrase["Эту операцию нельзя будет отменить."],
@@ -136,9 +139,14 @@ var ForeignDefinition  = {
             if (ButtonPressed === phrase["Да"]) {
                 var attributesJson = jQuery.parseJSON(jsonParams);
                 $('.definition_' + attributesJson.name + " .loader_definition").show();
+
+                if (url == 'handle') {
+                    url = "/admin/" + url + "/" + attributesJson.definition;
+                }
+
                 jQuery.ajax({
                     type: "POST",
-                    url: "/admin/handle/" + attributesJson.definition,
+                    url: url,
                     data: {
                         'idDelete' : idDelete,
                         'id' : idUpdate,
@@ -170,7 +178,7 @@ var ForeignDefinition  = {
         });
     },
 
-    edit : function (idEdit, idUpdate, jsonParams) {
+    edit : function (idEdit, idUpdate, jsonParams, url = 'handle') {
 
         var attributesJson = jQuery.parseJSON(jsonParams);
 
@@ -179,7 +187,7 @@ var ForeignDefinition  = {
 
         jQuery.ajax({
             type: "POST",
-            url: "/admin/handle/" + attributesJson.definition,
+            url: "/admin/" + url +  "/" + attributesJson.definition,
             data: {
                 'id' : idEdit,
                 'idUpdate' : idUpdate,

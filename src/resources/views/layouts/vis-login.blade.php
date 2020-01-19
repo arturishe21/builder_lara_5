@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 
-        <title>{{ __cms(config('builder.admin.caption')) }}</title>
+        <title>{{ $admin->getCaption()}}</title>
 
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
@@ -16,12 +16,12 @@
         <link rel="stylesheet" type="text/css" href="/packages/vis/builder/css/all_login.css">
 
 
-        <link rel="shortcut icon" href="{{ config('builder.admin.favicon_url') }}" type="image/x-icon">
-        <link rel="icon" href="{{ config('builder.admin.favicon_url') }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ $admin->getFaviconUrl() }}" type="image/x-icon">
+        <link rel="icon" href="{{ $admin->getFaviconUrl() }}" type="image/x-icon">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
 
-        @if (config('builder.login.css'))
-            <link rel="stylesheet" type="text/css" href="{{config('builder.login.css')}}">
+        @if ($login->getCss())
+            <link rel="stylesheet" type="text/css" href="{{$login->getCss()}}">
         @endif
 
     </head>

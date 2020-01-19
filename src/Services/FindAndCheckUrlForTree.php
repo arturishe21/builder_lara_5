@@ -2,6 +2,7 @@
 
 namespace Vis\Builder\Services;
 
+use App\Cms\Tree\Tree;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -60,13 +61,15 @@ class FindAndCheckUrlForTree
 
     private function getControllerAndMethod($node)
     {
-        $templates = config('builder.tree.templates');
+        $templates = (new Tree())->templates();
 
         if (! isset($templates[$node->template])) {
             return false;
         }
 
-        $controllerAndMethod = explode('@', $templates[$node->template]['action']);
+        $template =  new $templates[$node->template]();
+
+        $controllerAndMethod = explode('@', $template->getAction());
 
         $app = app();
         $controller = $app->make('App\\Http\\Controllers\\'.$controllerAndMethod[0]);

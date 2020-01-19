@@ -9,6 +9,7 @@ View::composer('admin::partials.navigation', function (ViewParam $view) {
     $view->with('user', $user)->with('menu', $menu);
 });
 
+
 View::composer(['admin::layouts.default', 'admin::partials.scripts'], function (ViewParam $view) {
     $skin = Cookie::get('skin') ?: 'smart-style-4';
     $thisLang = Cookie::get('lang_admin') ?: config('builder.translate_cms.lang_default');
@@ -23,6 +24,32 @@ View::composer(['admin::layouts.default', 'admin::partials.scripts'], function (
 
     $view->with(compact('skin', 'thisLang', 'customJs', 'customCss', 'logo'));
 });
+
+View::composer(['admin::new.layouts.default', 'admin::new.partials.scripts'], function (ViewParam $view) {
+
+    $admin = new \App\Cms\Admin();
+
+    $skin = Cookie::get('skin') ?: 'smart-style-4';
+    $thisLang = Cookie::get('lang_admin') ?: config('builder.translate_cms.lang_default');
+    $customJs = config('builder.admin.custom_js');
+    $customCss = config('builder.admin.custom_css');
+    $logoWhite = config('builder.admin.logo_url_white') ?: '/packages/vis/builder/img/logo-w.png';
+
+    if ($skin && $skin != 'smart-style-0') {
+        $logo = $logoWhite;
+    }
+
+    $view->with(compact('skin', 'thisLang', 'customJs', 'customCss', 'logo', 'admin'));
+});
+
+View::composer('admin::new.partials.navigation', function (ViewParam $view) {
+    $user = Sentinel::getUser();
+    $menu =  (new \App\Cms\Admin())->menu();
+
+
+    $view->with(compact('user', 'menu'));
+});
+
 
 View::composer(['admin::tree.create_modal', 'admin::tree.content'], function (ViewParam $view) {
     $templates = config('builder.'.$view->treeName.'.templates');
@@ -54,31 +81,8 @@ View::composer(['admin::tree.partials.update',
                      'admin::tree.partials.constructor',
 ], function (ViewParam $view) {
     $type = $view->getData()['type'];
-    $active = false;
+    $active = true;
     $caption = '';
-
-    $nodeDefinition = config('builder.'.$view->treeName.'.templates.'
-        .$view->item->template.'.node_definition');
-
-    $update = config('builder.tb-definitions.'.$view->treeName.'.'
-        .$nodeDefinition.'.actions.'.$type);
-    //check present config in template file
-    if ($update) {
-        $pathToConfig = 'builder.tb-definitions.'.$view->treeName.'.'
-            .$nodeDefinition.'.actions.'.$type;
-    }
-
-    //check in main file config
-    if (! isset($update) || ! $update) {
-        $pathToConfig = 'builder.'.$view->treeName.'.actions.'.$type;
-        $update = config('builder.'.$view->treeName.'.actions.'.$type);
-    }
-
-    if ($update) {
-        $caption = config($pathToConfig.'.caption');
-        $checkFunction = config($pathToConfig.'.check');
-        $active = $checkFunction && $checkFunction();
-    }
 
     $view->with(compact('active', 'caption'));
 });

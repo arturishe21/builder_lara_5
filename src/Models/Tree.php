@@ -180,20 +180,8 @@ class Tree extends \Baum\Node
             return $this->_nodeUrl;
         }
 
-        $basicDomain = config('builder.'.$this->fileDefinition.'.basic_domain');
-
-        if ($basicDomain) {
-            $protocol = Request::secure() ? 'https://' : 'http://';
-
-            return $protocol.$basicDomain.'/'.$this->_nodeUrl;
-        }
-
         return '/'.$this->_nodeUrl;
     }
-
-    // end getUrl
-
-    //return url without location
 
     /**
      * @return string
@@ -241,17 +229,6 @@ class Tree extends \Baum\Node
             $slugs[] = $node->slug;
         }
 
-        if (config('builder.'.$this->fileDefinition.'.templates.'.$this->template.'.subdomain')
-            && config('builder.'.$this->fileDefinition.'.basic_domain')
-        ) {
-            $subDomain = config('builder.'.$this->fileDefinition.'.templates.'.$this->template.'.subdomain');
-            $basicDomain = config('builder.'.$this->fileDefinition.'.basic_domain');
-
-            $protocol = Request::secure() ? 'https://' : 'http://';
-
-            return $protocol.$subDomain.'.'.$basicDomain.implode('/', $slugs);
-        }
-
         return implode('/', $slugs);
     }
 
@@ -274,14 +251,7 @@ class Tree extends \Baum\Node
      */
     private function getCacheTags()
     {
-        if ($this->fileDefinition) {
-            $tags = config('builder.'.$this->fileDefinition.'.cache');
-            if (isset($tags['tags']) && is_array($tags['tags'])) {
-                return $tags['tags'];
-            }
-        }
-
-        return false;
+        return ['tree'];
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('admin::layouts.default')
+@extends('admin::new.layouts.default')
 
 @section('title')
       {{__cms($title)}}

@@ -2,15 +2,10 @@
 
 @section('main')
 
-    <div id="main" role="main" style="background-image: url({{config('builder.login.background_url')}});">
+    <div id="main" role="main" style="background-image: url({{$login->getBackground()}});">
         <div id="content" class="container">
 
                 <div class="b-login col-xs-12 col-sm-12 col-md-5 col-lg-4 " style="float: right;">
-
-                    <div class="b-bottom">
-                       {{config('builder.login.bottom_block')}}
-                    </div>
-
                     <div class="well no-padding">
 
                         @if (Session::has('login_not_found'))
@@ -41,14 +36,7 @@
                                         <input type="password" name="password" password_required = "{{__cms('Введите пароль')}}" autocomplete="off">
                                         </label>
                                 </section>
-                                
-                                @if (config('builder::login.is_active_remember_me'))
-                                    <section>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="remember" checked="checked">
-                                            <i></i>{{__cms('Запомнить меня')}}</label>
-                                    </section>
-                                @endif
+
                             </fieldset>
                             <footer>
                                 <button type="submit" class="btn btn-primary submit_button">

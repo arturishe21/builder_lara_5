@@ -4,6 +4,7 @@ $arrSegments = explode('/', Request::path());
 
 if ($arrSegments[0] != 'admin') {
     try {
+
         $controllerMethodArray = (new \Vis\Builder\Services\FindAndCheckUrlForTree())->getRoute($arrSegments);
 
         if ($controllerMethodArray) {
