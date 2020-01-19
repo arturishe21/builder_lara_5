@@ -4,12 +4,25 @@ namespace Vis\Builder;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
 use DB;
+use Cartalyst\Sentinel\Activations\EloquentActivation;
+use App\Models\Group;
 
 /**
  * Class User.
  */
 class User extends EloquentUser
 {
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'role_users',  'user_id', 'role_id');
+    }
+
+    public function activation()
+    {
+        return $this->hasOne(EloquentActivation::class);
+    }
+
+
     /**
      * @var string
      */
@@ -41,18 +54,5 @@ class User extends EloquentUser
     public function getFullName()
     {
         return $this->first_name.' '.$this->last_name;
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getIdsTreeAccess()
-    {
-        return DB::table('role_users')
-            ->leftJoin('roles2tree', 'roles2tree.id_role', '=', 'role_users.role_id')
-            ->where('user_id', $this->id)
-            ->where('id_tree', '!=', null)
-            ->select('roles2tree.id_tree')
-            ->get();
     }
 }

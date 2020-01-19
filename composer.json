@@ -29,7 +29,6 @@
             "src/Http/Definitions",
             "src/Http/Facades",
             "src/Http/Fields",
-            "src/Http/FieldsNew",
             "src/Http/Handlers",
             "src/Http/Helpers",
             "src/Http/Traits",

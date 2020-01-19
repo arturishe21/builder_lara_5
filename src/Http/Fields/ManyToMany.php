@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\FieldsNew;
+namespace Vis\Builder\Fields;
 
 use Vis\Builder\Definitions\Resource;
 use Illuminate\Database\Eloquent\Model;

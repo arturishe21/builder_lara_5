@@ -2,7 +2,7 @@
 
 namespace App\Cms\Tree\Templates;
 
-use Vis\Builder\FieldsNew\{
+use Vis\Builder\Fields\{
     Id,
     Text
 };

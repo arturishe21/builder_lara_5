@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\FieldsNew\Relations;
+namespace Vis\Builder\Fields\Relations;
 
 class Options
 {

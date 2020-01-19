@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\FieldsNew;
+namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;

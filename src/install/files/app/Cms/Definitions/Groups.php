@@ -4,7 +4,7 @@ namespace App\Cms\Definitions;
 
 use App\Models\Group;
 use Vis\Builder\Services\Actions;
-use Vis\Builder\FieldsNew\{
+use Vis\Builder\Fields\{
     Id,
     Text
 };

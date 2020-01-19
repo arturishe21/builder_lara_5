@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\FieldsNew;
+namespace Vis\Builder\Fields;
 
 class Number extends Field
 {

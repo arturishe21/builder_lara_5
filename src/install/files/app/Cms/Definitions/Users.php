@@ -5,7 +5,7 @@ namespace App\Cms\Definitions;
 use App\Models\User;
 use Carbon\Carbon;
 use Vis\Builder\Services\Actions;
-use Vis\Builder\FieldsNew\{
+use Vis\Builder\Fields\{
     ManyToMany,
     Readonly,
     Relations\Options,

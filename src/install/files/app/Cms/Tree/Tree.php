@@ -11,8 +11,8 @@ class Tree extends BaseTree
     public function templates()
     {
         return [
-            'node' => Node::class,
-            'contacts2' => Contacts::class
+            'main' => Node::class,
+            'contacts' => Contacts::class
         ];
     }
 }

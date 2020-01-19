@@ -4,7 +4,7 @@ namespace App\Cms\Definitions;
 
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Revision;
-use Vis\Builder\FieldsNew\{ForeignAjax, Id, Datetime, Text, Relations\Options};
+use Vis\Builder\Fields\{ForeignAjax, Id, Datetime, Text, Relations\Options};
 use Vis\Builder\Definitions\Resource;
 
 class Revisions extends Resource

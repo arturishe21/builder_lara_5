@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\FieldsNew;
+namespace Vis\Builder\Fields;
 
 class Color extends Field
 {

@@ -2,7 +2,7 @@
 
 namespace App\Cms\Filds;
 
-use Vis\Builder\FieldsNew\Checkbox;
+use Vis\Builder\Fields\Checkbox;
 
 class Permissions extends Checkbox
 {

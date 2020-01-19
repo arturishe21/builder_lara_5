@@ -4,7 +4,7 @@ namespace Vis\Builder\Definitions;
 
 use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
-use Vis\Builder\FieldsNew\Definition;
+use Vis\Builder\Fields\Definition;
 
 class Resource
 {

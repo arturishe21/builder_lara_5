@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\FieldsNew;
+namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Arr;
 use Vis\Builder\Definitions\Resource;

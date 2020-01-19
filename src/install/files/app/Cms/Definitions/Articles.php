@@ -4,7 +4,7 @@ namespace App\Cms\Definitions;
 
 use Vis\Builder\Services\Actions;
 use App\Models\Article;
-use Vis\Builder\FieldsNew\{Color,
+use Vis\Builder\Fields\{Color,
     Hidden,
     ManyToManyAjax,
     MultiImage,
