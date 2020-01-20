@@ -13,7 +13,7 @@ class BaseTree
         return new $this->model;
     }
 
-    public function getTemplates()
+    public function getTemplates() : array
     {
         $templatesModels = $this->templates();
 

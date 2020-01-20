@@ -16,7 +16,7 @@ class ResourceTree extends Resource
         return 'tree';
     }
 
-    public function getTitleDefinition(): string
+    public function getTitleDefinition()
     {
         if ($this->titleDefinition) {
             return $this->titleDefinition;
@@ -25,7 +25,7 @@ class ResourceTree extends Resource
         return parent::getNameDefinition();
     }
 
-    public function saveEditForm($request)
+    public function saveEditForm($request) : array
     {
         $record = $this->model()->find($request['id']);
         $item = $this->saveActive($record, $request);

@@ -3,12 +3,6 @@
     Route::pattern('tree_name', '[a-z0-9-_]+');
     Route::pattern('any', '[a-z0-9-_/\]+');
 
-    if (config('builder.admin.not_cms_urls')) {
-        $noCmsUrl = config('builder.admin.not_cms_urls');
-
-        Route::pattern('page_admin', '^(?!'.implode('|', $noCmsUrl).').*$');
-    }
-
     Route::group(['middleware' => ['web']], function () {
         Route::get('login', 'Vis\Builder\LoginController@showLogin')->name('login_show');
         Route::post('login', 'Vis\Builder\LoginController@postLogin')->name('login');
@@ -34,38 +28,9 @@
                     'Vis\Builder\TableAdminController@handleTreeNew'
                 );
 
-                Route::any(
-                    '/{tree_name}_tree',
-                    'Vis\Builder\TableAdminController@showTreeOther'
-                );
-                Route::any(
-                    '/handle/{tree_name}_tree',
-                    'Vis\Builder\TableAdminController@handleTreeOther'
-                );
-
-                Route::post(
-                    '/show_all_tree/{tree_name}',
-                    'Vis\Builder\TableAdminController@showTreeAll'
-                );
-
-                Route::post(
-                    '/handle/{page_admin}',
-                    'Vis\Builder\TableAdminController@handlePage'
-                );
-
                 Route::post(
                     '/actions/{page_admin}',
                     'Vis\Builder\TableAdminController@actionsPage'
-                );
-
-                Route::post(
-                    '/handle/{page_admin}/fast-edit',
-                    'Vis\Builder\TableAdminController@fastEditText'
-                );
-
-                Route::post(
-                    '/insert-new-record-for-many-to-many',
-                    'Vis\Builder\TableAdminController@insertRecordForManyToMany'
                 );
 
                 // view showDashboard
@@ -80,8 +45,6 @@
                 Route::get('change_lang', 'Vis\Builder\TBController@doChangeLangAdmin')->name('change_lang');
                 Route::post('upload_image', 'Vis\Builder\EditorController@uploadFoto');
                 Route::post('save_croped_img', 'Vis\Builder\TBController@doSaveCropImg');
-
-                Route::post('change-relation-field', 'Vis\Builder\TableAdminController@doChangeRelationField');
 
                 //router for pages builder
                 Route::get(

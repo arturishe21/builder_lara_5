@@ -21,7 +21,7 @@ class Resource
         return new $this->model;
     }
 
-    public function getTitle()
+    public function getTitle() : string
     {
         return __cms($this->title);
     }
@@ -56,7 +56,6 @@ class Resource
 
         return $this->orderBy;
     }
-
 
     public function getFilter()
     {
@@ -163,7 +162,7 @@ class Resource
         ];
     }
 
-    public function showEditForm($id)
+    public function showEditForm(int $id) : array
     {
         $definition = $this;
 
@@ -189,7 +188,7 @@ class Resource
         ];
     }
 
-    public function saveAddForm($request)
+    public function saveAddForm($request) : array
     {
         $record = $this->model();
         $recordNew = $this->saveActive($record, $request);
@@ -200,7 +199,7 @@ class Resource
         ];
     }
 
-    public function saveEditForm($request)
+    public function saveEditForm($request) : array
     {
         $recordNew = $this->updateForm($request);
 

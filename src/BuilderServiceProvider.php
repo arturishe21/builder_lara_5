@@ -80,10 +80,6 @@ class BuilderServiceProvider extends ServiceProvider
                 ->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
         }
 
-        $this->app->singleton('jarboe', function () {
-            return new Jarboe();
-        });
-
         $this->registerCommands();
     }
 

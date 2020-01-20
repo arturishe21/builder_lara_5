@@ -147,7 +147,7 @@ class Field
         return $this;
     }
 
-    public function getPlaceholder()
+    public function getPlaceholder() : ?string
     {
         return $this->placeholderValue;
     }
@@ -183,7 +183,7 @@ class Field
         return $this;
     }
 
-    public function getLanguage()
+    public function getLanguage() : ?array
     {
         return $this->language;
     }

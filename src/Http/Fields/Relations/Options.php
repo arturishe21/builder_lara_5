@@ -14,7 +14,7 @@ class Options
        $this->relation = $relation;
    }
 
-   public function where(string $field, string $eq, string  $value) : Options
+   public function where(string $field, string $eq, string $value) : Options
    {
        $this->whereCollection[] = [
             'field' => $field,
