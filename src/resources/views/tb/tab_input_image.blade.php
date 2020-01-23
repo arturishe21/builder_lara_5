@@ -16,7 +16,8 @@
                             'name' => $name . $tab['postfix'],
                             'value' => $tab['value'],
                             'baseName' => $name,
-                            'source' => json_decode($tab['value'], true)
+                            'source' => json_decode($tab['value'], true),
+                            'path' => $path
                         ])
                     </div>
                 </div>

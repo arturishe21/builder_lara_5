@@ -105,6 +105,7 @@ class ImageField extends AbstractField
         $input->width = $this->getAttribute('img_width', 200);
         $input->height = $this->getAttribute('img_height', 200);
         $input->chooseFromUploaded = $this->getAttribute('choose_from_uploaded', true);
+        $input->path = $this->getAttribute('path', 'storage/editor/fotos/');
 
         return $input->render();
     }
