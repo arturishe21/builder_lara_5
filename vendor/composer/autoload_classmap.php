@@ -52,6 +52,7 @@ return array(
     'Vis\\Builder\\Fields\\MultiImage' => $baseDir . '/src/Http/Fields/MultiImage.php',
     'Vis\\Builder\\Fields\\Number' => $baseDir . '/src/Http/Fields/Number.php',
     'Vis\\Builder\\Fields\\Password' => $baseDir . '/src/Http/Fields/Password.php',
+    'Vis\\Builder\\Fields\\Permissions' => $baseDir . '/src/Http/Fields/Permissions.php',
     'Vis\\Builder\\Fields\\Readonly' => $baseDir . '/src/Http/Fields/Readonly.php',
     'Vis\\Builder\\Fields\\Relations\\Options' => $baseDir . '/src/Http/Fields/Relations/Options.php',
     'Vis\\Builder\\Fields\\Select' => $baseDir . '/src/Http/Fields/Select.php',

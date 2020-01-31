@@ -226,10 +226,7 @@ class Resource
             if ($nameField != 'id') {
 
                 if ($field->getLanguage()) {
-                    foreach ($field->getLanguage() as $langPrefix) {
-                        $langField = $nameField . $langPrefix['postfix'];
-                        $record->$langField = $request[$langField];
-                    }
+                    $this->saveLanguage($field, $record, $request);
                 }
 
                 if ($field->getHasOne()) {
@@ -246,8 +243,7 @@ class Resource
                     continue;
                 }
 
-
-                $record->$nameField = $request[$nameField];
+                $record->$nameField = $field->prepareSave($request);
             }
         }
 
@@ -272,6 +268,37 @@ class Resource
         }
 
         return $record;
+    }
+
+    protected function saveLanguage($field, &$record, $request)
+    {
+        $nameField = $field->getNameField();
+
+        foreach ($field->getLanguage() as $slugLang => $langPrefix) {
+            $langField = $nameField . $langPrefix['postfix'];
+
+            $translate = $request[$langField] ?? $this->getTranslate($field, $slugLang, $request[$nameField]);
+
+            $record->$langField = $translate;
+        }
+    }
+
+    private function getTranslate($field, $slugLang, $phrase)
+    {
+        try {
+            $langDef = $field->getLanguageDefault();
+
+            if ($langDef == $slugLang) {
+                return;
+            }
+
+            $translator = new \Yandex\Translate\Translator(config('builder.translate_cms.api_yandex_key'));
+            $translation = $translator->translate($phrase, $langDef . '-' . $slugLang);
+
+            if (isset($translation->getResult()[0])) {
+                return $translation->getResult()[0];
+            }
+        } catch (\Yandex\Translate\Exception $e) {}
     }
 
     protected function updateManyToMany($field, $collectionsIds)
@@ -312,6 +339,8 @@ class Resource
 
     public function getListing()
     {
+        $this->checkPermissions();
+
         $head = $this->head();
         $list = $this->getCollection();
         $definition = $this;
@@ -327,6 +356,13 @@ class Resource
         });
 
         return $list;
+    }
+
+    protected function checkPermissions()
+    {
+        if (!app('user')->hasAccess([$this->getNameDefinition(). '.view'])) {
+            abort(403);
+        }
     }
 
     protected function getCollection()

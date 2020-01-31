@@ -176,6 +176,11 @@ class Actions
         return $this->getThisField()->selectWithUploadedImages($this->definition);
     }
 
+    private function selectWithUploaded($request)
+    {
+        return $this->getThisField()->selectWithUploadedFiles($this->definition);
+    }
+
     private function search($request)
     {
         session()->put($this->definition->getSessionKeyFilter(), $request);

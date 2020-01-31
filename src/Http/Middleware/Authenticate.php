@@ -48,6 +48,11 @@ class Authenticate
 
                 return Redirect::route('login_show');
             }
+
+            \App::singleton('user', function () use ($user) {
+                return $user;
+            });
+
         } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
             Session::flash('login_not_found', 'Пользователь не активирован');
             Sentinel::logout();
@@ -60,20 +65,6 @@ class Authenticate
 
     private function checkIp($request)
     {
-        $listIp = [];
-
-        if (is_callable(config('builder.admin.limitation_of_ip'))) {
-            $listIp = config('builder.admin.limitation_of_ip')();
-        }
-
-        if (is_array(config('builder.admin.limitation_of_ip'))) {
-            $listIp = config('builder.admin.limitation_of_ip');
-        }
-
-        if (count($listIp)) {
-            return in_array($request->ip(), $listIp);
-        }
-
         return true;
     }
 }

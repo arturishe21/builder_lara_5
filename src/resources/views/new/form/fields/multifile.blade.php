@@ -35,7 +35,7 @@
                         <div class="tb-uploaded-file-container-{{$field->getNameField()}} uploaded-files">
                             <ul>
                                 @if($field->getValue())
-                                    @foreach($source as $file)
+                                    @foreach($field->getValueArray() as $file)
                                         <li>
                                             {{basename($file)}} <a href="{{$file}}" path = "{{$file}}" target="_blank">{{__cms('Скачать')}}</a>
                                             <a class="delete" onclick="TableBuilder.doDeleteFile(this)">{{__cms('Удалить')}}</a>

@@ -76,7 +76,7 @@
                                             </table>
                                         </div>
                                         <div class="modal-footer">
-                                            <span class="btn btn-success btn-sm" onclick="TableBuilder.selectImageUploaded('{{ $field->getNameField()}}', 'once')" >{{__cms('Выбрать')}}</span>
+                                            <span class="btn btn-success btn-sm" onclick="TableBuilder.selectImageUploaded('{{ $field->getNameField() . $tab['postfix']}}', 'once')" >{{__cms('Выбрать')}}</span>
                                             <span class="btn btn-default"  onclick="TableBuilder.closeWindowWithPictures();"> {{__cms('Отмена')}} </span>
                                         </div>
                                     </div>

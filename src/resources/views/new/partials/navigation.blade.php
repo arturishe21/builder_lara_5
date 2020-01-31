@@ -14,11 +14,7 @@
     <nav>
         <ul style="display: block;">
             @foreach($menu as $k=>$el)
-                @if(!isset($el['check']) || $el['check']())
-
-                    @if (isset($el['custom']))
-                        {!! $el['custom']() !!}
-                    @else
+                @if(app('user')->hasAccess([str_replace('/', '', $el['link']).'.view']))
 
                         <li class="level1">
                             <a  {!! isset($el['link']) && !isset($el['submenu'])? "href='/admin".$el['link']."'" : "" !!}>
@@ -30,7 +26,6 @@
                                 @endif
                                 @if (isset($el['badge']))
                                     <?php $badgeValue = $el['badge'](); ?>
-
                                     <span
                                         class="badge bg-color-greenLight inbox-badge"
                                         style="@if(!$badgeValue) display: none @endif"
@@ -43,7 +38,7 @@
                             @if(isset($el['submenu']))
                                 <ul>
                                     @foreach($el['submenu'] as $k_sub_menu=>$sub_menu)
-                                        @if(!isset($sub_menu['check']) || $sub_menu['check']())
+                                        @if(app('user')->hasAccess([str_replace('/', '', $sub_menu['link']).'.view']))
                                             <li>
                                                 <a
                                                     {!! isset($sub_menu['link']) && !isset($sub_menu['submenu']) ? "href='/admin".$sub_menu['link']."'" : "" !!}
@@ -64,7 +59,8 @@
 
                                                     <ul>
                                                         @foreach($sub_menu['submenu'] as $k_sub_menu2=>$sub_menu2)
-                                                            @if(!isset($sub_menu2['check']) || $sub_menu2['check']())
+
+                                                            @if(app('user')->hasAccess([str_replace('/', '', $sub_menu2['link']).'.view']))
                                                                 <li
                                                                     @if (isset($sub_menu2['badge']))
                                                                     style="align-items: center;justify-content: space-between;display: flex;"
@@ -88,7 +84,6 @@
                                 </ul>
                             @endif
                         </li>
-                    @endif
                 @endif
             @endforeach
         </ul>

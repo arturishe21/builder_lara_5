@@ -188,6 +188,11 @@ class Field
         return $this->language;
     }
 
+    public function getLanguageDefault()
+    {
+        return array_key_first($this->getLanguage());
+    }
+
     public function rules($rules)
     {
         $this->rules = is_string($rules) ? (array)$rules : $rules;
@@ -266,6 +271,13 @@ class Field
     public function getHasOne()
     {
         return $this->relationHasOne;
+    }
+
+    public function prepareSave($request)
+    {
+        $nameField = $this->getNameField();
+
+        return $request[$nameField];
     }
 
 }

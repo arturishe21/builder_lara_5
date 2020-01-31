@@ -4,7 +4,7 @@
         <div class="div_input">
             <div class="input_content">
 
-                <div class="multi_pictures">
+                <div class="multi_pictures pictures_input_field">
                     <div class="progress progress-micro" style="margin-bottom: 0;">
                         <div class="img-progress progress-bar progress-bar-primary bg-color-redLight" role="progressbar"
                              style="width: 0%;"></div>
@@ -45,6 +45,30 @@
                         </script>
                     </div>
                     <div style="clear: both"></div>
+
+                    <div class="modal files_uploaded_table" id ='files_uploaded_table_{{ $field->getNameField()}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span class="close_window" onclick="TableBuilder.closeWindowWithPictures();"> &times; </span>
+                                    <h4 class="modal-title" id="modal_form_label">{{__cms('Выберите изображения')}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <span class="btn btn-success btn-sm" onclick="TableBuilder.selectImageUploaded('{{ $field->getNameField()}}', 'multi')" >{{__cms('Выбрать')}}</span>
+                                    <span class="btn btn-default"  onclick="TableBuilder.closeWindowWithPictures();"> {{__cms('Отмена')}} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

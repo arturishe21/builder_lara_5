@@ -3,6 +3,7 @@
 namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File as FileFacade;
 
 class File extends Field
 {
@@ -49,6 +50,30 @@ class File extends Field
             'link'       => asset($this->path . $fileName),
             'short_link' => $fileName,
             'long_link'  => $this->path . $fileName,
+        ];
+    }
+
+    public function selectWithUploadedFiles($definition)
+    {
+        return $this->getFilesDefaultPath();
+    }
+
+    private function getFilesDefaultPath()
+    {
+        $files = collect(FileFacade::files(public_path($this->path)))->sortBy(function ($file) {
+            return filemtime($file);
+        })->reverse();
+
+        $page = (int) request('page') ?: 1;
+        $onPage = 24;
+        $slice = $files->slice(($page - 1) * $onPage, $onPage);
+
+        $list = new \Illuminate\Pagination\LengthAwarePaginator($slice, $files->count(), $onPage);
+        $list->setPath(url()->current());
+
+        return [
+            'status' => 'success',
+            'data'   => view('admin::new.form.fields.partials.files_list', compact('list'))->render(),
         ];
     }
 }

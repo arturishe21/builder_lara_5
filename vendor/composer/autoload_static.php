@@ -67,6 +67,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Fields\\MultiImage' => __DIR__ . '/../..' . '/src/Http/Fields/MultiImage.php',
         'Vis\\Builder\\Fields\\Number' => __DIR__ . '/../..' . '/src/Http/Fields/Number.php',
         'Vis\\Builder\\Fields\\Password' => __DIR__ . '/../..' . '/src/Http/Fields/Password.php',
+        'Vis\\Builder\\Fields\\Permissions' => __DIR__ . '/../..' . '/src/Http/Fields/Permissions.php',
         'Vis\\Builder\\Fields\\Readonly' => __DIR__ . '/../..' . '/src/Http/Fields/Readonly.php',
         'Vis\\Builder\\Fields\\Relations\\Options' => __DIR__ . '/../..' . '/src/Http/Fields/Relations/Options.php',
         'Vis\\Builder\\Fields\\Select' => __DIR__ . '/../..' . '/src/Http/Fields/Select.php',
