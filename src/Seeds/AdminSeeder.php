@@ -41,7 +41,7 @@ class AdminSeeder extends Seeder
 
             'slug'        => 'admin',
             'name'        => 'Администратор',
-            'permissions' => '{"admin.access":true,"tree.view":true,"articles.view":true,"settings_section.view":true,"settingssettings_all.view":true,"translations_cmsphrases.view":true,"revisions.view":true,"translationsphrases.view":true,"users_group.view":true,"users.view":true,"groups.view":true}',
+            'permissions' => '{"admin.access":true,"tree.view":true,"articles.view":true,"settings_block.view":true,"settingssettings_all.view":true,"translations_cmsphrases.view":true,"revisions.view":true,"translationsphrases.view":true,"users_group.view":true,"users.view":true,"groups.view":true}',
             'created_at'  => date('Y-m-d G:i:s'),
             'updated_at'  => date('Y-m-d G:i:s'),
         ]);
@@ -49,7 +49,7 @@ class AdminSeeder extends Seeder
         DB::table('roles')->insert([
             'slug'        => 'editor',
             'name'        => 'Редактор',
-            'permissions' => '{"admin.access":true,"tree.view":true,"articles.view":true,"settings_section.view":true,"settingssettings_all.view":true,"translations_cmsphrases.view":true,"revisions.view":true,"translationsphrases.view":true,"users_group.view":true,"users.view":true,"groups.view":true}',
+            'permissions' => '{"admin.access":true,"tree.view":true,"articles.view":true,"settings_block.view":true,"settingssettings_all.view":true,"translations_cmsphrases.view":true,"revisions.view":true,"translationsphrases.view":true,"users_group.view":true,"users.view":true,"groups.view":true}',
             'created_at'  => date('Y-m-d G:i:s'),
             'updated_at'  => date('Y-m-d G:i:s'),
 

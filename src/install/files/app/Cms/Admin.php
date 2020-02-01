@@ -29,12 +29,7 @@ class Admin extends AdminBase
                 'submenu' => [
                     [
                         'title' => 'Управление',
-                        'submenu' => [
-                            [
-                                'title' => 'Общее',
-                                'link'  => '/settings/settings_all',
-                            ],
-                        ],
+                        'link'  => '/settings/settings_all',
                     ],
                     [
                         'title' => 'Переводы CMS',
@@ -56,7 +51,7 @@ class Admin extends AdminBase
             [
                 'title' => 'Упр. пользователями',
                 'icon'  => 'user',
-                'link'  => '/users_block',
+                'link'  => '/users_group',
                 'submenu' => [
                     [
                         'title' => 'Пользователи',
