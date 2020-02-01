@@ -33,12 +33,17 @@ class Trans extends Model
      */
     public $timestamps = false;
 
+    public function translationsPhrases()
+    {
+        return $this->hasMany('Vis\TranslationsCMS\Translate', 'translations_phrases_cms_id');
+    }
+
     /**
      * @return mixed
      */
     public function getTrans()
     {
-        $res = $this->hasMany('Vis\TranslationsCMS\Translate', 'id_translations_phrase')->get()->toArray();
+        $res = $this->hasMany('Vis\TranslationsCMS\Translate', 'translations_phrases_cms_id')->get()->toArray();
 
         if ($res) {
             foreach ($res as $el) {
@@ -59,7 +64,7 @@ class Trans extends Model
         } else {
             $translationsGet = DB::table('translations_phrases_cms')->leftJoin(
                 'translations_cms',
-                'translations_cms.id_translations_phrase',
+                'translations_cms.translations_phrases_cms_id',
                 '=',
                 'translations_phrases_cms.id'
             )

@@ -1,5 +1,5 @@
 <script src="/packages/vis/builder/js/footer_all.js"></script>
-<script src='/packages/vis/builder/js/plugin/editor_floala/js/languages/{{$thisLang}}.js'></script>
+<script src='/packages/vis/builder/js/plugin/editor_floala/js/languages/{{str_replace('uk', 'ua', $thisLang) }}.js'></script>
 
 <script type="text/javascript">
 

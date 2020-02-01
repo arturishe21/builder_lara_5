@@ -14,57 +14,35 @@ class Admin extends AdminBase
                 'title' => 'Структура сайта',
                 'icon'  => 'sitemap',
                 'link'  => '/tree',
-                'check' => function () {
-                    return true;
-                },
             ],
 
             [
                 'title' => 'Статьи',
                 'icon'  => 'building',
                 'link'  => '/articles',
-                'check' => function () {
-                    return true;
-                },
             ],
 
             [
                 'title' => 'Настройки',
                 'icon'  => 'cog',
-                'badge' => function() {   //лейбла с количеством чего-то
-                    return \App\Models\Article::all()->count();
-                },
+                'link'  => '/settings_block',
                 'submenu' => [
                     [
                         'title' => 'Управление',
                         'submenu' => [
                             [
                                 'title' => 'Общее',
-                                'link'  => '/settings/settings_all?group=general',
-                                'check' => function () {
-                                    return true;
-                                },
-
-
+                                'link'  => '/settings/settings_all',
                             ],
                         ],
-                        'check' => function () {
-                            return true;
-                        },
                     ],
                     [
                         'title' => 'Переводы CMS',
                         'link'  => '/translations_cms/phrases',
-                        'check' => function () {
-                            return true;
-                        },
                     ],
                     [
                         'title' => 'Контроль изменений',
                         'link'  => '/revisions',
-                        'check' => function () {
-                            return true;
-                        },
                     ],
                 ],
             ],
@@ -73,29 +51,21 @@ class Admin extends AdminBase
                 'title' => 'Переводы',
                 'icon'  => 'language',
                 'link'  => '/translations/phrases',
-                'check' => function() {
-                    return true;
-                }
             ),
 
             [
                 'title' => 'Упр. пользователями',
                 'icon'  => 'user',
+                'link'  => '/users_block',
                 'submenu' => [
                     [
                         'title' => 'Пользователи',
                         'link'  => '/users',
-                        'check' => function () {
-                            return true;
-                        },
                     ],
 
                     [
                         'title' => 'Группы',
                         'link'  => '/groups',
-                        'check' => function () {
-                            return true;
-                        },
                     ],
 
                 ],

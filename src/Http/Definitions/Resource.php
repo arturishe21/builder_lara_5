@@ -292,7 +292,7 @@ class Resource
                 return;
             }
 
-            $translator = new \Yandex\Translate\Translator(config('builder.translate_cms.api_yandex_key'));
+            $translator = new \Yandex\Translate\Translator(config('builder.translations.cms.api_yandex_key'));
             $translation = $translator->translate($phrase, $langDef . '-' . $slugLang);
 
             if (isset($translation->getResult()[0])) {

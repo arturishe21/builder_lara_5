@@ -12,7 +12,7 @@ View::composer('admin::partials.navigation', function (ViewParam $view) {
 
 View::composer(['admin::layouts.default', 'admin::partials.scripts'], function (ViewParam $view) {
     $skin = Cookie::get('skin') ?: 'smart-style-4';
-    $thisLang = Cookie::get('lang_admin') ?: config('builder.translate_cms.lang_default');
+    $thisLang = Cookie::get('lang_admin') ?: config('builder.translations.cms.language_default');
     $customJs = config('builder.admin.custom_js');
     $customCss = config('builder.admin.custom_css');
     $logo = config('builder.admin.logo_url') ?: '/packages/vis/builder/img/logo.png';
@@ -30,7 +30,7 @@ View::composer(['admin::new.layouts.default', 'admin::new.partials.scripts'], fu
     $admin = new \App\Cms\Admin();
 
     $skin = Cookie::get('skin') ?: 'smart-style-4';
-    $thisLang = Cookie::get('lang_admin') ?: config('builder.translate_cms.lang_default');
+    $thisLang = Cookie::get('lang_admin') ?: config('builder.translations.cms.language_default');
     $customJs = config('builder.admin.custom_js');
     $customCss = config('builder.admin.custom_css');
     $logoWhite = config('builder.admin.logo_url_white') ?: '/packages/vis/builder/img/logo-w.png';

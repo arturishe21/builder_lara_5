@@ -139,9 +139,15 @@ if (! function_exists('geturl')) {
 if (! function_exists('__cms')) {
     function __cms($phrase)
     {
-        $thisLang = Cookie::get('lang_admin', config('builder.translate_cms.lang_default'));
+        $thisLang = Cookie::get('lang_admin', config('builder.translations.cms.language_default'));
 
         $arrayTranslate = Vis\TranslationsCMS\Trans::fillCacheTrans();
+
+        if (!isset($arrayTranslate[$phrase][$thisLang])) {
+            if ($phrase) {
+                (new \Vis\TranslationsCMS\Translate())->createNewTranslate($phrase);
+            }
+        }
 
         return $arrayTranslate[$phrase][$thisLang] ?? $phrase;
     }

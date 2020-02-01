@@ -17,11 +17,15 @@ class CreateTranslationsCmsTable extends Migration
             $table->charset = 'utf8';
 
             $table->increments('id');
-            $table->integer('id_translations_phrase')->unsigned();
+            $table->integer('translations_phrases_cms_id')->unsigned();
             $table->string('lang', 2);
             $table->text('translate');
 
-            $table->index('id_translations_phrase');
+            $table->index('translations_phrases_cms_id');
+
+            $table->foreign('translations_phrases_cms_id')
+                ->references('id')->on('translations_phrases_cms')
+                ->onDelete('cascade');
         });
     }
 

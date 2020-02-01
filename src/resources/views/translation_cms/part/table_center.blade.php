@@ -18,7 +18,7 @@
 
                   <select class="form-control" name="dt_basic_length" aria-controls="dt_basic">
 
-                  @foreach(config('builder.translate_cms.show_count') as $val)
+                  @foreach([20, 40, 100] as $val)
                       <option value="{{$val}}"
                         @if($val == $count_show)
                          selected
@@ -45,6 +45,7 @@
              </tr>
          </thead>
          <tbody>
+
            @forelse($data as $k=>$el )
                 <tr class="tr_{{$el->id}} " id_page="{{$el->id}}">
 
@@ -59,10 +60,12 @@
                         $trans = $el->getTrans();
                         ?>
 
-                     @foreach($langs as $lang_key=>$el_lang)
+                     @foreach($langs as $languageKey=>$languageValue)
                         <p>
-                        <img class="flag flag-{{$lang_key == "en" ? "us" : $lang_key}}" style="margin-right: 5px">
-                         <a data-type="textarea" class="lang_change" data-pk="{{$el->id}}"  data-name="{{$lang_key}}" data-original-title="Язык: {{$el_lang}}">{{$trans[$lang_key] ?? ''}}</a>
+                        <img class="flag flag-{{str_replace(['en', 'uk'],  ['us', 'ua'], $languageKey)}}" style="margin-right: 5px">
+                         <a data-type="textarea" class="lang_change" data-pk="{{$el->id}}"
+                            data-name="{{$languageKey}}"
+                            data-original-title="Язык: {{$languageValue}}">{{$trans[$languageKey] ?? ''}}</a>
                          </p>
                       @endforeach
                     </td>

@@ -6,17 +6,16 @@ use App\Models\Group;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Fields\{
     Id,
-    Text
+    Text,
+    Permissions
 };
 
 use Vis\Builder\Definitions\Resource;
-use App\Cms\Filds\Permissions;
 
 class Groups extends Resource
 {
     public $model = Group::class;
     public $title = 'Группы';
-    protected $orderBy = 'created_at desc';
 
     public function fields()
     {

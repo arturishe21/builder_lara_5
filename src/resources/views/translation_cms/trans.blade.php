@@ -1,7 +1,7 @@
 @extends('admin::new.layouts.default')
 
 @section('title')
-  {{__cms($title)}}
+  {{__cms('Переводы CMS')}}
 @stop
 
 @section('ribbon')
