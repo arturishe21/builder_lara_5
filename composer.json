@@ -38,5 +38,12 @@
         "psr-4": {
             "Vis\\Builder\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vis\\Builder\\BuilderServiceProvider"
+            ]
+        }
     }
 }
