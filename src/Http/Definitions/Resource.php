@@ -22,6 +22,11 @@ class Resource
         return new $this->model;
     }
 
+    public function cards()
+    {
+        return [];
+    }
+
     public function getTitle() : string
     {
         return __cms($this->title);
@@ -280,7 +285,11 @@ class Resource
         foreach ($field->getLanguage() as $slugLang => $langPrefix) {
             $langField = $nameField . $langPrefix['postfix'];
 
-            $translate = $request[$langField] ?? $this->getTranslate($field, $slugLang, $request[$nameField]);
+            if (isset($request[$langField]) && $request[$langField]) {
+                $translate = $request[$langField];
+            } else {
+                $translate = $this->getTranslate($field, $slugLang, $request[$nameField]);
+            }
 
             $record->$langField = $translate;
         }
@@ -292,7 +301,7 @@ class Resource
             $langDef = $field->getLanguageDefault();
 
             if ($langDef == $slugLang || !$phrase) {
-                return;
+                return '';
             }
 
             $translator = new \Yandex\Translate\Translator(config('builder.translations.cms.api_yandex_key'));

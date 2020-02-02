@@ -1,6 +1,6 @@
-@if (isset($def['cards']))
+@if (count($list->getDefinition()->cards()))
     <div class="row">
-        @foreach ($def['cards'] as $k => $model)
+        @foreach ($list->getDefinition()->cards() as $k => $model)
             <div id="card{{$k}}">
                 <?php $modelCard = new $model(); ?>
                 @if ($modelCard instanceof \Vis\Builder\Services\Value)

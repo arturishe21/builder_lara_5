@@ -41,6 +41,9 @@
             padding:6px 12px;
         }
     </style>
+    <link rel="shortcut icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
+
 </head>
 <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin ?? '' }}">
 <div id="modal_wrapper" class="modal_popup_first"></div>

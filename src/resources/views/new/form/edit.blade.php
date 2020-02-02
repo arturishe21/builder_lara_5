@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="btn btn-default close_button" style="float: right; margin: 0 5px"  type="button"
-                        onclick="TableBuilder.doClosePopup('{{$definition->getNameDefinition()}}')"
+                        onclick="TableBuilder.doClosePopup('{{$definition->model()->getTable()}}')"
                 > {{__cms('Отмена')}} </button>
                 <button class="btn btn-success btn-sm" style="float: right" type="button"
                         onclick="$('#edit_form_{{$definition->getNameDefinition()}}').submit();">

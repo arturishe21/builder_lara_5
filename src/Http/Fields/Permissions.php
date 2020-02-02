@@ -31,7 +31,7 @@ class Permissions extends Field
 
         foreach ($permissionsMenu as $permission) {
             if (isset($permission['link']) && isset($permission['title'])) {
-                $slug = str_replace('/', '', $permission['link']);
+                $slug = str_replace(['/', '_'], [''], $permission['link']);
 
                 $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
@@ -61,7 +61,7 @@ class Permissions extends Field
             if (isset($permission['submenu'])) {
                 foreach ($permission['submenu'] as $subMenu) {
                     if (isset($subMenu['link'])) {
-                        $slug = str_replace('/', '', $subMenu['link']);
+                        $slug =  str_replace(['/', '_'], [''], $subMenu['link']);
                         $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
                         if (isset($subMenu['link']) && isset($subMenu['title'])) {

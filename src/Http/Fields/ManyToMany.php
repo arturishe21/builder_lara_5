@@ -81,6 +81,6 @@ class ManyToMany extends Field
 
     public function getNameField() : string
     {
-       return Str::slug(parent::getNameField());
+        return str_replace('-', '', Str::slug(parent::getNameField()));
     }
 }
