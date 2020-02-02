@@ -5,6 +5,7 @@ namespace Vis\Builder\Definitions;
 use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
 use Vis\Builder\Fields\Definition;
+use Illuminate\Support\Facades\Cache;
 
 class Resource
 {
@@ -267,6 +268,8 @@ class Resource
             }
         }
 
+        Cache::tags($this->getNameDefinition())->flush();
+
         return $record;
     }
 
@@ -288,7 +291,7 @@ class Resource
         try {
             $langDef = $field->getLanguageDefault();
 
-            if ($langDef == $slugLang) {
+            if ($langDef == $slugLang || !$phrase) {
                 return;
             }
 

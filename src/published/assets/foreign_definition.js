@@ -98,6 +98,7 @@ var ForeignDefinition  = {
             dataType: 'json',
             success: function (response) {
                 if (response.html) {
+
                     $('.definition_' + attributesJson.name).html(response.html);
 
                     if (attributesJson.sortable != undefined) {

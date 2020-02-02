@@ -773,6 +773,7 @@ var TableBuilder = {
                 TableBuilder.hideFormPreloader(TableBuilder.form);
 
                 if (response.id) {
+
                     if (foreign_field_id != '' && foreign_attributes != '') {
                         ForeignDefinition.callbackForeignDefinition(foreign_field_id, foreign_attributes);
                         return;
@@ -782,6 +783,7 @@ var TableBuilder = {
                         TableBuilder.handlerCreate(TableBuilder.getActionUrl(), response.id);
                         return;
                     }
+
 
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
 

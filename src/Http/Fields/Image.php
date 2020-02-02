@@ -18,8 +18,8 @@ class Image extends Field
 
     public function getValueForList($definition)
     {
-        $img = glide($this->getValue(), ['w' => 50]);
-        $imgHover = glide($this->getValue(), ['w' => 350]);
+        $img = glide($this->getValue(), ['w' => 50, 'h' => 50]);
+        $imgHover = glide($this->getValue(), ['w' => 350, 'h' => 350]);
 
         return "<a class='screenshot' rel='{$imgHover}'><img src='{$img}'></a>";
     }

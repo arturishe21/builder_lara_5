@@ -17,7 +17,8 @@
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
         "predis/predis" : "v1.1.1",
-        "maatwebsite/excel": "3.*"
+        "maatwebsite/excel": "3.*",
+        "barryvdh/laravel-debugbar": "^3.2"
     },
     "autoload": {
         "classmap": [

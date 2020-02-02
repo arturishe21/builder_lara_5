@@ -2,6 +2,7 @@
 
 namespace Vis\Builder;
 
+use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Vis\Builder\Services\Actions;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
@@ -43,6 +44,8 @@ class TableAdminController extends Controller
 
             return view('admin::new.table', compact('data'));
         }
+
+        throw new \Exception('Not found class '. $modelDefinition);
     }
 
     /**
@@ -57,6 +60,8 @@ class TableAdminController extends Controller
         if (class_exists($modelDefinition)) {
             return (new ListController(new $modelDefinition()))->list();
         }
+
+        throw new \Exception('Not found class '. $modelDefinition);
     }
 
     /**
@@ -73,7 +78,7 @@ class TableAdminController extends Controller
 
     private function getModelDefinition($page)
     {
-        return "App\\Cms\\Definitions\\" . Str::title($page);
+        return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
 
 

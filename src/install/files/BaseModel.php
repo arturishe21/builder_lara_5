@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
-use Vis\Builder\Facades\Jarboe;
+use Illuminate\Support\Str;
 
 class BaseModel extends Model
 {
@@ -56,7 +56,7 @@ class BaseModel extends Model
      */
     public function getSlug()
     {
-        return Jarboe::urlify(strip_tags($this->title));
+        return Str::slug(strip_tags($this->title));
     }
 
     /*

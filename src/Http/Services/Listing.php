@@ -28,9 +28,9 @@ class Listing
 
     public function getUrlAction()
     {
-        $page = $this->definition->getNameDefinition();
+        $arraySlugs = explode('/', request()->url());
 
-        return '/admin/actions/' . $page;
+        return '/admin/actions/' . last($arraySlugs);
     }
 
     public function isSortable()

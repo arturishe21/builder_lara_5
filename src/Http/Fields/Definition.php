@@ -41,10 +41,7 @@ class Definition extends Field
             'definition' => $definitionRelation->getNameDefinition(),
             'definition_parent' => $definition->getNameDefinition(),
             'ident' => $this->getNameField(),
-            'show' => [
-                'id',
-                'title'
-            ]
+            'foreign_field' => $this->getFieldForeignKeyName($definition)
         ];
 
         if ($definitionRelation->getIsSortable()) {
@@ -54,13 +51,23 @@ class Definition extends Field
         return json_encode($attributes);
     }
 
+    private function getFieldForeignKeyName($definition)
+    {
+        $foreignIdWithTable = $definition->model()->{$this->relation}()->getQualifiedForeignKeyName();
+        $foreignIdWithTableArray = explode('.', $foreignIdWithTable);
+
+        return $foreignIdWithTableArray[1] ?? '';
+    }
+
     public function getTable($definition, $parseJsonData)
     {
         $attributes = json_encode($parseJsonData);
 
         $model = $definition->model();
 
-        $list = $model::find(request('id'))->{$this->relation};
+        $list = request('id') ? $model::find(request('id'))->{$this->relation}
+                                   : (new $model())->{$this->relation};
+        
         $fieldsDefinition = $this->head($definition);
 
         $list->map(function ($item, $key) use ($fieldsDefinition, $definition) {
