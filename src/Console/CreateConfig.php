@@ -3,6 +3,7 @@
 namespace Vis\Builder;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class CreateConfig extends Command
 {
@@ -47,14 +48,15 @@ class CreateConfig extends Command
     public function handle()
     {
         $this->table = $this->argument('table');
-        $this->model = ucfirst(camel_case(str_singular($this->table)));
+
+        $this->model = ucfirst(Str::camel(Str::singular($this->table)));
         $this->fields = $this->option('fields');
 
-        $this->createModel();
+      //  $this->createModel();
 
-        $this->createDefinition();
+        $this->createModelDefinition();
 
-        $this->createMigration();
+        //$this->createMigration();
     }
 
     private function createModel()
@@ -77,25 +79,27 @@ class CreateConfig extends Command
         $this->info('Model '.$this->model.' created');
     }
 
-    private function createDefinition()
+    private function createModelDefinition()
     {
-        $fileDefinition = config_path().'/builder/tb-definitions/'.$this->table.'.php';
+        $model = Str::plural($this->model);
+
+        $fileDefinition = app_path('/Cms/Definitions/'.$model.'.php');
 
         if (file_exists($fileDefinition)) {
-            if (! $this->confirm('Definition '.$this->table.' is exist, replace definition?')) {
+            if (! $this->confirm('Definition '.$model.' is exist, replace definition?')) {
                 return;
             }
         }
 
         copy(
-            $this->installPath.'/Config.php',
+            $this->installPath.'/DefinitionModel.php',
             $fileDefinition
         );
 
         $this->replaceParams($fileDefinition);
         $this->replaceFieldsConfig($fileDefinition);
 
-        $this->info('Definition '.$this->table.' created');
+        $this->info('Definition '.$model.' created');
     }
 
     private function createMigration()
@@ -109,7 +113,7 @@ class CreateConfig extends Command
         );
 
         $this->replaceParams($fileMigration);
-        $this->replaceFieldsMigration($fileMigration);
+      //  $this->replaceFieldsMigration($fileMigration);
 
         $this->info('Migration '.$nameMigration.' created');
     }
@@ -118,15 +122,15 @@ class CreateConfig extends Command
     {
         $file = file_get_contents($fileReplace);
         $file = str_replace(
-            ['modelName', 'tableName', 'tableUpName'],
-            [$this->model, $this->table, ucfirst(camel_case($this->table))], $file);
+            ['modelName', 'tableName', 'tableUpName', 'modelPluralName'],
+            [$this->model, $this->table, ucfirst(Str::camel($this->table)), Str::plural($this->model)],
+            $file);
 
         file_put_contents($fileReplace, $file);
     }
 
     private function replaceFieldsConfig($fileReplace)
     {
-        $fieldsReplaceTabs = '';
         $fieldsDescription = '';
 
         if ($this->fields) {
@@ -138,24 +142,18 @@ class CreateConfig extends Command
                     $field = $nameAndType[0];
                     $type = $this->adaptiveFieldForConfig($nameAndType[1]);
                 } else {
-                    $type = 'text';
+                    $type = 'Text';
                 }
 
-                $fieldsReplaceTabs .= "'".$field."',
+                $fieldsDescription .= "$type::make('$field', '$field')->filter()->sortable(),
                 ";
-
-                $fieldsDescription .= "'".$field."' => [
-            'caption' => '".$field."',
-            'type' => '".$type."',
-        ],
-        ";
             }
         }
 
         $file = file_get_contents($fileReplace);
         $file = str_replace(
-            ["'fieldsTabs',", "'fieldsDescription',"],
-            [$fieldsReplaceTabs, $fieldsDescription],
+            ["fieldsDescription,"],
+            [$fieldsDescription],
             $file);
 
         file_put_contents($fileReplace, $file);
@@ -165,19 +163,19 @@ class CreateConfig extends Command
     {
         switch ($type) {
             case 'string':
-                return 'text';
+                return 'Text';
                 break;
             case 'text':
-                return 'textarea';
+                return 'Textarea';
                 break;
             case 'tinyInteger':
-                return 'checkbox';
+                return 'Checkbox';
                 break;
-            case 'date':
-                return 'datetime';
+            case 'datetime':
+                return 'Datetime';
                 break;
             default:
-                return 'text';
+                return 'Text';
         }
     }
 
