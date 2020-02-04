@@ -52,11 +52,11 @@ class CreateConfig extends Command
         $this->model = ucfirst(Str::camel(Str::singular($this->table)));
         $this->fields = $this->option('fields');
 
-      //  $this->createModel();
+        $this->createModel();
 
         $this->createModelDefinition();
 
-        //$this->createMigration();
+        $this->createMigration();
     }
 
     private function createModel()
