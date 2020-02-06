@@ -82,6 +82,7 @@ class FileField extends AbstractField
         $input->comment = $this->getAttribute('comment');
         $input->className = $this->getAttribute('class_name');
         $input->chooseFromUploaded = $this->getAttribute('choose_from_uploaded', true);
+        $input->path = $this->getAttribute('path') ? : '/storage/files';
 
         $this->getPreparedTabsMulti($input->tabs);
 
