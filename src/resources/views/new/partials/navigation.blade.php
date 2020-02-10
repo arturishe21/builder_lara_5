@@ -33,12 +33,12 @@
                                         {{is_numeric($badgeValue) ? $badgeValue : ''}}
                                     </span>
                             @endif
-                        </a>
+                        </a>_
 
                         @if(isset($el['submenu']))
                             <ul>
                                 @foreach($el['submenu'] as $k_sub_menu=>$sub_menu)
-                                    @if(app('user')->hasAccess([str_replace(['/', ''], [''], $sub_menu['link']).'.view']))
+                                    @if(app('user')->hasAccess([str_replace(['/', '_'], [''], $sub_menu['link']).'.view']))
                                         <li>
                                             <a
                                                 {!! isset($sub_menu['link']) && !isset($sub_menu['submenu']) ? "href='/admin".$sub_menu['link']."'" : "" !!}
