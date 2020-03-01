@@ -24,10 +24,8 @@
                     </div>
                 </div>
             @endforeach
-
         </div>
-
     </div>
 </section>
-
+@include('admin::new.form.fields.partials.traslation')
 

@@ -23,23 +23,7 @@
                 </label>
             </div>
         </div>
-
-        <script>
-                @if (isset($transliteration) && isset($transliteration['field']))
-
-            var runTrans = true;
-            @if (isset($transliteration['only_empty']) && $transliteration['only_empty'] == true)
-                runTrans = $('[name={{$transliteration['field']}}]').val() == '' ? true : false;
-            @endif
-
-            if (runTrans) {
-                $('[name={{$transliteration['field']}}]').keyup(function(){
-                    $('[name={{ $name }}]').val(TableBuilder.urlRusLat($(this).val()));
-                });
-            }
-            @endif
-        </script>
     </div>
 </section>
-
+@include('admin::new.form.fields.partials.traslation')
 

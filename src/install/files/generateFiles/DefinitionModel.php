@@ -19,7 +19,6 @@ class modelPluralName extends Resource
         return [
             'test' => [
                 Id::make('#', 'id')->sortable(),
-                Text::make('Картинки111', 'title')->language(),
                 fieldsDescription,
                 Datetime::make('Дата создания', 'created_at')->filter()->sortable(),
             ],

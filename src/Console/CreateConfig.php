@@ -112,8 +112,7 @@ class CreateConfig extends Command
             $fileMigration
         );
 
-        $this->replaceParams($fileMigration);
-      //  $this->replaceFieldsMigration($fileMigration);
+        $this->replaceFieldsMigration($fileMigration);
 
         $this->info('Migration '.$nameMigration.' created');
     }

@@ -53,10 +53,7 @@ class Definition extends Field
 
     private function getFieldForeignKeyName($definition)
     {
-        $foreignIdWithTable = $definition->model()->{$this->relation}()->getQualifiedForeignKeyName();
-        $foreignIdWithTableArray = explode('.', $foreignIdWithTable);
-
-        return $foreignIdWithTableArray[1] ?? '';
+        return $definition->model()->{$this->relation}()->getForeignKeyName();
     }
 
     public function getTable($definition, $parseJsonData)
