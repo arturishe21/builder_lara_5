@@ -200,6 +200,11 @@ class Field
         return $this;
     }
 
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
     public function nullable($value)
     {
         $this->nullValue = $value;

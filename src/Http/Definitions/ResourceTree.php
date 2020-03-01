@@ -42,4 +42,9 @@ class ResourceTree extends Resource
         return $this->action;
     }
 
+    public function showTemplate() : ?array
+    {
+        return null;
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace Vis\Builder\Definitions;
 
 use App\Models\Tree;
+use Illuminate\Support\Arr;
 
 class BaseTree
 {
@@ -15,7 +16,7 @@ class BaseTree
 
     public function getTemplates() : array
     {
-        $templatesModels = $this->templates();
+        $templatesModels = $this->filterTemplates($this->templates());
 
         $templates = [];
         foreach ($templatesModels as $slug => $template) {
@@ -33,5 +34,20 @@ class BaseTree
 
             return (new $classDefinition())->getTitleDefinition();
         }
+    }
+
+    private function filterTemplates($templatesModels)
+    {
+        $idNode = request('node', 1);
+        $info = $this->model::find($idNode);
+        $thisTemplate = $info->template;
+
+        $showTemplateForThisNode = (new $templatesModels[$thisTemplate]())->showTemplate();
+
+        if ($showTemplateForThisNode) {
+            $templatesModels = Arr::only($templatesModels, $showTemplateForThisNode);
+        }
+
+        return $templatesModels;
     }
 }
