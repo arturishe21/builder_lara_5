@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,6 +51,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+
         if ($e instanceof NotFoundHttpException) {
             return response()->view('admin::errors.404', [], 404);
         }
@@ -57,6 +59,18 @@ class Handler extends ExceptionHandler
         if (($request->is('admin/*') && $request->isXmlHttpRequest())
             || (env('APP_ENV') == 'testing')
         ) {
+
+            if ($e instanceof ValidationException) {
+
+                $data = [
+                    'status'  => 'error',
+                    'code'    => $e->getCode(),
+                    'message' => $this->getErrorValidation($e),
+                ];
+
+                return response()->json($data, 422);
+            }
+
             $data = [
                 'status'  => 'error',
                 'code'    => $e->getCode(),
@@ -71,5 +85,17 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $e);
+    }
+
+    private function getErrorValidation($e)
+    {
+        $errors = '';
+        foreach ($e->errors() as $k => $collection) {
+            foreach ($collection as $messageError) {
+                $errors .= "{$messageError} <br>";
+            }
+        }
+
+        return $errors;
     }
 }

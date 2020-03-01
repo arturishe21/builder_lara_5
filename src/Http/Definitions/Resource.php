@@ -6,6 +6,7 @@ use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
 use Vis\Builder\Fields\Definition;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class Resource
 {
@@ -223,9 +224,22 @@ class Resource
         return $recordNew;
     }
 
+    private function getRules($fields)
+    {
+        $rules = [];
+        foreach ($fields as $field) {
+            if ($field->getRules()) {
+                $rules[$field->getNameField()] = $field->getRules();
+            }
+        }
+
+        return $rules;
+    }
+
     protected function saveActive($record, $request)
     {
         $fields = $this->getAllFields();
+        Validator::make($request, $this->getRules($fields))->validate();
 
         foreach ($fields as $field) {
             $nameField = $field->getNameField();
