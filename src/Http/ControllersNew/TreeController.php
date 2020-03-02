@@ -43,7 +43,7 @@ class TreeController
 
     public function handle()
     {
-        if (request('query_type') == 'get_html_foreign_definition') {
+        if (in_array(request('query_type'), ['delete_foreign_row', 'get_html_foreign_definition'])) {
             $method = Str::camel(request('query_type'));
 
             return $this->$method(request()->except('query_type'));
@@ -161,5 +161,16 @@ class TreeController
         $field = $definition->getAllFields()[$parseJsonData['ident']];
 
         return $field->getTable($definition, $parseJsonData);
+    }
+
+    private function deleteForeignRow($request)
+    {
+        $model = $this->getDefinitionModel($request);
+        $definition = new $model();
+
+        $parseJsonData = (array) json_decode($request['paramsJson']);
+        $field = $definition->getAllFields()[$parseJsonData['ident']];
+
+        return $field->remove($definition, $parseJsonData);
     }
 }

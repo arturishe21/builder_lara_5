@@ -76,7 +76,7 @@ class Definition extends Field
             });
         });
 
-        $urlAction = 'actions/' . $definition->model()->getTable();
+        $urlAction = 'actions/'. $definition->getNameDefinition();
         $isSortable = $this->getDefinitionRelation($definition)->getIsSortable();
 
         return [
