@@ -43,6 +43,12 @@ class TreeController
 
     public function handle()
     {
+        if (request('query_type') == 'get_html_foreign_definition') {
+            $method = Str::camel(request('query_type'));
+
+            return $this->$method(request()->except('query_type'));
+        }
+
         $definitionModel = $this->getDefinitionModel(request()->all());
 
         return (new $definitionModel())->saveEditForm(request()->all());
@@ -144,5 +150,16 @@ class TreeController
         return [
             'status' => true,
         ];
+    }
+
+    private function getHtmlForeignDefinition($request)
+    {
+        $model = $this->getDefinitionModel($request);
+        $definition = new $model();
+
+        $parseJsonData = (array) json_decode($request['paramsJson']);
+        $field = $definition->getAllFields()[$parseJsonData['ident']];
+
+        return $field->getTable($definition, $parseJsonData);
     }
 }
