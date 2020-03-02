@@ -2,7 +2,7 @@
     $selected = $field->getOptionsSelected($definition);
 ?>
 
-<section class="section_field">
+<section class="{{$field->getClassName()}}">
     <label class="label" for="{{ $field->getNameField()}}">{{$field->getName()}}</label>
     <div style="position: relative;">
         <div class="div_input">

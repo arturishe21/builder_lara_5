@@ -1,4 +1,4 @@
-<section class="section_field">
+<section class="{{$field->getClassName()}}">
     <div class="tab-pane active">
 
         <ul class="nav nav-tabs tabs-pull-right">

@@ -1,4 +1,4 @@
-<section class="section_field">
+<section class="{{$field->getClassName()}}">
     <div style="position: relative;">
         <div class="div_input">
             <div class="input_content">

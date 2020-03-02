@@ -21,6 +21,7 @@ class Field
     protected $filter;
     protected $commentText = '';
     protected $relationHasOne;
+    protected $classNameField;
 
     public function __construct(string $name, $attribute = null)
     {
@@ -44,6 +45,18 @@ class Field
         }
 
         $this->value = $value[$this->attribute];
+    }
+
+    public function className($class)
+    {
+        $this->classNameField = $class;
+
+        return $this;
+    }
+
+    public function getClassName()
+    {
+        return $this->classNameField ? 'section_field '. $this->classNameField : '';
     }
 
     public function getValue()

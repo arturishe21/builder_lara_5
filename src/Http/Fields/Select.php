@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 class Select extends Field
 {
     private $options = [];
+    private $isAction = false;
 
     public function options($arrayList)
     {
@@ -20,9 +21,16 @@ class Select extends Field
         return $this->options;
     }
 
-    public function isAction()
+    public function action(bool $isAction = true)
     {
-        return false;
+        $this->isAction = $isAction;
+
+        return $this;
+    }
+
+    public function getAction() : bool
+    {
+        return $this->isAction;
     }
 
     public function getValueForList($definition)
