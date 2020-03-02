@@ -221,20 +221,22 @@ var ForeignDefinition  = {
 
     changePosition : function (context, attributesJson) {
         var arrIds = new Array();
-        context.find('tr').each(function ( index ) {
-            arrIds.push($(this).attr('data-id'));
-        });
+      //  var table = context.find('table');
 
         var jsonIds = JSON.stringify(arrIds);
         var foreignAttributes = jQuery.parseJSON(attributesJson);
 
+        var order = $('.definition_' + foreignAttributes.name + ' tbody').sortable("serialize");
+
+        console.log(order);
+        console.log('.definition_' + foreignAttributes.name + ' tbody');
+
         jQuery.ajax({
             type: "POST",
-            url: "/admin/handle/" + foreignAttributes.definition,
+            url: "/admin/actions/" + foreignAttributes.definition,
             data: {
-                'paramsJson' : attributesJson,
-                'idsPosition' : jsonIds,
-                'query_type' : 'change_position'
+                'order' : order,
+                'query_type' : 'change_order'
             },
             dataType: 'json',
             success: function (response) {

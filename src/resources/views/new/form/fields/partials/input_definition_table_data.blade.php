@@ -11,7 +11,7 @@
     </thead>
     <tbody>
     @forelse($list as $record)
-        <tr data-id="{{$record->id}}">
+        <tr data-id="{{$record->id}}" id="sort-{{$record->id}}">
             <td class="handle col_sort"><i class="fa fa-sort"></i></td>
             @foreach($record->fields as $field)
                 <td>{!! $field->value !!}</td>
