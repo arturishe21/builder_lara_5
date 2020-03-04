@@ -26,11 +26,7 @@ class Image extends Field
 
     public function selectWithUploadedImages($definition)
     {
-      /*  if ($field->getAttribute('use_image_storage')) {
-            return $this->getImagesWithImageStorage();
-        }*/
-
-        return $this->getImagesWithDefaultPath();
+        return $this->getImagesWithImageStorage();
     }
 
     public function upload($definition)
@@ -99,40 +95,55 @@ class Image extends Field
 
     private function saveInImageStore($fileName, $link)
     {
-        return;
-
-        if (! $this->getAttribute('use_image_storage') || ! class_exists('\Vis\ImageStorage\Image')) {
+        if (! class_exists('\Vis\ImageStorage\Image')) {
             return;
         }
 
         $fileCmsPreview = strpos($fileName, '.svg') ?
             $fileName :
-            str_replace('/storage/editor/fotos/', '', $link);
+            str_replace($this->path, '', $link);
 
         $imgStorage = new \Vis\ImageStorage\Image();
-        $imgStorage->file_folder = '/storage/editor/fotos/';
+        $imgStorage->file_folder = $this->path;
         $imgStorage->file_source = $fileName;
         $imgStorage->file_cms_preview = $fileCmsPreview;
         $imgStorage->save();
     }
 
-    private function getImagesWithDefaultPath()
+    private function getImagesWithImageStorage() : array
     {
-        $files = collect(File::files(public_path($this->path)))->sortBy(function ($file) {
-            return filemtime($file);
-        })->reverse();
+        if (class_exists('\Vis\ImageStorage\Image')) {
+            $list = \Vis\ImageStorage\Image::orderBy('created_at', 'desc');
 
-        $page = (int) request('page') ?: 1;
-        $onPage = 24;
-        $slice = $files->slice(($page - 1) * $onPage, $onPage);
+            if (request('tag')) {
+                $list->leftJoin('vis_tags2entities', 'id_entity', '=', 'vis_images.id')->where('entity_type', 'Vis\ImageStorage\Image')->where('id_tag', request('tag'));
+            }
 
-        $list = new \Illuminate\Pagination\LengthAwarePaginator($slice, $files->count(), $onPage);
-        $list->setPath(url()->current());
+            if (request('gallary')) {
+                $list->leftJoin('vis_images2galleries', 'id_image', '=', 'vis_images.id')->where('id_gallery', request('gallary'));
+            }
 
-        return [
-            'status' => 'success',
-            'data'   => view('admin::new.form.fields.partials.images_list', compact('list'))->render(),
-        ];
+            if (request('q')) {
+                $list->where('vis_images.title', 'like', request('q').'%');
+            }
+
+            $list = $list->groupBy('vis_images.id')->paginate(18);
+
+            $tags = \Vis\ImageStorage\Tag::where('is_active', 1)->orderBy('title', 'asc')->get();
+            $galleries = \Vis\ImageStorage\Gallery::where('is_active', 1)->orderBy('title', 'asc')->get();
+
+            $data = [
+                'status' => 'success',
+                'data'   => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries'))->render(),
+            ];
+        } else {
+            $data = [
+                'status' => 'success',
+                'data'   => 'Не подключен пакет ImageStorage',
+            ];
+        }
+
+        return $data;
     }
 
 }

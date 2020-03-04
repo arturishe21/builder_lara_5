@@ -402,7 +402,7 @@ class Resource
 
         if (isset($filter['filter']) && is_array($filter['filter'])) {
             foreach ($filter['filter'] as $field => $value) {
-                if (is_null($value)) {
+                if (is_null($value) || $value == '') {
                     continue;
                 }
 
