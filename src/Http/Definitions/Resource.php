@@ -16,6 +16,7 @@ class Resource
     protected $cacheTag;
     protected $updateManyToManyList = [];
     protected $updateHasOneList = [];
+    protected $updateMorphOneList = [];
     protected $relations = [];
 
     public function model()
@@ -112,6 +113,10 @@ class Resource
 
             if ($field->getHasOne()) {
                 $this->relations[] = $field->getHasOne();
+            }
+
+            if ($field->getMorphOne()) {
+                $this->relations[] = $field->getMorphOne();
             }
         }
 
@@ -254,6 +259,11 @@ class Resource
                     continue;
                 }
 
+                if ($field->getMorphOne()) {
+                    $this->updateMorphOne($field, $request[$nameField]);
+                    continue;
+                }
+
                 if ($field->isManyToMany()) {
                     $this->updateManyToMany($field, $request[$nameField] ?? '');
                     continue;
@@ -286,6 +296,18 @@ class Resource
                 ];
 
                 $record->$relationHasOne ? $record->$relationHasOne()->update($data) : $record->$relationHasOne()->create($data);
+            }
+        }
+
+        if (count($this->updateMorphOneList)) {
+            foreach ($this->updateMorphOneList as $item) {
+
+                $relationMorphOne = $item['field']->getMorphOne();
+                $data = [
+                    $item['field']->getNameField() => $item['value']
+                ];
+
+                $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
             }
         }
 
@@ -344,6 +366,15 @@ class Resource
             'value' => $value
         ];
     }
+
+    protected function updateMorphOne($field, $value)
+    {
+        $this->updateMorphOneList[] = [
+            'field' => $field,
+            'value' => $value
+        ];
+    }
+
 
     protected function getSingleRow($recordNew)
     {

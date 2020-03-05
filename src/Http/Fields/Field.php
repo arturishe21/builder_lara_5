@@ -21,6 +21,7 @@ class Field
     protected $filter;
     protected $commentText = '';
     protected $relationHasOne;
+    protected $relationMorphOne;
     protected $classNameField;
 
     public function __construct(string $name, $attribute = null)
@@ -33,6 +34,13 @@ class Field
     {
         if ($this->getHasOne()) {
             $relation = $value->{$this->getHasOne()};
+            $this->value = $relation ? $relation->{$this->getNameField()} : $relation;
+
+            return;
+        }
+
+        if ($this->getMorphOne()) {
+            $relation = $value->{$this->getMorphOne()};
             $this->value = $relation ? $relation->{$this->getNameField()} : $relation;
 
             return;
@@ -289,6 +297,18 @@ class Field
     public function getHasOne()
     {
         return $this->relationHasOne;
+    }
+
+    public function morphOne($relation)
+    {
+        $this->relationMorphOne = $relation;
+
+        return $this;
+    }
+
+    public function getMorphOne()
+    {
+        return $this->relationMorphOne;
     }
 
     public function prepareSave($request)
