@@ -250,7 +250,7 @@ class Resource
             $nameField = $field->getNameField();
             if ($nameField != 'id') {
 
-                if ($field->getLanguage()) {
+                if ($field->getLanguage() && !$field->getMorphOne() && !$field->getHasOne()) {
                     $this->saveLanguage($field, $record, $request);
                 }
 
@@ -303,10 +303,19 @@ class Resource
             foreach ($this->updateMorphOneList as $item) {
 
                 $relationMorphOne = $item['field']->getMorphOne();
-                $data = [
-                    $item['field']->getNameField() => $item['value']
-                ];
 
+                if ($item['field']->getLanguage()) {
+                    $data = [];
+                    foreach ($item['field']->getLanguage() as $language) {
+                        $data[$field->getNameField().$language['postfix']] = $request[$field->getNameField().$language['postfix']];
+                    }
+
+                } else {
+                    $data = [
+                        $item['field']->getNameField() => $item['value']
+                    ];
+                }
+                
                 $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
             }
         }

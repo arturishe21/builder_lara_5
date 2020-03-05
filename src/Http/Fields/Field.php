@@ -41,6 +41,15 @@ class Field
 
         if ($this->getMorphOne()) {
             $relation = $value->{$this->getMorphOne()};
+
+            if ($this->getLanguage()) {
+                foreach ($this->getLanguage() as $lang) {
+                    $this->valueLanguage[$lang['postfix']] = $relation->{$this->attribute.$lang['postfix']};
+                }
+
+                return;
+            }
+
             $this->value = $relation ? $relation->{$this->getNameField()} : $relation;
 
             return;
