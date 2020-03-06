@@ -94,6 +94,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Revision' => __DIR__ . '/../..' . '/src/Models/Revision.php',
         'Vis\\Builder\\Services\\Actions' => __DIR__ . '/../..' . '/src/Http/Services/Actions.php',
         'Vis\\Builder\\Services\\Listing' => __DIR__ . '/../..' . '/src/Http/Services/Listing.php',
+        'Vis\\Builder\\Services\\Revisions' => __DIR__ . '/../..' . '/src/Http/Services/Revisions.php',
         'Vis\\Builder\\Setting' => __DIR__ . '/../..' . '/src/Models/Setting.php',
         'Vis\\Builder\\SettingSelect' => __DIR__ . '/../..' . '/src/Models/SettingSelect.php',
         'Vis\\Builder\\Setting\\AdminBase' => __DIR__ . '/../..' . '/src/Settings/AdminBase.php',

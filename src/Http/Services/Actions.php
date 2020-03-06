@@ -9,10 +9,12 @@ class Actions
 {
     protected $definition;
     protected $actionsList = [];
+    protected $revision;
 
     public function __construct($definition = null)
     {
         $this->definition = $definition;
+        $this->revision = new Revisions();
     }
 
     public static function make(...$arguments)
@@ -77,6 +79,13 @@ class Actions
         return $this;
     }
 
+    public function revisions()
+    {
+        $this->actionsList['revisions'] = 'revisions';
+
+        return $this;
+    }
+
     public function router($action)
     {
         $method = Str::camel($action);
@@ -130,6 +139,16 @@ class Actions
     private function saveAddForm($request)
     {
         return $this->definition->saveAddForm($request);
+    }
+
+    private function showRevisions($request)
+    {
+        return $this->revision->show($request['id'], $this->definition);
+    }
+
+    private function returnRevisions($request)
+    {
+        return $this->revision->doReturn($request['id'], $this->definition);
     }
 
     private function setPerPage($request)

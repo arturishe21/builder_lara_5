@@ -44,7 +44,9 @@ class Field
 
             if ($this->getLanguage()) {
                 foreach ($this->getLanguage() as $lang) {
-                    $this->valueLanguage[$lang['postfix']] = $relation->{$this->attribute.$lang['postfix']};
+                    if ($relation) {
+                        $this->valueLanguage[$lang['postfix']] = $relation->{$this->attribute.$lang['postfix']};
+                    }
                 }
 
                 return;

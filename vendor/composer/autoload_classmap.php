@@ -79,6 +79,7 @@ return array(
     'Vis\\Builder\\Revision' => $baseDir . '/src/Models/Revision.php',
     'Vis\\Builder\\Services\\Actions' => $baseDir . '/src/Http/Services/Actions.php',
     'Vis\\Builder\\Services\\Listing' => $baseDir . '/src/Http/Services/Listing.php',
+    'Vis\\Builder\\Services\\Revisions' => $baseDir . '/src/Http/Services/Revisions.php',
     'Vis\\Builder\\Setting' => $baseDir . '/src/Models/Setting.php',
     'Vis\\Builder\\SettingSelect' => $baseDir . '/src/Models/SettingSelect.php',
     'Vis\\Builder\\Setting\\AdminBase' => $baseDir . '/src/Settings/AdminBase.php',

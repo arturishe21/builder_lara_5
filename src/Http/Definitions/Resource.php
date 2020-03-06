@@ -229,7 +229,7 @@ class Resource
         return $recordNew;
     }
 
-    private function getRules($fields)
+    private function getRules($fields) : array
     {
         $rules = [];
         foreach ($fields as $field) {
@@ -300,14 +300,16 @@ class Resource
         }
 
         if (count($this->updateMorphOneList)) {
+
+            $data = [];
+
             foreach ($this->updateMorphOneList as $item) {
 
                 $relationMorphOne = $item['field']->getMorphOne();
 
                 if ($item['field']->getLanguage()) {
-                    $data = [];
                     foreach ($item['field']->getLanguage() as $language) {
-                        $data[$field->getNameField().$language['postfix']] = $request[$field->getNameField().$language['postfix']];
+                        $data[$item['field']->getNameField().$language['postfix']] = $request[$item['field']->getNameField().$language['postfix']];
                     }
 
                 } else {
@@ -315,9 +317,9 @@ class Resource
                         $item['field']->getNameField() => $item['value']
                     ];
                 }
-                
-                $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
             }
+
+            $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
         }
 
         Cache::tags($this->getNameDefinition())->flush();
@@ -383,7 +385,6 @@ class Resource
             'value' => $value
         ];
     }
-
 
     protected function getSingleRow($recordNew)
     {
