@@ -509,7 +509,7 @@ class QueryHandler
                 $fields[$tableExField] = $id;
 
                 if ($hasExistRecord) {
-                    $id = isset($hasExistRecord['id']) ? $hasExistRecord['id'] : $hasExistRecord->id;
+                    $id = $hasExistRecord->id;
 
                     $table->where('id', $id)->update($fields);
                 } else {
