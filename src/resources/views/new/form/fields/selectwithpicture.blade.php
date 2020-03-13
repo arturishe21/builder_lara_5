@@ -40,6 +40,12 @@
     });
 
     function showImg{{ $field->getNameField()}}(id) {
+
+         if (!id) {
+             $('.imgdisplay').hide();
+             return;
+         }
+
          $('.imgdisplay').show();
          var img = $('select[name={{ $field->getNameField() }}] option[value=' + id + ']').attr('data-img');
 

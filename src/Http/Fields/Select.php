@@ -8,6 +8,7 @@ class Select extends Field
 {
     private $options = [];
     private $isAction = false;
+    private $actionSelect = false;
 
     public function options($arrayList)
     {
@@ -45,6 +46,18 @@ class Select extends Field
         $this->isAction = $isAction;
 
         return $this;
+    }
+
+    public function actionSelect($nameSelect)
+    {
+        $this->actionSelect = $nameSelect;
+
+        return $this;
+    }
+
+    public function getActionSelect()
+    {
+        return $this->actionSelect;
     }
 
     public function getAction() : bool

@@ -24,3 +24,14 @@
         </div>
     </div>
 </section>
+
+@if ($field->getActionSelect())
+
+    <script>
+        $('select[name={{ $field->getNameField() }}]').change(function () {
+            $('select[name={{ $field->getActionSelect() }}] option').hide();
+            $('select[name={{ $field->getActionSelect() }}] option[data-class=' + $(this).val() + ']').show();
+        });
+    </script>
+
+@endif
