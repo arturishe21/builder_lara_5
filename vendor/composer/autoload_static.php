@@ -71,6 +71,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Fields\\Readonly' => __DIR__ . '/../..' . '/src/Http/Fields/Readonly.php',
         'Vis\\Builder\\Fields\\Relations\\Options' => __DIR__ . '/../..' . '/src/Http/Fields/Relations/Options.php',
         'Vis\\Builder\\Fields\\Select' => __DIR__ . '/../..' . '/src/Http/Fields/Select.php',
+        'Vis\\Builder\\Fields\\SelectWithPicture' => __DIR__ . '/../..' . '/src/Http/Fields/SelectWithPicture.php',
         'Vis\\Builder\\Fields\\Text' => __DIR__ . '/../..' . '/src/Http/Fields/Text.php',
         'Vis\\Builder\\Fields\\Textarea' => __DIR__ . '/../..' . '/src/Http/Fields/Textarea.php',
         'Vis\\Builder\\GeneratePassword' => __DIR__ . '/../..' . '/src/Console/GeneratePassword.php',

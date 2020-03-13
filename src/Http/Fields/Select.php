@@ -16,9 +16,28 @@ class Select extends Field
         return $this;
     }
 
+    public function optionsWithAttributes($arrayList)
+    {
+        foreach ($arrayList as $key => $arrayValues) {
+            if (is_array($arrayValues) && isset($arrayValues['value'])) {
+                $this->options[$key] = $arrayValues['value'];
+                unset($arrayList[$key]['value']);
+            }
+        }
+
+        $this->attributes = $arrayList;
+
+        return $this;
+    }
+
     public function getOptions()
     {
         return $this->options;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 
     public function action(bool $isAction = true)

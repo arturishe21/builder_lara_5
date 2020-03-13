@@ -56,6 +56,7 @@ return array(
     'Vis\\Builder\\Fields\\Readonly' => $baseDir . '/src/Http/Fields/Readonly.php',
     'Vis\\Builder\\Fields\\Relations\\Options' => $baseDir . '/src/Http/Fields/Relations/Options.php',
     'Vis\\Builder\\Fields\\Select' => $baseDir . '/src/Http/Fields/Select.php',
+    'Vis\\Builder\\Fields\\SelectWithPicture' => $baseDir . '/src/Http/Fields/SelectWithPicture.php',
     'Vis\\Builder\\Fields\\Text' => $baseDir . '/src/Http/Fields/Text.php',
     'Vis\\Builder\\Fields\\Textarea' => $baseDir . '/src/Http/Fields/Textarea.php',
     'Vis\\Builder\\GeneratePassword' => $baseDir . '/src/Console/GeneratePassword.php',

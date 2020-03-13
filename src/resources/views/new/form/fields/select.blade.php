@@ -7,7 +7,9 @@
                     <select
                         name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable {{$field->getAction() ? "action" : ""}}">
                         @foreach ($field->getOptions() as $value => $caption)
-                                <option value="{{ $value }}" {{$value == $field->getValue() ? 'selected' : ''}}>{{ __cms($caption) }}</option>
+                                <option value="{{ $value }}"
+                                    {{$value == $field->getValue() ? 'selected' : ''}}
+                                >{{ __cms($caption) }}</option>
                         @endforeach
                     </select>
                     <i></i>
@@ -22,7 +24,3 @@
         </div>
     </div>
 </section>
-
-
-
-
