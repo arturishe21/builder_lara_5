@@ -25,7 +25,7 @@
                         {{$field->getComment()}}
                     </div>
                 @endif
-                <div class="imgdisplay" style="display: none; text-align: center">
+                <div class="imgdisplay" style="display: none; text-align: center; padding-top: 15px">
                     <img src="">
                 </div>
             </div>
