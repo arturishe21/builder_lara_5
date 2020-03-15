@@ -19,8 +19,26 @@ class SelectWithPicture extends Select
         }
 
         if (isset($options[$value]) && Arr::get($options, $value)) {
-            return $options[$value];
+            return $options[$value] . $this->getImg($value);
         }
     }
 
+    public function getImg($value)
+    {
+        $optionsRes = $this->getOptions();
+
+        if (isset($optionsRes[$value]) && Arr::get($optionsRes, $value) && isset($optionsRes[$value]['data-img'])) {
+
+            $image = $optionsRes[$value]['data-img'];
+
+            if (!$image) {
+                return;
+            }
+
+            $imageSmall = glide($image, ['w' => 50, 'h' => 50]);
+            $imageHover = glide($image, ['w' => 350, 'h' => 350]);
+
+            return "<a class='screenshot' style='margin-left:20px' rel='{$imageHover}'><img src='{$imageSmall}'></a>";
+        }
+    }
 }

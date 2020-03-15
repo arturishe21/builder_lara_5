@@ -241,7 +241,8 @@ var ForeignDefinition  = {
             url: "/admin/actions/" + foreignAttributes.definition,
             data: {
                 'order' : order,
-                'query_type' : 'change_order'
+                'query_type' : 'change_order',
+                'foreign_attributes' : attributesJson
             },
             dataType: 'json',
             success: function (response) {
