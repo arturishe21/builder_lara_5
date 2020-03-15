@@ -41,7 +41,8 @@ class Definition extends Field
             'definition' => $definitionRelation->getNameDefinition(),
             'definition_parent' => $definition->getNameDefinition(),
             'ident' => $this->getNameField(),
-            'foreign_field' => $this->getFieldForeignKeyName($definition)
+            'foreign_field' => $this->getFieldForeignKeyName($definition),
+            'path_definition' => addslashes($this->definitionRelation),
         ];
 
         if ($definitionRelation->getIsSortable()) {

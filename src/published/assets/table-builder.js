@@ -644,6 +644,9 @@ var TableBuilder = {
 
                 if (response.id) {
                     if (foreign_field_id != '' && foreign_attributes != '') {
+
+                        foreign_attributes = foreign_attributes.replace(/\\/g,'\\\\');
+
                         ForeignDefinition.callbackForeignDefinition(foreign_field_id, foreign_attributes);
                         TableBuilder.doClosePopup(table);
                         return;
@@ -775,6 +778,9 @@ var TableBuilder = {
                 if (response.id) {
 
                     if (foreign_field_id != '' && foreign_attributes != '') {
+
+                        foreign_attributes = foreign_attributes.replace(/\\/g,'\\\\');
+
                         ForeignDefinition.callbackForeignDefinition(foreign_field_id, foreign_attributes);
                         return;
                     }
@@ -786,16 +792,6 @@ var TableBuilder = {
 
 
                     TableBuilder.showSuccessNotification(phrase['Сохранено']);
-
-
-                    /*
-                    if (TableBuilder.options.is_page_form) {
-                        //window.location.href = TableBuilder.options.list_url;
-                        window.history.back();
-                        return;
-                    }
-                    */
-
 
                     var form = $(create_form).parents('#modal_form');
 

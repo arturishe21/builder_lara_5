@@ -35,6 +35,10 @@
             </div>
         @endif
 
+        @if (request('foreign_attributes'))
+            <input type="hidden" name="foreign_attributes" value="{{request('foreign_attributes')}}">
+        @endif
+
     </form>
 </div>
 

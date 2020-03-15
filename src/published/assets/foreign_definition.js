@@ -55,6 +55,8 @@ var ForeignDefinition  = {
         var loader = content.parent().find('.loader_create_definition');
         loader.removeClass('hide').text('Загрузка окна...');
 
+        //definition = 'HasMany/TestDefinition2'
+
         jQuery.ajax({
             type: "POST",
             url: "/admin/actions/" + definition,
@@ -75,12 +77,12 @@ var ForeignDefinition  = {
                 TableBuilder.showErrorNotification(errorResult.message);
             }
         });
-
     },
 
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
+
         var attributesJson = jQuery.parseJSON(foreignAttributes);
-        // TableBuilder.showSuccessNotification(phrase['Сохранено']);
+
         TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
@@ -132,6 +134,8 @@ var ForeignDefinition  = {
 
     delete : function (idDelete, idUpdate, jsonParams, url = 'handle') {
 
+        jsonParams = jsonParams.replace(/\\/g,'\\\\');
+
         jQuery.SmartMessageBox({
             title : phrase["Удалить?"],
             content : phrase["Эту операцию нельзя будет отменить."],
@@ -180,6 +184,7 @@ var ForeignDefinition  = {
     },
 
     edit : function (idEdit, idUpdate, jsonParams, url = 'handle') {
+        jsonParams = jsonParams.replace(/\\/g,'\\\\');
 
         var attributesJson = jQuery.parseJSON(jsonParams);
 

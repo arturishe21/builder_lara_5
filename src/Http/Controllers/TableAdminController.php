@@ -78,6 +78,14 @@ class TableAdminController extends Controller
 
     private function getModelDefinition($page)
     {
+        if (request('foreign_attributes')) {
+            $arrayAttributes = json_decode(request('foreign_attributes'), 'true');
+
+            return $arrayAttributes['path_definition'];
+
+            return 'App\\Cms\\Definitions\\HasMany\\TestDefinition2';
+        }
+
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
 
