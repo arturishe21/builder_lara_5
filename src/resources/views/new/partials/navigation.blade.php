@@ -33,7 +33,7 @@
                                         {{is_numeric($badgeValue) ? $badgeValue : ''}}
                                     </span>
                             @endif
-                        </a>_
+                        </a>
 
                         @if(isset($el['submenu']))
                             <ul>
