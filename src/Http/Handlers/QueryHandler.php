@@ -509,9 +509,7 @@ class QueryHandler
                 $fields[$tableExField] = $id;
 
                 if ($hasExistRecord) {
-                    $id = $hasExistRecord->id;
-
-                    $table->where('id', $id)->update($fields);
+                    $table->where('id', $hasExistRecord->id)->update($fields);
                 } else {
                     $table->insert($fields);
                 }
