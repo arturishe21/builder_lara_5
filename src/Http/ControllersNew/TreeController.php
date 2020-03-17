@@ -28,7 +28,8 @@ class TreeController
         $current = $this->model::findOrFail(request('node', 1));
         $perPage = 20;
         $children = $current->children();
-        $children = $children->withCount('children')->paginate($perPage);
+
+        $children = $children->withCount('children')->defaultOrder()->paginate($perPage);
         $templates = $this->definition->getTemplates();
         $definition = $this->definition;
 
@@ -87,9 +88,9 @@ class TreeController
 
         if ($prevParentID == $idParent) {
             if ($idLeftSibling) {
-                $item->moveToRightOf($this->model::find($idLeftSibling));
+                $item->insertAfterNode($this->model::find($idLeftSibling));
             } elseif ($idRightSibling) {
-                $item->moveToLeftOf($this->model::find($idRightSibling));
+                $item->insertBeforeNode($this->model::find($idRightSibling));
             }
         }
 
@@ -143,7 +144,7 @@ class TreeController
 
         $node->checkUnicUrl();
 
-        $root->children()->count() == 1 ? $node->makeChildOf($root) : $node->makeFirstChildOf($root);
+        $node->prependToNode($root)->save();
 
         $root->clearCache();
 

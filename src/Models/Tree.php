@@ -4,18 +4,46 @@ namespace Vis\Builder;
 
 use Illuminate\Support\Facades\Cache;
 use Request;
+use Kalnoy\Nestedset\NodeTrait;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Tree.
  */
-class Tree extends \Baum\Node
+class Tree extends Model
 {
     use \Vis\Builder\Helpers\Traits\Rememberable,
         \Vis\Builder\Helpers\Traits\TranslateTrait,
         \Vis\Builder\Helpers\Traits\SeoTrait,
         \Vis\Builder\Helpers\Traits\ImagesTrait,
         \Vis\Builder\Helpers\Traits\ViewPageTrait,
-        \Venturecraft\Revisionable\RevisionableTrait;
+        \Venturecraft\Revisionable\RevisionableTrait,
+        NodeTrait;
+
+    public function getLftName()
+    {
+        return 'lft';
+    }
+
+    public function getRgtName()
+    {
+        return 'rgt';
+    }
+
+    public function getParentIdName()
+    {
+        return 'parent_id';
+    }
+
+    public function makeFirstChildOf($root)
+    {
+        $this->appendToNode($root)->save();
+    }
+
+    public function makeChildOf($root)
+    {
+        $this->appendToNode($root)->save();
+    }
 
     /**
      * @var array
@@ -212,6 +240,11 @@ class Tree extends \Baum\Node
     }
 
     // end getGeneratedUrl
+
+    public function getAncestorsAndSelf()
+    {
+        return self::ancestorsAndSelf($this->id);
+    }
 
     /**
      * @return string

@@ -3,7 +3,7 @@
         <i class="fa fa-sort"></i>
     </td>
     <td>
-        <i class="fa {{$item->isHasChildren() ? 'fa-folder' : 'fa-file-o'}}"></i>&nbsp;
+        <i class="{{$item->isHasChildren() ? 'fa fa-folder' : 'fal fa-file'}}"></i>&nbsp;
         <a href="?node={{ $item->id }}" class="node_link">{{ $item->title }}</a>
     </td>
         <td>

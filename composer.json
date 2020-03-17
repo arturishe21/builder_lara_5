@@ -9,9 +9,9 @@
         }
     ],
     "require": {
-        "cartalyst/sentinel": "^3.0",
+        "cartalyst/sentinel": "^4.0",
         "mcamara/laravel-localization": "1.4.*",
-        "baum/baum": "v2.x-dev",
+        "kalnoy/nestedset": "^5.0",
         "venturecraft/revisionable": "1.*",
         "yandex/translate-api": "1.5.x",
         "intervention/image": "2.*",

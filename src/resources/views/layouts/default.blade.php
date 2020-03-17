@@ -44,6 +44,7 @@
         </style>
     </head>
     <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin }}">
+
         <div id="modal_wrapper" class="modal_popup_first"></div>
         <div class="table_form_create modal_popup_first"></div>
         <div class="foreign_popups"></div>

@@ -1,4 +1,5 @@
-<?php $ancestors = $current->getAncestorsAndSelf(); ?>
+<?php
+$ancestors = $current::ancestorsAndSelf($current->id); ?>
 
 @foreach ($ancestors as $ancestor)
     <a href="?node={{ $ancestor->id }}" class="node_link">{{ $ancestor->title}}</a> /
