@@ -10,7 +10,7 @@
     ],
     "require": {
         "cartalyst/sentinel": "^4.0",
-        "mcamara/laravel-localization": "1.4.*",
+        "mcamara/laravel-localization": "1.5.*",
         "kalnoy/nestedset": "^5.0",
         "venturecraft/revisionable": "1.*",
         "yandex/translate-api": "1.5.x",
