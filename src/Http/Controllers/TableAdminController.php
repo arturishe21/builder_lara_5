@@ -89,5 +89,17 @@ class TableAdminController extends Controller
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
 
+    public function showTreeAll($page)
+    {
+        $modelPath = "App\\Models\\" . ucfirst(Str::camel($page));
+
+        $model = new $modelPath();
+        $tree = $model::get()->toTree();
+        $parentIDs = [];
+
+
+        return view('admin::tree.tree', compact('tree', 'parentIDs'));
+    }
+
 
 }

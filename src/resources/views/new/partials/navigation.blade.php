@@ -19,7 +19,7 @@
                     <li class="level1">
                         <a  {!! isset($el['link']) && !isset($el['submenu'])? "href='/admin".$el['link']."'" : "" !!}>
                             @if (isset($el['icon']))
-                                <i class="fa fa-lg fa-fw fa-{{$el['icon']}}"></i>
+                                <i class="fal fa-lg fa-fw fa-{{$el['icon']}}"></i>
                             @endif
                             @if (isset($el['title']))
                                 <span class="menu-item-parent">{{__cms($el['title'])}}</span>

@@ -16,7 +16,7 @@
     <div class="pull-right">
 
         <div id="hide-menu" class="btn-header pull-right">
-            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fal fa-bars"></i></a> </span>
         </div>
         <div id="logout" class="btn-header transparent pull-right">
             <span> <a href="/admin/logout" title="{{__cms("Выход")}}" data-action="userLogout" ><i class="fa fa-sign-out"></i></a> </span>

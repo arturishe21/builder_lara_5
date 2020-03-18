@@ -31,7 +31,7 @@ class Translate extends Model
                 return json_encode(['lang' => $language, 'text' => $translation->getResult()[0]]);
             }
         } catch (\Yandex\Translate\Exception $e) {
-            return $e->getMessage();
+            return json_encode(['lang' => $language, 'text' => $phrase]);
         }
     }
 

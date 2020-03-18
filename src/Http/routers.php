@@ -29,6 +29,11 @@
                 );
 
                 Route::post(
+                    '/show_all_tree/{tree_name}',
+                    'Vis\Builder\TableAdminController@showTreeAll'
+                );
+
+                Route::post(
                     '/actions/{page_admin}',
                     'Vis\Builder\TableAdminController@actionsPage'
                 );
