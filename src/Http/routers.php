@@ -62,6 +62,11 @@
                         'Vis\Builder\TableAdminController@showPagePost'
                     );
                 }
+
+                Route::post(
+                    '/{page_admin}',
+                    'Vis\Builder\TableAdminController@actionsPage'
+                );
             }
         );
     });

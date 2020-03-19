@@ -45,6 +45,12 @@ class Tree extends Model
         $this->appendToNode($root)->save();
     }
 
+    public function children()
+    {
+        return $this->hasMany(get_class($this), $this->getParentIdName())
+            ->setModel($this)->defaultOrder();
+    }
+
     /**
      * @var array
      */
@@ -111,19 +117,6 @@ class Tree extends Model
      * @var string
      */
     protected $table = 'tb_tree';
-    /**
-     * @var string
-     */
-    protected $parentColumn = 'parent_id';
-
-    // 'lft' column name
-    protected $leftColumnName = 'lft';
-
-    // 'rgt' column name
-    protected $rightColumnName = 'rgt';
-
-    // 'depth' column name
-    protected $depthColumnName = 'depth';
 
     /**
      * @var

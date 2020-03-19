@@ -1,10 +1,6 @@
 
 <div id="table-preloader" class="smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
-
-@if(config('builder.'.$treeName.'.tree_menu') != "hide")
-    <p><a class="show_hide_tree">{{__cms('Показать дерево')}}</a></p>
-@endif
-
+<p><a class="show_hide_tree">{{__cms('Показать дерево')}}</a></p>
 <div id="tree_top">
     <div class="tree_top_content"></div>
 </div>

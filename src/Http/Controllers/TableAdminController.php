@@ -6,7 +6,7 @@ use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Vis\Builder\Services\Actions;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Vis\Builder\ControllersNew\{ListController, TreeController};
+use Vis\Builder\ControllersNew\{TreeController};
 
 /**
  * Class TableAdminController.
@@ -40,9 +40,12 @@ class TableAdminController extends Controller
         $modelDefinition = $this->getModelDefinition($page);
 
         if (class_exists($modelDefinition)) {
-            $data = (new ListController(new $modelDefinition()))->list();
 
-            return view('admin::new.table', compact('data'));
+            $model = new $modelDefinition();
+
+            $data = $model->getList();
+
+            return view($model->getTableView(), compact('data'));
         }
 
         throw new \Exception('Not found class '. $modelDefinition);
@@ -58,7 +61,7 @@ class TableAdminController extends Controller
         $modelDefinition = $this->getModelDefinition($page);
 
         if (class_exists($modelDefinition)) {
-            return (new ListController(new $modelDefinition()))->list();
+            return (new $modelDefinition())->getList();
         }
 
         throw new \Exception('Not found class '. $modelDefinition);
@@ -82,8 +85,6 @@ class TableAdminController extends Controller
             $arrayAttributes = json_decode(request('foreign_attributes'), 'true');
 
             return $arrayAttributes['path_definition'];
-
-            return 'App\\Cms\\Definitions\\HasMany\\TestDefinition2';
         }
 
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
@@ -94,9 +95,8 @@ class TableAdminController extends Controller
         $modelPath = "App\\Models\\" . ucfirst(Str::camel($page));
 
         $model = new $modelPath();
-        $tree = $model::get()->toTree();
+        $tree = $model::with('children')->get()->toTree();
         $parentIDs = [];
-
 
         return view('admin::tree.tree', compact('tree', 'parentIDs'));
     }

@@ -29,6 +29,11 @@ class Resource
         return [];
     }
 
+    public function getTableView()
+    {
+        return 'admin::new.table';
+    }
+
     public function getTitle() : string
     {
         return __cms($this->title);
@@ -470,4 +475,13 @@ class Resource
             return $name->isOnlyForm() == true;
         });
     }
+
+    public function getList()
+    {
+        $list = new Listing($this);
+        $listingRecords = $list->body();
+
+        return view('admin::new.list.table', compact('list', 'listingRecords'));
+    }
+
 }

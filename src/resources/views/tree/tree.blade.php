@@ -32,10 +32,10 @@
                                 <ul>
                                     @foreach($tree as $item)
                                     <li data-jstree='{ "opened" : true }'  data-id="{{$item->id}}" data-parent-id="{{$item->parent_id}}">
-                                        @if ($item->children()->count())
+
+                                        @if ($item->children)
                                             {{ $item->title }}
                                             @include('admin::tree.node_children', $item)
-
                                         @else
                                             @include('admin::tree.node', $item)
                                         @endif

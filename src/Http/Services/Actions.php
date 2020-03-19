@@ -4,6 +4,7 @@ namespace Vis\Builder\Services;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Vis\Builder\ControllersNew\TreeController;
 
 class Actions
 {
@@ -198,6 +199,11 @@ class Actions
     private function selectWithUploaded($request)
     {
         return $this->getThisField()->selectWithUploadedFiles($this->definition);
+    }
+
+    private function doChangePosition($request)
+    {
+       return (new TreeController($this->definition))->doChangePosition();
     }
 
     private function search($request)

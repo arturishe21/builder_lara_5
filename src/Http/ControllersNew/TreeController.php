@@ -71,7 +71,7 @@ class TreeController
         ];
     }
 
-    public function doChangePosition($request)
+    public function doChangePosition()
     {
         $id = request('id');
         $idParent = request('parent_id', 1);
