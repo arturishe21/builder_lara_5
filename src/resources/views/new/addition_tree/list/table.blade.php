@@ -79,7 +79,7 @@
 
             if (showTree == 0) {
                 $(".tree_top_content").html("<p style='padding:10px'>Загрузка..</p>");
-                $.post("/admin/show_all_tree/{{$definition->getNameDefinition()}}", {},
+                $.post("/admin/show_all_tree/{{$list->getThisUrl()}}", {},
                     function(data){
                         $(".tree_top_content").html(data);
                         Tree.init();
