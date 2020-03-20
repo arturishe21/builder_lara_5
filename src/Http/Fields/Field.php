@@ -36,6 +36,16 @@ class Field
             $relation = $value->{$this->getHasOne()};
             $this->value = $relation ? $relation->{$this->getNameField()} : $relation;
 
+            if ($this->getLanguage()) {
+                foreach ($this->getLanguage() as $lang) {
+                    if ($relation) {
+                        $this->valueLanguage[$lang['postfix']] = $relation->{$this->attribute.$lang['postfix']};
+                    }
+                }
+
+                return;
+            }
+
             return;
         }
 

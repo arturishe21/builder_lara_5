@@ -95,7 +95,7 @@ class TableAdminController extends Controller
         $modelPath = "App\\Models\\" . ucfirst(Str::camel($page));
 
         $model = new $modelPath();
-        $tree = $model::with('children')->get()->toTree();
+        $tree = $model::with('children')->defaultOrder()->get()->toTree();
         $parentIDs = [];
 
         return view('admin::tree.tree', compact('tree', 'parentIDs'));
