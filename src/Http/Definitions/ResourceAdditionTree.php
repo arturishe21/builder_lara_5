@@ -75,13 +75,14 @@ class ResourceAdditionTree extends Resource
     {
         parent::saveActive($record, $request);
 
-        $record->parent_id = request('__node', 1);
+        $node = request('__node') ? : 1;
+
+        $record->parent_id = $node;
         $record->save();
 
-        $root = $this->model()->find(request('__node', 1));
+        $root = $this->model()->find($node);
         $record->prependToNode($root)->save();
 
         return $record;
     }
-
 }
