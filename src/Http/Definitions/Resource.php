@@ -85,6 +85,11 @@ class Resource
         return mb_strtolower(class_basename($this));
     }
 
+    public function getFullPathDefinition() : string
+    {
+        return get_class($this);
+    }
+
     public function getSessionKeyOrder() : string
     {
         return "table_builder.{$this->getNameDefinition()}.order";

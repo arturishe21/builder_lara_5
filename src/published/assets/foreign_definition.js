@@ -86,7 +86,6 @@ var ForeignDefinition  = {
         TableBuilder.doClosePopup(attributesJson.table);
         $('.definition_' + attributesJson.name + " .loader_definition").show();
 
-        var url = "/admin/" + url + "/" + attributesJson.definition;
         var url = '/admin/actions/' + attributesJson.definition_parent;
 
         jQuery.ajax({

@@ -87,6 +87,12 @@ class TableAdminController extends Controller
             return $arrayAttributes['path_definition'];
         }
 
+        if (request('paramsJson')) {
+            $arrayAttributes = json_decode(request('paramsJson'), 'true');
+
+            return $arrayAttributes['model_parent'];
+        }
+
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
 
