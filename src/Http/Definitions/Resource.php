@@ -102,9 +102,9 @@ class Resource
 
     public function getUrlAction() : string
     {
-        $page = $this->getNameDefinition();
+        $arraySlugs = explode('/', request()->url());
 
-        return '/admin/actions/' . $page;
+        return '/admin/actions/' . last($arraySlugs);
     }
 
     public function getAllFields() : array
