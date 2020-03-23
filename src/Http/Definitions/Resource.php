@@ -332,7 +332,7 @@ class Resource
             $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
         }
 
-        Cache::tags($this->getNameDefinition())->flush();
+        $this->clearCache();
 
         return $record;
     }

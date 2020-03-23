@@ -1,4 +1,5 @@
-	/*
+
+/*
 	 * VARIABLES
 	 * Description: All Global Vars
 	 */
@@ -82,8 +83,8 @@ $(document).ready(function() {
 		$('nav ul').jarvismenu({
 			accordion : true,
 			speed : $.menu_speed,
-			closedSign : '<em class="fa fa-expand-o"></em>',
-			openedSign : '<em class="fa fa-collapse-o"></em>'
+			closedSign : '<em class="fal fa-plus"></em>',
+			openedSign : '<em class="fal fa-minus"></em>'
 		});
 	} else {
 		alert("Error - menu anchor does not exist");
