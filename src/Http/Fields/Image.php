@@ -26,7 +26,7 @@ class Image extends Field
 
     public function selectWithUploadedImages($definition)
     {
-        return $this->getImagesWithImageStorage();
+        return $this->getImagesWithImageStorage($definition);
     }
 
     public function upload($definition)
@@ -110,7 +110,7 @@ class Image extends Field
         $imgStorage->save();
     }
 
-    private function getImagesWithImageStorage() : array
+    private function getImagesWithImageStorage($definition) : array
     {
         if (class_exists('\Vis\ImageStorage\Image')) {
             $list = \Vis\ImageStorage\Image::orderBy('created_at', 'desc');
@@ -134,7 +134,7 @@ class Image extends Field
 
             $data = [
                 'status' => 'success',
-                'data'   => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries'))->render(),
+                'data'   => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries', 'definition'))->render(),
             ];
         } else {
             $data = [

@@ -29,7 +29,7 @@
             </label>
         </section>
         <input type="hidden" value="{{request('ident')}}" name="ident">
-        <input type="hidden" value="{{request('baseName')}}" name="baseName">
+        <input type="hidden" value="{{$definition->getFullPathDefinition()}}" name="path_model">
 
     </div>
 </div>

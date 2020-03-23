@@ -2,7 +2,7 @@
 <article class="{{$modelCard->size}}" id="article_chart_{{$k}}" style="margin-bottom: 20px">
     <div class="jarviswidget" data-widget-colorbutton="false" data-widget-sortable="false">
         <header style="padding-right: 5px; height: 41px">
-            <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+            <span class="widget-icon"> <i class="far fa-chart-bar"></i></span>
             <h2>{{$modelCard->title}}</h2>
             <div style="text-align: right">
                 <label class="input" style="width: 110px; position: relative">

@@ -1290,20 +1290,19 @@ var TableBuilder = {
         var idTag = context.parents('.filter_gallary_images').find('[name=id_tag]').val();
         var searchQuery = context.parents('.filter_gallary_images').find('[name=q]').val();
         var ident = context.parents('.filter_gallary_images').find('[name=ident]').val();
-        var baseName = context.parents('.filter_gallary_images').find('[name=baseName]').val();
+        var pathModel = context.parents('.filter_gallary_images').find('[name=path_model]').val();
 
         var data = {
-            query_type: "select_with_uploaded_images",
             ident : ident,
-            baseName : baseName,
             tag : idTag,
             gallary : idGallary,
-            q : searchQuery
+            q : searchQuery,
+            path_model : pathModel
         };
         var section = context.parents('tbody');
 
         $.post(
-            TableBuilder.getActionUrl(),
+            '/admin/photo/select_photos',
             data,
             function (response) {
                 section.html(response.data);
