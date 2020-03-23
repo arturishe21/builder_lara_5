@@ -848,19 +848,8 @@ var TableBuilder = {
         var data = new FormData();
         data.append("image", context.files[0]);
         data.append('ident', ident);
-        data.append('query_type', 'upload_photo');
         data.append('type', "single_photo");
-        data.append('baseIdent', baseIdent);
-
-
-        if (TableBuilder.getUrlParameter('id_tree') != undefined) {
-            data.append('page_id', TableBuilder.getUrlParameter('id_tree'));
-        }
-
-        if (TableBuilder.getUrlParameter('id') != undefined) {
-            data.append('page_id', TableBuilder.getUrlParameter('id'));
-        }
-
+        data.append('path_model', context.getAttribute('data-name-model'));
 
         var $progress = $(context).parents('.picture_block').find('.progress-bar');
 
@@ -887,7 +876,7 @@ var TableBuilder = {
             },
             data: data,
             type: "POST",
-            url: TableBuilder.getActionUrl($(context)),
+            url: '/admin/photo/upload',
             cache: false,
             contentType: false,
             processData: false,
@@ -1209,11 +1198,12 @@ var TableBuilder = {
             query_type: "select_with_uploaded_images",
             ident : name,
             baseName : baseName,
-            page_id : pageId
+            page_id : pageId,
+            path_model: thisFileElement.attr('data-name-model')
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(
-            TableBuilder.getActionUrl(thisFileElement),
+            '/admin/photo/select_photos',
             data,
             function (response) {
                 section.find('#files_uploaded_table_' + name + ' tbody').html(response.data);
@@ -1250,7 +1240,7 @@ var TableBuilder = {
 
         if (type == 'multi') {
             section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').each(function ( index ) {
-                var img = $(this).attr('data-path');
+                var img =  $(this).attr('data-path');
                 var html = '<li><img src="' + img + '" data_src_original = "' + img + '" width="120px"><div class="tb-btn-delete-wrap"><button class="btn2 btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteImage(this);"><i class="fa fa-times"></i></button></div></li>';
                 section.find('.tb-uploaded-image-container_' + name + ' ul').append(html);
 

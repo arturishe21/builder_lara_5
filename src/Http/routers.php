@@ -34,6 +34,16 @@
                 );
 
                 Route::post(
+                    '/photo/upload',
+                    'Vis\Builder\PhotoController@upload'
+                );
+
+                Route::post(
+                    '/photo/select_photos',
+                    'Vis\Builder\PhotoController@selectPhotos'
+                );
+
+                Route::post(
                     '/actions/{page_admin}',
                     'Vis\Builder\TableAdminController@actionsPage'
                 );

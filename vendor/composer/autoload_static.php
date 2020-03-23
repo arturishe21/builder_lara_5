@@ -92,6 +92,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\LogViewerController' => __DIR__ . '/../..' . '/src/Http/Controllers/LogViewerController.php',
         'Vis\\Builder\\LoginController' => __DIR__ . '/../..' . '/src/Http/Controllers/LoginController.php',
         'Vis\\Builder\\OptmizationImg' => __DIR__ . '/../..' . '/src/libs/OptmizationImg.php',
+        'Vis\\Builder\\PhotoController' => __DIR__ . '/../..' . '/src/Http/Controllers/PhotoController.php',
         'Vis\\Builder\\Revision' => __DIR__ . '/../..' . '/src/Models/Revision.php',
         'Vis\\Builder\\Services\\Actions' => __DIR__ . '/../..' . '/src/Http/Services/Actions.php',
         'Vis\\Builder\\Services\\Listing' => __DIR__ . '/../..' . '/src/Http/Services/Listing.php',

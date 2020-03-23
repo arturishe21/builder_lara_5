@@ -176,11 +176,6 @@ class Actions
         return $this->getThisField()->search($this->definition);
     }
 
-    private function uploadPhoto($request)
-    {
-        return $this->getThisField()->upload($this->definition);
-    }
-
     private function uploadFile($request)
     {
         return $this->getThisField()->upload($this->definition);
@@ -189,11 +184,6 @@ class Actions
     private function getThisField()
     {
         return $this->definition->getAllFields()[request('ident')];
-    }
-
-    private function selectWithUploadedImages($request)
-    {
-        return $this->getThisField()->selectWithUploadedImages($this->definition);
     }
 
     private function selectWithUploaded($request)

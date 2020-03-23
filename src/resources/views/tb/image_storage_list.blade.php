@@ -48,7 +48,7 @@
             <div class="one_img_uploaded is_wrapper" onclick="TableBuilder.selectImgInStorage($(this))">
                 <div class="one_img_uploaded_content">
                     <img src="{{glide($img->file_folder . $img->file_source, ['w'=>100, 'h' => 100])}}"
-                         data-path = '{{trim($img->file_folder . $img->file_source, '/')}}'
+                         data-path = '/{{trim($img->file_folder . $img->file_source, '/')}}'
                       >
                 </div>
                 <div class="one_img_uploaded_label">

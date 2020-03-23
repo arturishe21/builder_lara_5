@@ -3,11 +3,8 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\View;
 
 /**
  * Class SettingsController.

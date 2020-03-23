@@ -77,6 +77,7 @@ return array(
     'Vis\\Builder\\LogViewerController' => $baseDir . '/src/Http/Controllers/LogViewerController.php',
     'Vis\\Builder\\LoginController' => $baseDir . '/src/Http/Controllers/LoginController.php',
     'Vis\\Builder\\OptmizationImg' => $baseDir . '/src/libs/OptmizationImg.php',
+    'Vis\\Builder\\PhotoController' => $baseDir . '/src/Http/Controllers/PhotoController.php',
     'Vis\\Builder\\Revision' => $baseDir . '/src/Models/Revision.php',
     'Vis\\Builder\\Services\\Actions' => $baseDir . '/src/Http/Services/Actions.php',
     'Vis\\Builder\\Services\\Listing' => $baseDir . '/src/Http/Services/Listing.php',
