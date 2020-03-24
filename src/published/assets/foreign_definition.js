@@ -131,6 +131,40 @@ var ForeignDefinition  = {
 
     },
 
+    clone : function (idRecord, idUpdate, jsonParams, url = 'handle') {
+        jsonParams = jsonParams.replace(/\\/g,'\\\\');
+        var attributesJson = jQuery.parseJSON(jsonParams);
+
+        $('.definition_' + attributesJson.name + " .loader_definition").show();
+
+        if (url == 'handle') {
+            url = "/admin/" + url + "/" + attributesJson.definition;
+        }
+
+        jQuery.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                'id' : idRecord,
+                'foreign_attributes' : jsonParams,
+                'paramsJson' : jsonParams,
+                'query_type' : 'clone_foreign_row'
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.html) {
+                    $('.definition_' + attributesJson.name).html(response.html);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorResult = jQuery.parseJSON(xhr.responseText);
+
+                TableBuilder.showErrorNotification(errorResult.message);
+            }
+        });
+
+    },
+
     delete : function (idDelete, idUpdate, jsonParams, url = 'handle') {
 
         jsonParams = jsonParams.replace(/\\/g,'\\\\');

@@ -21,6 +21,7 @@
                     <a class="btn dropdown-toggle btn-default"  data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
                         <li><a onclick="ForeignDefinition.edit({{$record->id}}, '{{request('id')}}', '{{$attributes}}', 'actions')"><i class="fa fa-pencil"></i> {{__cms('Редактировать')}}</a></li>
+                       {{-- <li><a onclick="ForeignDefinition.clone({{$record->id}}, '{{request('id')}}', '{{$attributes}}', 'actions')"><i class="fa fa-copy"></i> {{__cms('Клонировать')}}</a></li>--}}
                         <li><a onclick="ForeignDefinition.delete({{$record->id}}, '{{request('id')}}', '{{$attributes}}', '{{$urlAction}}')"><i class="fa red fa-times"></i> {{__cms('Удалить')}}</a></li>
                     </ul>
                 </div>

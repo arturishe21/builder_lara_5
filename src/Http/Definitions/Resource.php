@@ -145,7 +145,6 @@ class Resource
     public function clone(int $id) : array
     {
         $model = $this->model()->find($id);
-
         $newModel = $model->replicate();
         $newModel->push();
 

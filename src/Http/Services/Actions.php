@@ -205,6 +205,13 @@ class Actions
         ];
     }
 
+    private function cloneForeignRow($request)
+    {
+        $this->cloneRecord($request);
+
+        return $this->getHtmlForeignDefinition($request);
+    }
+
     public function getHtmlForeignDefinition($request)
     {
         $parseJsonData = (array) json_decode($request['paramsJson']);
