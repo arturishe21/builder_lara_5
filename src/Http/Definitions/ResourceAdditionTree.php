@@ -85,4 +85,9 @@ class ResourceAdditionTree extends Resource
 
         return $record;
     }
+
+    public function clone(int $id): array
+    {
+        return $this->cloneTree($id);
+    }
 }

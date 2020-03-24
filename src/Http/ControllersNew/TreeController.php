@@ -94,11 +94,10 @@ class TreeController
             }
         }
 
-        $root->clearCache();
-        $this->definition->clearCache();
-
         $item = $this->model::find($item->id);
         $item->checkUnicUrl();
+
+        $this->model->clearCache();
 
         return [
             'status'    => true,
@@ -112,6 +111,13 @@ class TreeController
         $model = $this->model::find($request['id']);
 
         return $this->definition->templates()[$model->template];
+    }
+
+    private function cloneRecordTree($request)
+    {
+        $definitionModel = $this->getDefinitionModel($request);
+
+        return (new $definitionModel())->cloneTree($request['id']);
     }
 
     private function getEditModalForm($request)
