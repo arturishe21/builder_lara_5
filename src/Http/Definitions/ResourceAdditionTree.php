@@ -71,19 +71,20 @@ class ResourceAdditionTree extends Resource
         return (new TreeController($definition))->doChangePosition();
     }
 
-    protected function saveActive($record, $request)
+    public function saveAddForm($request) : array
     {
-        parent::saveActive($record, $request);
+        $result = parent::saveAddForm($request);
 
         $node = request('__node') ? : 1;
+        $thisRecord = $this->model()->find($result['id']);
 
-        $record->parent_id = $node;
-        $record->save();
+        $thisRecord->parent_id = $node;
+        $thisRecord->save();
 
         $root = $this->model()->find($node);
-        $record->prependToNode($root)->save();
+        $thisRecord->prependToNode($root)->save();
 
-        return $record;
+        return $result;
     }
 
     public function clone(int $id): array
