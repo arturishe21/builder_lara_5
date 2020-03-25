@@ -97,7 +97,7 @@ class TreeController
         $item = $this->model::find($item->id);
         $item->checkUnicUrl();
 
-        $this->model->clearCache();
+        $this->definition->clearCache();
 
         return [
             'status'    => true,

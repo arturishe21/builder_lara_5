@@ -163,22 +163,6 @@ class Tree extends Model
     }
 
     /**
-     * @return bool
-     */
-    public function hasTableDefinition()
-    {
-        $templates = config('builder.tree.templates');
-        $template = config('builder.tree.default');
-        if (isset($templates[$this->template])) {
-            $template = $templates[$this->template];
-        }
-
-        return $template['type'] == 'table';
-    }
-
-    // end hasTableDefinition
-
-    /**
      * @param $url
      */
     public function setUrl($url)
@@ -278,52 +262,5 @@ class Tree extends Model
     private function getCacheTags()
     {
         return ['tree'];
-    }
-
-    /**
-     * @param $id
-     * @param bool $recursiveOnlyLastLevel
-     *
-     * @return mixed
-     */
-    public function getCategory($id, $recursiveOnlyLastLevel = false)
-    {
-        $this->recursiveOnlyLastLevel = $recursiveOnlyLastLevel;
-        $node = \Tree::find($id);
-        $children = $node->descendants()->get(['id', 'title', 'parent_id'])->toArray();
-        $result = [];
-
-        foreach ($children as $row) {
-            $result[$row['parent_id']][] = $row;
-        }
-
-        $this->treeMy = $result;
-        $this->printCategories($id, 0);
-
-        return $this->treeOptions;
-    }
-
-    /**
-     * @param $parent_id
-     * @param $level
-     */
-    private function printCategories($parent_id, $level)
-    {
-        if (isset($this->treeMy[$parent_id])) {
-            foreach ($this->treeMy[$parent_id] as $value) {
-                $disable = isset($this->treeMy[$value['id']]) && $this->recursiveOnlyLastLevel ? 'disabled' : '';
-
-                $paddingLeft = '';
-
-                for ($i = 0; $i < $level; $i++) {
-                    $paddingLeft .= '--';
-                }
-
-                $this->treeOptions[$value['id']] = "<option $disable value ='".$value['id']."'>".$paddingLeft.$value['title'].'</option>';
-                $level = $level + 1;
-                $this->printCategories($value['id'], $level);
-                $level = $level - 1;
-            }
-        }
     }
 }
