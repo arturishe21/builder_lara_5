@@ -298,6 +298,7 @@ p.table_album_action_a a{
     display:none;
     color:#fff;
     z-index: 200011;
+    margin: 60px 0 0 60px;
 }
 
 .section_group{

@@ -36,9 +36,9 @@ class SelectWithPicture extends Select
             }
 
             $imageSmall = glide($image, ['w' => 100, 'h' => 100]);
-            $imageHover = glide($image, ['w' => 350, 'h' => 350]);
+            $imageHover = glide($image, ['w' => 550, 'h' => 550]);
 
-            return "<a class='screenshot' style='margin-left:20px' rel='{$imageHover}'><img src='{$imageSmall}'></a>";
+            return "<a class='screenshot' style='margin-left:20px;' rel='{$imageHover}'><img style='max-width: 100px' src='{$imageSmall}'></a>";
         }
     }
 }
