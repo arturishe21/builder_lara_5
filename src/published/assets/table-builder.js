@@ -1704,7 +1704,13 @@ var TableBuilder = {
     },
 
     checkActionSelect : function (value) {
+
         $("section.section_field").hide();
+
+        if (!value) {
+            return;
+        }
+
         $("section.section_field." + value).show();
     },
 
