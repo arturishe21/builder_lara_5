@@ -29,9 +29,24 @@
 
     <script>
         $('select[name={{ $field->getNameField() }}]').change(function () {
+
+            if (!$(this).val()) {
+                $('select[name={{ $field->getActionSelect() }}] option').show();
+                return;
+            }
+
             $('select[name={{ $field->getActionSelect() }}] option').hide();
             $('select[name={{ $field->getActionSelect() }}] option[data-class=' + $(this).val() + ']').show();
-        });
-    </script>
+            $('select[name={{ $field->getActionSelect() }}] option[value=""').show();
+            $('select[name={{ $field->getActionSelect() }}]').prop("selected", true).val('').change();
 
+        });
+
+        if ($('select[name={{ $field->getNameField() }}]').val()) {
+            $('select[name={{ $field->getActionSelect() }}] option').hide();
+            $('select[name={{ $field->getActionSelect() }}] option[data-class=' + $('select[name={{ $field->getNameField() }}]').val() + ']').show();
+            $('select[name={{ $field->getActionSelect() }}] option[value=""').show();
+        }
+
+    </script>
 @endif
