@@ -220,7 +220,7 @@ class Tree extends Model
 
     public function getAncestorsAndSelf()
     {
-        return self::ancestorsAndSelf($this->id);
+        return self::defaultOrder()->ancestorsAndSelf($this->id);
     }
 
     /**

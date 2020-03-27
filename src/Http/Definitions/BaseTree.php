@@ -50,4 +50,9 @@ class BaseTree
 
         return $templatesModels;
     }
+
+    public function clearCache()
+    {
+        $this->model()->clearCache();
+    }
 }
