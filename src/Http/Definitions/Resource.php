@@ -298,15 +298,30 @@ class Resource
         }
 
         if (count($this->updateHasOneList)) {
-            foreach ($this->updateHasOneList as $item) {
+            foreach ($this->updateHasOneList as $relationHasOne => $items) {
 
-                $relationHasOne = $item['field']->getHasOne();
-                $data = [
-                    $item['field']->getNameField() => $item['value']
-                ];
+                unset($data);
 
-                $record->$relationHasOne ? $record->$relationHasOne()->update($data) : $record->$relationHasOne()->create($data);
+                foreach ($items as $item) {
+
+                    if ($item['field']->getLanguage()) {
+                        foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
+                            $fieldLanguage = $item['field']->getNameField().$language['postfix'];
+
+                            $data[$fieldLanguage] = $request[$fieldLanguage] ? :
+                                $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
+                        }
+
+                    } else {
+                        $data = [
+                            $item['field']->getNameField() => $item['value']
+                        ];
+                    }
+
+                    $record->$relationHasOne ? $record->$relationHasOne()->update($data) : $record->$relationHasOne()->create($data);
+                }
             }
+
         }
 
         if (count($this->updateMorphOneList)) {
@@ -382,7 +397,7 @@ class Resource
 
     protected function updateHasOne($field, $value)
     {
-        $this->updateHasOneList[] = [
+        $this->updateHasOneList[$field->getHasOne()][] = [
             'field' => $field,
             'value' => $value
         ];
@@ -540,7 +555,4 @@ class Resource
             }
         }
     }
-
-
-
 }
