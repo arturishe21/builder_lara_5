@@ -38,6 +38,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Authenticate' => __DIR__ . '/../..' . '/src/Http/Middleware/Authenticate.php',
         'Vis\\Builder\\AuthenticateFrontend' => __DIR__ . '/../..' . '/src/Http/Middleware/AuthenticateFrontend.php',
         'Vis\\Builder\\ChangeRangeController' => __DIR__ . '/../..' . '/src/Http/Controllers/ChangeRangeController.php',
+        'Vis\\Builder\\ControllersNew\\EditContentOnSiteController' => __DIR__ . '/../..' . '/src/Http/ControllersNew/EditContentOnSiteController.php',
         'Vis\\Builder\\ControllersNew\\TreeController' => __DIR__ . '/../..' . '/src/Http/ControllersNew/TreeController.php',
         'Vis\\Builder\\CreateConfig' => __DIR__ . '/../..' . '/src/Console/CreateConfig.php',
         'Vis\\Builder\\CreateImgWebp' => __DIR__ . '/../..' . '/src/Console/CreateImgWebp.php',

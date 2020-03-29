@@ -23,6 +23,7 @@ return array(
     'Vis\\Builder\\Authenticate' => $baseDir . '/src/Http/Middleware/Authenticate.php',
     'Vis\\Builder\\AuthenticateFrontend' => $baseDir . '/src/Http/Middleware/AuthenticateFrontend.php',
     'Vis\\Builder\\ChangeRangeController' => $baseDir . '/src/Http/Controllers/ChangeRangeController.php',
+    'Vis\\Builder\\ControllersNew\\EditContentOnSiteController' => $baseDir . '/src/Http/ControllersNew/EditContentOnSiteController.php',
     'Vis\\Builder\\ControllersNew\\TreeController' => $baseDir . '/src/Http/ControllersNew/TreeController.php',
     'Vis\\Builder\\CreateConfig' => $baseDir . '/src/Console/CreateConfig.php',
     'Vis\\Builder\\CreateImgWebp' => $baseDir . '/src/Console/CreateImgWebp.php',

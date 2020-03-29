@@ -18,6 +18,7 @@ class Tree extends Model
         \Vis\Builder\Helpers\Traits\ImagesTrait,
         \Vis\Builder\Helpers\Traits\ViewPageTrait,
         \Venturecraft\Revisionable\RevisionableTrait,
+        \Vis\Builder\Helpers\Traits\QuickEditTrait,
         NodeTrait;
 
     public function getLftName()

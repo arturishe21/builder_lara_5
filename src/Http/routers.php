@@ -15,6 +15,11 @@
                 Route::post('change-range-card', 'Vis\Builder\ChangeRangeController@doChangeValue');
                 Route::post('change-range-trend', 'Vis\Builder\ChangeRangeController@doChangeTrend');
 
+                Route::post(
+                    '/save_edit_on_site',
+                    'Vis\Builder\ControllersNew\EditContentOnSiteController@index'
+                );
+
                 Route::get('logout', 'Vis\Builder\LoginController@doLogout')->name('logout');
 
                 Route::get('/logs', 'Vis\Builder\LogViewerController@index');
