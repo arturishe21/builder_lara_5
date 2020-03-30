@@ -298,30 +298,30 @@ class Resource
         }
 
         if (count($this->updateHasOneList)) {
+
             foreach ($this->updateHasOneList as $relationHasOne => $items) {
 
                 unset($data);
-
                 foreach ($items as $item) {
 
-                    if ($item['field']->getLanguage()) {
+                    if (is_array($item['field']->getLanguage())) {
+
                         foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
                             $fieldLanguage = $item['field']->getNameField().$language['postfix'];
 
-                            $data[$fieldLanguage] = $request[$fieldLanguage] ? :
+                            $data[$relationHasOne][$fieldLanguage] = $request[$fieldLanguage] ? :
                                 $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
                         }
 
                     } else {
-                        $data = [
-                            $item['field']->getNameField() => $item['value']
-                        ];
+                        $data[$relationHasOne][$item['field']->getNameField()] = $item['value'];
                     }
-
-                    $record->$relationHasOne ? $record->$relationHasOne()->update($data) : $record->$relationHasOne()->create($data);
                 }
-            }
 
+                $record->$relationHasOne ?
+                    $record->$relationHasOne()->update($data[$relationHasOne]) :
+                    $record->$relationHasOne()->create($data[$relationHasOne]);
+            }
         }
 
         if (count($this->updateMorphOneList)) {
