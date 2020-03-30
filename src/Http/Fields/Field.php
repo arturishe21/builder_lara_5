@@ -115,6 +115,15 @@ class Field
 
     public function getNameField()
     {
+        if ($this->getHasOne()) {
+            return $this->attribute . '_' . $this->getHasOne();
+        }
+
+        return $this->attribute;
+    }
+
+    public function getNameFieldInBd()
+    {
         return $this->attribute;
     }
 

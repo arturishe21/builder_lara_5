@@ -302,19 +302,22 @@ class Resource
             foreach ($this->updateHasOneList as $relationHasOne => $items) {
 
                 unset($data);
+
                 foreach ($items as $item) {
 
                     if (is_array($item['field']->getLanguage())) {
 
                         foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
-                            $fieldLanguage = $item['field']->getNameField().$language['postfix'];
 
-                            $data[$relationHasOne][$fieldLanguage] = $request[$fieldLanguage] ? :
+                            $fieldLanguage = $item['field']->getNameField().$language['postfix'];
+                            $keyField = $item['field']->getNameFieldInBd().$language['postfix'];
+
+                            $data[$relationHasOne][$keyField] = $request[$fieldLanguage] ? :
                                 $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
                         }
 
                     } else {
-                        $data[$relationHasOne][$item['field']->getNameField()] = $item['value'];
+                        $data[$relationHasOne][$item['field']->getNameFieldInBd()] = $item['value'];
                     }
                 }
 
