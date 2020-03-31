@@ -42,11 +42,11 @@
                                             <img class="image-attr-editable"
                                                  data-tbident="{{$field->getNameField() . $tab['postfix']}}"
                                                  @if (strpos($field->getValueLanguage($tab['postfix']), ".svg"))
-                                                 width="200"
-                                                 src="/{{ $field->getValueLanguage($tab['postfix'])}}" src_original="{{$field->getValueLanguage($tab['postfix'])}}"
+                                                    width="200"
+                                                    src="{{ $field->getValueLanguage($tab['postfix'])}}" src_original="{{$field->getValueLanguage($tab['postfix'])}}"
                                                  @else
-                                                 src="{{ glide($field->getValueLanguage($tab['postfix']), ['w' => 200, 'h' => 200]) }}"
-                                                 src_original="{{$field->getValueLanguage($tab['postfix'])}}"
+                                                    src="{{ glide($field->getValueLanguage($tab['postfix']), ['w' => 200, 'h' => 200]) }}"
+                                                    src_original="{{$field->getValueLanguage($tab['postfix'])}}"
                                                  @endif
 
                                                  style="max-width: 200px"
