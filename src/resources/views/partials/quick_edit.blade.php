@@ -1,4 +1,4 @@
-@if (Sentinel::check() && $user->hasAccess(['admin.access']))
+@if (Sentinel::check() && Sentinel::getUser()->hasAccess(['admin.access']))
     <script
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
