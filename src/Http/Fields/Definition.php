@@ -92,6 +92,8 @@ class Definition extends Field
     {
         $this->getDefinitionRelation($definition)->model()->destroy(request('idDelete'));
 
+        $this->getDefinitionRelation($definition)->clearCache();
+
         return $this->getTable($definition, $parseJsonData);
     }
 

@@ -169,6 +169,8 @@ class Resource
             ]);
         }
 
+        $this->clearCache();
+
         return [
             'status' => 'success'
         ];
