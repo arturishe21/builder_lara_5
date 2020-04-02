@@ -14,9 +14,10 @@
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>{{ $list->title() }}</h2>
-                    {!! isset($def['buttons']) && $def['buttons'] ?  $controller->buttons->fetch() : '' !!}
-                    {!! isset($def['import']) && $def['import']  ? $controller->import->fetch() : '' !!}
-                    {!! isset($def['export']) && $def['export'] ? $controller->export->fetch() : '' !!}
+
+                    @foreach($list->getDefinition()->buttons() as $button)
+                        {!! (new $button($list->getDefinition()))->show($list)  !!}
+                    @endforeach
                 </header>
                 <div>
                     <div class="jarviswidget-editbox"></div>

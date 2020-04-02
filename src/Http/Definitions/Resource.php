@@ -24,6 +24,11 @@ class Resource
         return new $this->model;
     }
 
+    public function buttons()
+    {
+        return [];
+    }
+
     public function cards()
     {
         return [];
@@ -464,7 +469,7 @@ class Resource
         }
     }
 
-    protected function getCollection()
+    public function getCollection()
     {
         $collection = $this->model()->with($this->relations);
         $filter = $this->getFilter();
