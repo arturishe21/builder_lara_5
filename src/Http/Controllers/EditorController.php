@@ -5,6 +5,7 @@ namespace Vis\Builder;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 /**
  * Class EditorController.
@@ -22,7 +23,7 @@ class EditorController extends Controller
             'file'  => 'required|image',
         ];
 
-        $validator = Validator::make(request()->ll(), $rules);
+        $validator = Validator::make(request()->all(), $rules);
 
         if ($validator->fails()) {
             return Response::json([
@@ -67,11 +68,11 @@ class EditorController extends Controller
         $fullname = $file->getClientOriginalName();
         $fullname = str_replace('.'.$ext, '', $fullname);
 
-        $hashname = str_slug($fullname).'.'.$ext;
+        $hashname = Str::slug($fullname).'.'.$ext;
         $fullPathImg = '/'.$destinationPath.'/'.$hashname;
 
         if (file_exists(public_path().$fullPathImg)) {
-            $hashname = str_slug($fullname).'_'.time().'.'.$ext;
+            $hashname = Str::slug($fullname).'_'.time().'.'.$ext;
             $fullPathImg = '/'.$destinationPath.'/'.$hashname;
         }
 
