@@ -102,7 +102,7 @@ class Definition extends Field
         $fields = $this->getDefinitionRelation($definition)->getAllFields();
 
         return collect($fields)->reject(function ($name) {
-            return $name->onlyForm == true;
+            return $name->isOnlyForm();
         });
     }
 
