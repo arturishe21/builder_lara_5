@@ -672,3 +672,12 @@ a[href="https://www.froala.com/wysiwyg-editor?k=u"] {
     position: absolute;
     top: -99999999px;
 }
+
+@font-face {
+    font-family: "FontAwesome";
+    font-style: normal;
+    font-weight: 400;
+    font-display:auto;
+    src: url(../fontawesome-pro-5.12.0-web/webfonts/fa-regular-400.eot);
+    src: url(../fontawesome-pro-5.12.0-web/webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"),url(../fontawesome-pro-5.12.0-web/webfonts/fa-regular-400.woff2) format("woff2"),url(../fontawesome-pro-5.12.0-web/webfonts/fa-regular-400.woff) format("woff"),url(../fontawesome-pro-5.12.0-web/webfonts/fa-regular-400.ttf) format("truetype"),url(../fontawesome-pro-5.12.0-web/webfonts/fa-regular-400.svg#fontawesome) format("svg")
+}
