@@ -394,7 +394,9 @@ class Resource
             if (isset($translation->getResult()[0])) {
                 return $translation->getResult()[0];
             }
-        } catch (\Yandex\Translate\Exception $e) {}
+        } catch (\Yandex\Translate\Exception $e) {
+            return $phrase;
+        }
     }
 
     protected function updateManyToMany($field, $collectionsIds)
