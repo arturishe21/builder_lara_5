@@ -94,6 +94,7 @@
     </style>
 
     <script>
+
         $(".paginator_pictures a").click(function(e) {
             var href = $(this).attr('href');
             e.preventDefault();
@@ -103,6 +104,7 @@
                     section.html(response.data);
             });
         });
+
         $('[name=q]').keyup(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
 

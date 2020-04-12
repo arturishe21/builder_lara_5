@@ -49,7 +49,7 @@
 
         var href = $(this).attr('href');
 
-        if (href) {
+        if (href && !$(this).parents('div').hasClass('paginator_pictures')) {
 
             $("nav li").removeClass("active");
             $(this).parent().addClass("active");

@@ -46,10 +46,12 @@
    });
 
     $(document).on('click', 'nav a', function (e) {
-
+        alert('ss');
         var href = $(this).attr('href');
 
-        if (href) {
+        if (href && !$(this).parents('div').hasClass('paginator_pictures')) {
+
+            alert('ss');
 
            $("nav li").removeClass("active");
            $(this).parent().addClass("active");
@@ -61,6 +63,7 @@
 
     $(document).on('click', '.pagination a', function (e) {
         if (!$(this).parents('div').hasClass('paginator_pictures') && $(this).parents('div').hasClass('paging_bootstrap_full')) {
+            alert('ss');
             var href = $(this).attr('href');
             doAjaxLoadContent(href);
             e.preventDefault();
