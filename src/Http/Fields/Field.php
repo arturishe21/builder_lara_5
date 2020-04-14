@@ -34,7 +34,6 @@ class Field
     {
         if ($this->getHasOne()) {
             $relation = $value->{$this->getHasOne()};
-            $this->value = $relation ? $relation->{$this->getNameField()} : $relation;
 
             if ($this->getLanguage()) {
                 foreach ($this->getLanguage() as $lang) {
@@ -45,6 +44,8 @@ class Field
 
                 return;
             }
+
+            $this->value = $relation->{$this->attribute};
 
             return;
         }
