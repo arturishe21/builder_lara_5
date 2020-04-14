@@ -343,8 +343,12 @@ class Resource
                 $relationMorphOne = $item['field']->getMorphOne();
 
                 if ($item['field']->getLanguage()) {
-                    foreach ($item['field']->getLanguage() as $language) {
-                        $data[$item['field']->getNameField().$language['postfix']] = $request[$item['field']->getNameField().$language['postfix']];
+                    foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
+
+                        $fieldLanguage = $item['field']->getNameField().$language['postfix'];
+
+                        $data[$item['field']->getNameField().$language['postfix']] = $request[$fieldLanguage] ? :
+                            $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
                     }
 
                 } else {
