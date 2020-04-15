@@ -45,7 +45,7 @@ class Field
                 return;
             }
 
-            $this->value = $relation->{$this->attribute};
+            $this->value = $relation ? $relation->{$this->attribute} : '';
 
             return;
         }
