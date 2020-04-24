@@ -294,6 +294,14 @@ class Resource
             }
         }
 
+        if (isset($request['foreign_attributes'])) {
+            $foreignAttributes = json_decode($request['foreign_attributes']);
+
+            if ($foreignAttributes->type_relation == 'morphMany') {
+                $record->{$foreignAttributes->morph_type} = $foreignAttributes->model_base;
+            }
+        }
+
         $record->save();
 
         if (count($this->updateManyToManyList)) {

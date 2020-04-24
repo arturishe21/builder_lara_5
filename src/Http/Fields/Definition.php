@@ -9,11 +9,22 @@ class Definition extends Field
     protected $definitionRelation;
     protected $relation;
     protected $onlyForm = true;
+    protected $typeRelative;
 
     public function hasMany($relation, $classDefinitionRelation = null)
     {
         $this->relation = $relation;
         $this->definitionRelation = $classDefinitionRelation;
+        $this->typeRelative = 'hasMany';
+
+        return $this;
+    }
+
+    public function morphMany($relation, $classDefinitionRelation = null)
+    {
+        $this->relation = $relation;
+        $this->definitionRelation = $classDefinitionRelation;
+        $this->typeRelative = 'morphMany';
 
         return $this;
     }
@@ -44,10 +55,16 @@ class Definition extends Field
             'foreign_field' => $this->getFieldForeignKeyName($definition),
             'path_definition' => addslashes($this->definitionRelation),
             'model_parent' => addslashes($definition->getFullPathDefinition()),
+            'type_relation' => $this->typeRelative,
         ];
 
         if ($definitionRelation->getIsSortable()) {
             $attributes['sortable'] = 'priority';
+        }
+
+        if ($this->typeRelative == 'morphMany') {
+            $attributes['morph_type'] = $definition->model()->{$this->relation}()->getMorphType();
+            $attributes['model_base'] = addslashes($definition->model);
         }
 
         return json_encode($attributes);
