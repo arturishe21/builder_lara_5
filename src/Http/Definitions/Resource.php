@@ -360,9 +360,7 @@ class Resource
                     }
 
                 } else {
-                    $data = [
-                        $item['field']->getNameField() => $item['value']
-                    ];
+                    $data[$item['field']->getNameField()] = $item['value'];
                 }
             }
 
