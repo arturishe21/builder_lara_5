@@ -13,7 +13,7 @@ class FindAndCheckUrlForTree
 
     public function getRoute($arrSegments)
     {
-        $this->model = config('builder.tree.model', 'App\Models\Tree');
+        $this->model = 'App\Models\Tree';
 
         $slug = $this->getSlug($arrSegments);
 
@@ -39,7 +39,7 @@ class FindAndCheckUrlForTree
 
     private function findUrl($slug)
     {
-        $tagsCache = config('builder.tree.cache.tags', ['tree']);
+        $tagsCache = ['tree'];
         $model = $this->model;
 
         if (request('show') == 1) {
@@ -75,9 +75,9 @@ class FindAndCheckUrlForTree
         $controller = $app->make('App\\Http\\Controllers\\'.$controllerAndMethod[0]);
 
         return [
-           'controller' => $controller,
-           'method' => $controllerAndMethod[1],
-           'node' => $node,
-       ];
+            'controller' => $controller,
+            'method' => $controllerAndMethod[1],
+            'node' => $node,
+        ];
     }
 }

@@ -28,7 +28,7 @@ class ResourceTree extends Resource
 
     public function saveEditForm($request) : array
     {
-        $record = $this->model()->find($request['id']);
+        $record = $this->model()->withCount('children')->find($request['id']);
         $item = $this->saveActive($record, $request);
         $definition = $this;
 
