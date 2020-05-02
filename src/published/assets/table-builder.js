@@ -99,8 +99,15 @@ var TableBuilder = {
             }
 
             if ($(this).attr("inlinestyles")) {
-                option.inlineStyles = JSON.parse($(this).attr("inlinestyles"))
+                option.inlineStyles = JSON.parse($(this).attr("inlinestyles"));
             }
+/*
+
+            option.paragraphStyles = {
+                class1: 'Class 1',
+                class2: 'Class 2'
+            };
+*/
 
             if ($(this).attr("options")) {
                 var optionsConfig = JSON.parse($(this).attr("options"));

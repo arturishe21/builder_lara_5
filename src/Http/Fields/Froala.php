@@ -28,6 +28,6 @@ class Froala extends Field
 
     public function getOptions()
     {
-        return $this->options;
+        return json_encode($this->options);
     }
 }
