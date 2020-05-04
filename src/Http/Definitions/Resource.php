@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Vis\Builder\Fields\Definition;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
+use Vis\Builder\Services\Actions;
 
 class Resource
 {
@@ -18,6 +19,11 @@ class Resource
     protected $updateHasOneList = [];
     protected $updateMorphOneList = [];
     protected $relations = [];
+
+    public function actions()
+    {
+        return Actions::make()->insert()->update()->preview()->clone()->delete();
+    }
 
     public function model()
     {
