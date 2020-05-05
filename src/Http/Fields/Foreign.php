@@ -20,6 +20,13 @@ class Foreign extends Field
     {
         $collection = $this->getDataWithWhereAndOrder($definition);
         $data = [];
+
+        if ($this->defaultValue) {
+            $data = [
+                '' => $this->defaultValue
+            ];
+        }
+
         foreach ($collection as $item) {
             $data[$item->id] = $item->name;
         }
@@ -27,8 +34,22 @@ class Foreign extends Field
         return $data;
     }
 
+    public function prepareSave($request)
+    {
+        $nameField = $this->getNameField();
+
+        return $request[$nameField] ?: null;
+    }
+
     public function getDataWithWhereAndOrder(Resource $definition)
     {
+        if (request('paramsJson')) {
+            $listParams = json_decode(request('paramsJson'));
+            $definitionPath = $listParams->path_definition;
+
+            $definition = new $definitionPath();
+        }
+
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $collection = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
         $where = $this->options->getWhereCollection();
@@ -49,7 +70,6 @@ class Foreign extends Field
         return $collection->get();
     }
 
-
     public function getValueForList($definition)
     {
         $value = $this->getValue();
@@ -58,5 +78,7 @@ class Foreign extends Field
         if (isset($options[$value]) && Arr::get($options, $value)) {
             return $options[$value];
         }
+
+        return $this->defaultValue;
     }
 }

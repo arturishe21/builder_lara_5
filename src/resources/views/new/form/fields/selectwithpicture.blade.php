@@ -5,15 +5,15 @@
             <div class="input_content">
                 <label class="select">
                     <select
-                        name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable {{$field->getAction() ? "action" : ""}}">
+                            name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable {{$field->getAction() ? "action" : ""}}">
                         @foreach ($field->getOptions() as $key => $arrayValues)
                             <option
-                                value="{{ $key }}"
-                                {{$key == $field->getValue() ? 'selected' : ''}}
+                                    value="{{ $key }}"
+                            {{$key == $field->getValue() ? 'selected' : ''}}
 
-                                @foreach ($arrayValues as $dataKey => $dataValue)
-                                    {{$dataKey}}='{{$dataValue}}'
-                                @endforeach
+                            @foreach ($arrayValues as $dataKey => $dataValue)
+                                {{$dataKey}}='{{$dataValue}}'
+                            @endforeach
                             >{{ __cms($arrayValues['value']) }}</option>
                         @endforeach
                     </select>
@@ -25,7 +25,7 @@
                         {{$field->getComment()}}
                     </div>
                 @endif
-                <div class="imgdisplay" style="display: none; text-align: center; padding-top: 15px">
+                <div class="imgdisplay {{ $field->getNameField() }}" style="display: none; text-align: center; padding-top: 15px">
                     <img src="">
                 </div>
             </div>
@@ -41,15 +41,15 @@
 
     function showImg{{ $field->getNameField()}}(id) {
 
-         if (!id) {
-             $('.imgdisplay').hide();
-             return;
-         }
+        if (!id) {
+            $('.{{ $field->getNameField()}}.imgdisplay').hide();
+            return;
+        }
 
-         $('.imgdisplay').show();
-         var img = $('select[name={{ $field->getNameField() }}] option[value=' + id + ']').attr('data-img');
+        $('.{{ $field->getNameField()}}.imgdisplay').show();
+        var img = $('select[name={{ $field->getNameField() }}] option[value=' + id + ']').attr('data-img');
 
-         $('.imgdisplay img').attr('src', img);
+        $('.{{ $field->getNameField()}}.imgdisplay img').attr('src', img);
     }
 
     showImg{{ $field->getNameField()}}($('select[name={{ $field->getNameField() }}]').val());
