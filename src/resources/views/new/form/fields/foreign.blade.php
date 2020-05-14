@@ -14,7 +14,7 @@
                         @endif
 
                         @foreach ($field->getOptions($definition) as $value => $caption)
-                            <option value="{{ $value }}" {{$value == $field->getValue()? "selected" : ""}} >{{ __cms($caption) }}</option>
+                            <option value="{{ $value }}" {{$value == $field->getValue()? "selected" : ""}} >{{ $caption }}</option>
                         @endforeach
 
                     </select>

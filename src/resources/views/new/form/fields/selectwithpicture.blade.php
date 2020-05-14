@@ -14,7 +14,7 @@
                             @foreach ($arrayValues as $dataKey => $dataValue)
                                 {{$dataKey}}='{{$dataValue}}'
                             @endforeach
-                            >{{ __cms($arrayValues['value']) }}</option>
+                            >{{ $arrayValues['value'] }}</option>
                         @endforeach
                     </select>
                     <i></i>

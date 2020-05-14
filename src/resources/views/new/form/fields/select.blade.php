@@ -9,7 +9,7 @@
                         @foreach ($field->getOptions() as $value => $caption)
                                 <option value="{{ $value }}"
                                     {{$value == $field->getValue() ? 'selected' : ''}}
-                                >{{ __cms($caption) }}</option>
+                                >{{ $caption }}</option>
                         @endforeach
                     </select>
                     <i></i>
