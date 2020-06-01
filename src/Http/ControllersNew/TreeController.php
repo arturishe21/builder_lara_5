@@ -34,7 +34,7 @@ class TreeController
         $definition = $this->definition;
 
         $content = view('admin::new.tree.content',
-            compact('current', 'treeName', 'children', 'controller', 'perPage', 'templates', 'definition'));
+            compact('current', 'treeName', 'children', 'perPage', 'templates', 'definition'));
 
         $view = request()->ajax() ? 'center' : 'table';
 
