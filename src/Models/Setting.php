@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 use Venturecraft\Revisionable\RevisionableTrait;
 use Vis\Builder\Helpers\Traits\Rememberable;
+use Illuminate\Support\Str;
 
 class Setting extends Model
 {
@@ -110,7 +111,7 @@ class Setting extends Model
             $destinationPath = 'storage/settings';
             $ext = $file->getClientOriginalExtension();
 
-            $nameFile = \Jarboe::urlify(trim($file->getClientOriginalName(), $ext));
+            $nameFile = Str::slug(trim($file->getClientOriginalName(), $ext));
 
             $nameFile = $nameFile.'.'.$ext;
             $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
