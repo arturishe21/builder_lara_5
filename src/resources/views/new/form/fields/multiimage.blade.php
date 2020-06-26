@@ -10,10 +10,14 @@
                              style="width: 0%;"></div>
                     </div>
                     <div class="input input-file">
-                        <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$field->getNameField()}}', 'multi', $(this), '{{$field->getNameField()}}', '{{request('id_tree')}}')"> {{__cms('Выбрать из загруженных')}} </span>
+                        <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$field->getNameField()}}', 'multi', $(this), '{{$field->getNameField()}}', '{{request('id_tree')}}')"
+                              data-name-model="{{$definition->getFullPathDefinition()}}"
+                        > {{__cms('Выбрать из загруженных')}} </span>
                         <span class="button">
                             <input type="file" multiple accept="image/*" class="image_{{$field->getNameField()}}"
-                                   onchange="TableBuilder.uploadMultipleImages(this, '{{$field->getNameField()}}', '{{$field->getNameField()}}');">
+                                   onchange="TableBuilder.uploadMultipleImages(this, '{{$field->getNameField()}}', '{{$field->getNameField()}}');"
+                                   data-name-model="{{$definition->getFullPathDefinition()}}"
+                            >
                                  {{__cms('Загрузить')}}
                         </span>
                         <input type="hidden" name="{{$field->getNameField()}}" value='{{ $field->getValue() }}'>

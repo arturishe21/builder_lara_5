@@ -914,6 +914,7 @@ var TableBuilder = {
             data.append("image", context.files[index]);
             data.append('ident', ident);
             data.append('baseIdent', baseIdent);
+            data.append('path_model', context.getAttribute('data-name-model'));
 
             data.append('query_type', 'upload_photo');
             if (TableBuilder.getUrlParameter('id_tree') != undefined) {
@@ -950,7 +951,7 @@ var TableBuilder = {
                 },
                 data: data,
                 type: "POST",
-                url: TableBuilder.getActionUrl($(context)),
+                url: '/admin/photo/upload',
                 cache: false,
                 contentType: false,
                 processData: false,
