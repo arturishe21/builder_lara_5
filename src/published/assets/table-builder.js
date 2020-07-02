@@ -701,14 +701,8 @@ alert('sdsd');
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorResult = $.parseJSON(xhr.responseText);
 
-                var errorsResponse = errorResult.errors;
-                var errors = '';
+                TableBuilder.showErrorNotification(errorResult.message);
 
-                for (key in errorsResponse) {
-                    errors += errorsResponse[key] + '<br>';
-                }
-
-                TableBuilder.showErrorNotification(errors);
                 TableBuilder.hidePreloader();
                 TableBuilder.hideFormPreloader(TableBuilder.form_edit);
             }
@@ -840,14 +834,8 @@ alert('sdsd');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorResult = jQuery.parseJSON(xhr.responseText);
-                var errorsResponse = errorResult.errors;
-                var errors = '';
 
-                for (key in errorsResponse) {
-                    errors += errorsResponse[key] + '<br>';
-
-                }
-                TableBuilder.showErrorNotification(errors);
+                TableBuilder.showErrorNotification(errorResult.message);
 
                 TableBuilder.hidePreloader();
                 TableBuilder.hideFormPreloader(TableBuilder.form);
