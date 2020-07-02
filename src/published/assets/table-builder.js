@@ -319,6 +319,13 @@ var TableBuilder = {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorResult = jQuery.parseJSON(xhr.responseText);
+                var errors = errorResult.errors;
+
+                errors.each(function( index , value ) {
+                    console.log( errors[index] );
+                });
+
+alert('sdsd');
 
                 TableBuilder.showErrorNotification(errorResult.message);
                 TableBuilder.hidePreloader();
@@ -694,7 +701,14 @@ var TableBuilder = {
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorResult = $.parseJSON(xhr.responseText);
 
-                TableBuilder.showErrorNotification(errorResult.message);
+                var errorsResponse = errorResult.errors;
+                var errors = '';
+
+                for (key in errorsResponse) {
+                    errors += errorsResponse[key] + '<br>';
+                }
+
+                TableBuilder.showErrorNotification(errors);
                 TableBuilder.hidePreloader();
                 TableBuilder.hideFormPreloader(TableBuilder.form_edit);
             }
@@ -826,8 +840,15 @@ var TableBuilder = {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorResult = jQuery.parseJSON(xhr.responseText);
+                var errorsResponse = errorResult.errors;
+                var errors = '';
 
-                TableBuilder.showErrorNotification(errorResult.message);
+                for (key in errorsResponse) {
+                    errors += errorsResponse[key] + '<br>';
+
+                }
+                TableBuilder.showErrorNotification(errors);
+
                 TableBuilder.hidePreloader();
                 TableBuilder.hideFormPreloader(TableBuilder.form);
             }
@@ -1091,7 +1112,6 @@ var TableBuilder = {
             }
         });
     }, // end uploadFile
-
 
     uploadFileMulti : function (context, ident) {
         var arr = context.files;
