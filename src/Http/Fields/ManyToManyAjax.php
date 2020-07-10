@@ -18,15 +18,6 @@ class ManyToManyAjax extends ManyToMany
         return $this->getDataWithWhereAndOrder($definition)->toArray();
     }
 
-    public function save($collectionString, $model)
-    {
-        $collectionString = explode(',', $collectionString);
-
-        $model->{$this->options->getRelation()}()->detach();
-
-        $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
-    }
-
     public function getOptionsSelected(Resource $definition)
     {
         if (request()->id) {
@@ -35,7 +26,7 @@ class ManyToManyAjax extends ManyToMany
             $selected = $definition->model()->find(request()->id)->{$this->options->getRelation()}()
                 ->select([ "{$table}.id", "{$table}.{$this->options->getKeyField()} as name"])->get()->toArray();
 
-            return $selected;
+            return json_encode($selected);
         }
 
         return;
