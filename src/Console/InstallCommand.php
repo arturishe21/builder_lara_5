@@ -44,7 +44,7 @@ class InstallCommand extends Command
     public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
-            $this->createEnvFile();
+           // $this->createEnvFile();
 
             $this->createDb();
             $this->loadFiles();

@@ -22,7 +22,9 @@ class ManyToManyAjax extends ManyToMany
     {
         $collectionString = explode(',', $collectionString);
 
-        $model->{$this->options->getRelation()}()->sync($collectionString);
+        $model->{$this->options->getRelation()}()->detach();
+
+        $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
     }
 
     public function getOptionsSelected(Resource $definition)
@@ -33,7 +35,7 @@ class ManyToManyAjax extends ManyToMany
             $selected = $definition->model()->find(request()->id)->{$this->options->getRelation()}()
                 ->select([ "{$table}.id", "{$table}.{$this->options->getKeyField()} as name"])->get()->toArray();
 
-            return json_encode($selected);
+            return $selected;
         }
 
         return;

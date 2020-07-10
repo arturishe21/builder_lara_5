@@ -76,6 +76,8 @@ class ManyToMany extends Field
 
     public function save($collectionIds, Model $model)
     {
+        $model->{$this->options->getRelation()}()->detach();
+
         $model->{$this->options->getRelation()}()->sync($collectionIds);
     }
 
