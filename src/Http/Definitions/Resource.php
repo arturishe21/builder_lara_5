@@ -352,25 +352,28 @@ class Resource
 
             $data = [];
 
-            foreach ($this->updateMorphOneList as $item) {
+            foreach ($this->updateMorphOneList as $relationMorphOne => $items) {
 
-                $relationMorphOne = $item['field']->getMorphOne();
+                unset($data);
 
-                if ($item['field']->getLanguage()) {
-                    foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
+                foreach ($items as $item) {
 
-                        $fieldLanguage = $item['field']->getNameField().$language['postfix'];
+                    if ($item['field']->getLanguage()) {
+                        foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
 
-                        $data[$item['field']->getNameField().$language['postfix']] = $request[$fieldLanguage] ? :
-                            $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
+                            $fieldLanguage = $item['field']->getNameField().$language['postfix'];
+
+                            $data[$item['field']->getNameField().$language['postfix']] = $request[$fieldLanguage] ? :
+                                $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
+                        }
+
+                    } else {
+                        $data[$item['field']->getNameField()] = $item['value'];
                     }
-
-                } else {
-                    $data[$item['field']->getNameField()] = $item['value'];
                 }
-            }
 
-            $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
+                $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
+            }
         }
 
         $this->clearCache();
@@ -433,7 +436,7 @@ class Resource
 
     protected function updateMorphOne($field, $value)
     {
-        $this->updateMorphOneList[] = [
+        $this->updateMorphOneList[$field->getMorphOne()][] = [
             'field' => $field,
             'value' => $value
         ];
