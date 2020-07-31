@@ -49,6 +49,7 @@ return array(
     'Vis\\Builder\\Fields\\Image' => $baseDir . '/src/Http/Fields/Image.php',
     'Vis\\Builder\\Fields\\ManyToMany' => $baseDir . '/src/Http/Fields/ManyToMany.php',
     'Vis\\Builder\\Fields\\ManyToManyAjax' => $baseDir . '/src/Http/Fields/ManyToManyAjax.php',
+    'Vis\\Builder\\Fields\\ManyToManyMultiSelect' => $baseDir . '/src/Http/Fields/ManyToManyMultiSelect.php',
     'Vis\\Builder\\Fields\\MultiFile' => $baseDir . '/src/Http/Fields/MultiFile.php',
     'Vis\\Builder\\Fields\\MultiImage' => $baseDir . '/src/Http/Fields/MultiImage.php',
     'Vis\\Builder\\Fields\\Number' => $baseDir . '/src/Http/Fields/Number.php',

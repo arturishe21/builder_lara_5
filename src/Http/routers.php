@@ -43,6 +43,11 @@
                     'Vis\Builder\PhotoController@upload'
                 );
 
+                Route::post(
+                    '/file/upload',
+                    'Vis\Builder\PhotoController@upload'
+                );
+
                 Route::any(
                     '/photo/select_photos',
                     'Vis\Builder\PhotoController@selectPhotos'

@@ -11,7 +11,9 @@
                     <div class="input input-file">
 
                          <span class="button">
-                             <input type="file" onchange="TableBuilder.uploadFile(this, '{{$field->getNameField()}}');"  {!! $field->getAccept() !!} >
+                             <input type="file" onchange="TableBuilder.uploadFile(this, '{{$field->getNameField()}}');"  {!! $field->getAccept() !!}
+                             data-name-model="{{$definition->getFullPathDefinition()}}"
+                             >
                              {{__cms('Загрузить')}}
                          </span>
                          <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'one_file', $(this))">

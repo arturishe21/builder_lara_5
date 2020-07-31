@@ -1070,14 +1070,13 @@ alert('sdsd');
     uploadFile: function (context, ident) {
         var data = new FormData();
         data.append("file", context.files[0]);
-        data.append('query_type', 'upload_file');
         data.append('ident', ident);
-        data.append('__node', TableBuilder.getUrlParameter('id_tree'));
+        data.append('path_model', context.getAttribute('data-name-model'));
 
         jQuery.ajax({
             data: data,
             type: "POST",
-            url: TableBuilder.getActionUrl(),
+            url: '/admin/file/upload',
             cache: false,
             contentType: false,
             processData: false,
