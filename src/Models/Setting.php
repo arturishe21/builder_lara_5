@@ -111,7 +111,7 @@ class Setting extends Model
             $destinationPath = 'storage/settings';
             $ext = $file->getClientOriginalExtension();
 
-            $nameFile = Str::slug(trim($file->getClientOriginalName(), $ext));
+            $nameFile = Str::slug(rtrim($file->getClientOriginalName(), $ext));
 
             $nameFile = $nameFile.'.'.$ext;
             $fullPathImg = '/'.$destinationPath.'/'.$nameFile;
