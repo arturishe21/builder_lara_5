@@ -106,7 +106,7 @@ class Field
 
     public function getValueLanguage($postfix)
     {
-        return $this->valueLanguage[$postfix];
+        return $this->valueLanguage[$postfix] ?? '';
     }
 
     public function getName()
