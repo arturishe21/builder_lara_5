@@ -413,7 +413,7 @@ class Resource
 
             return $result;
 
-        } catch (\Yandex\Translate\Exception $e) {
+        } catch (\Exception $e) {
             return $phrase;
         }
     }
