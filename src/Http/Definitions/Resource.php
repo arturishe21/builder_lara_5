@@ -8,6 +8,7 @@ use Vis\Builder\Fields\Definition;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Services\Actions;
+use Vis\Builder\Libs\GoogleTranslateForFree;
 
 class Resource
 {
@@ -407,12 +408,11 @@ class Resource
                 return '';
             }
 
-            $translator = new \Yandex\Translate\Translator(config('builder.translations.cms.api_yandex_key'));
-            $translation = $translator->translate($phrase, $langDef . '-' . $slugLang);
+            $attempts = 2;
+            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, $attempts);
 
-            if (isset($translation->getResult()[0])) {
-                return $translation->getResult()[0];
-            }
+            return $result;
+
         } catch (\Yandex\Translate\Exception $e) {
             return $phrase;
         }
