@@ -313,9 +313,7 @@ class Resource
 
         if (count($this->updateManyToManyList)) {
             foreach ($this->updateManyToManyList as $item) {
-                if ($item['collectionsIds']) {
                     $item['field']->save($item['collectionsIds'], $record);
-                }
             }
         }
 

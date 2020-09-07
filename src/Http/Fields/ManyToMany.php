@@ -76,11 +76,13 @@ class ManyToMany extends Field
 
     public function save($collectionString, $model)
     {
-        $collectionString = explode(',', $collectionString);
+        $collectionArray = explode(',', $collectionString);
 
         $model->{$this->options->getRelation()}()->detach();
 
-        $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
+        if ($collectionString) {
+            $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionArray);
+        }
     }
 
     public function getNameField() : string
