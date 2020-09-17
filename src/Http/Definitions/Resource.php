@@ -509,7 +509,9 @@ class Resource
                     continue;
                 }
 
-                $collection = $collection->where($field, '=', $value);
+                $collection = $collection->where(function ($query) use ($field, $value) {
+                    $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                });
             }
         }
 
