@@ -9,16 +9,15 @@
         }
     ],
     "require": {
-        "cartalyst/sentinel": "^4.0",
-        "mcamara/laravel-localization": "1.5.*",
+        "cartalyst/sentinel": "^5.0",
+        "mcamara/laravel-localization": "1.6.*",
         "kalnoy/nestedset": "^5.0",
         "venturecraft/revisionable": "1.*",
-        "yandex/translate-api": "1.5.x",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
         "predis/predis" : "v1.1.1",
         "maatwebsite/excel": "3.*",
-        "barryvdh/laravel-debugbar": "^3.2"
+        "barryvdh/laravel-debugbar": "3.*"
     },
     "autoload": {
         "classmap": [
