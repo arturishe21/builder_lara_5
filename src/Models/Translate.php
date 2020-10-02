@@ -3,8 +3,8 @@
 namespace Vis\TranslationsCMS;
 
 use Illuminate\Database\Eloquent\Model;
-use Yandex\Translate\Translator;
 use Illuminate\Support\Facades\Cache;
+use Vis\Builder\Libs\GoogleTranslateForFree;
 
 class Translate extends Model
 {
@@ -17,20 +17,17 @@ class Translate extends Model
     public function generateTranslate($language, $phrase)
     {
         try {
-            $languageDefault = config('builder.translations.cms.language_default');
+            $langDef = config('builder.translations.cms.language_default');
 
-            if ($language == $languageDefault) {
+            if ($langDef == $language || !$phrase) {
                 return json_encode(['lang' => $language, 'text' => $phrase]);
             }
 
-            $translator = new Translator(config('builder.translations.cms.api_yandex_key'));
+            $result = (new GoogleTranslateForFree())->translate($langDef, $language, $phrase, 2);
 
-            $translation = $translator->translate($phrase, $languageDefault . '-' . $language);
+            return json_encode(['lang' => $language, 'text' => $result]);
 
-            if (isset($translation->getResult()[0])) {
-                return json_encode(['lang' => $language, 'text' => $translation->getResult()[0]]);
-            }
-        } catch (\Yandex\Translate\Exception $e) {
+        } catch (\Exception $e) {
             return json_encode(['lang' => $language, 'text' => $phrase]);
         }
     }
