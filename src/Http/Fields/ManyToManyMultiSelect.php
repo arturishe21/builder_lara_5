@@ -22,10 +22,16 @@ class ManyToManyMultiSelect extends ManyToMany
             $tableRelateModel = $definition->model()->find(request()->id)
                 ->{$this->options->getRelation()}()->getRelated()->getTable();
 
-            $selected = $definition->model()->find(request()->id)
-                ->{$this->options->getRelation()}()->pluck($this->options->getKeyField(), "{$tableRelateModel}.id");
+            $selected = $definition->model()->find(request()->id)->{$this->options->getRelation()}()
+                ->get([$this->options->getKeyField(), "{$tableRelateModel}.id"]);
 
-            return $selected->toArray();
+            $result = [];
+
+            foreach ($selected as $item) {
+                $result[$item->id] = $item->{$this->options->getKeyField()};
+            }
+
+            return $result;
         }
 
         return [];
