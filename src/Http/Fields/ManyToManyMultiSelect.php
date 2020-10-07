@@ -10,7 +10,9 @@ class ManyToManyMultiSelect extends ManyToMany
     {
         $model->{$this->options->getRelation()}()->detach();
 
-        $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
+        if (is_array($collectionString)) {
+           $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
+        }
     }
 
     public function getOptionsSelected(Resource $definition)
