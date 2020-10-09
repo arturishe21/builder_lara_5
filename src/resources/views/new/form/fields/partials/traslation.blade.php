@@ -1,14 +1,16 @@
 <script>
-        @if ($field->getTraslationField())
-    var runTrans = true;
-    @if ($field->getTraslationOnlyEmpty() == true)
-        runTrans = $('[name={{$field->getNameField()}}]').val() == '' ? true : false;
-    @endif
+    @if ($field->getTraslationField())
 
-    if (runTrans) {
-        $('[name={{$field->getNameField()}}]').keyup(function(){
-            $('[name={{ $field->getTraslationField() }}]').val(TableBuilder.urlRusLat($(this).val()));
-        });
-    }
+		var runTrans = true;
+
+		@if ($field->getTraslationOnlyEmpty() == true)
+			runTrans = $('[data-name-input={{$definition->getNameDefinition().$field->getNameField()}}]').val() == '' ? true : false;
+		@endif
+
+		if (runTrans) {
+			$('[data-name-input={{$definition->getNameDefinition().$field->getNameField()}}]').keyup(function(){
+				$('[name={{ $field->getTraslationField() }}]').val(TableBuilder.urlRusLat($(this).val()));
+			});
+		}
     @endif
 </script>

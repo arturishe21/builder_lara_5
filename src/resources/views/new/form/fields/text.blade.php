@@ -14,6 +14,7 @@
                         name="{{ $field->getNameField() }}"
                         placeholder="{{ $field->getPlaceholder() }}"
                         class="dblclick-edit-input form-control input-sm unselectable"
+                        data-name-input="{{$definition->getNameDefinition().$field->getNameField()}}"
                     />
                     @if ($field->getComment())
                         <div class="note">
