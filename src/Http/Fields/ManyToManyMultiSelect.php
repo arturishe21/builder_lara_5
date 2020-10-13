@@ -6,12 +6,12 @@ use Vis\Builder\Definitions\Resource;
 
 class ManyToManyMultiSelect extends ManyToMany
 {
-    public function save($collectionString, $model)
+    public function save($collectionArray, $model)
     {
         $model->{$this->options->getRelation()}()->detach();
 
-        if (is_array($collectionString)) {
-           $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
+        if (is_array($collectionArray) && $collectionArray[0]) {
+           $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionArray);
         }
     }
 
