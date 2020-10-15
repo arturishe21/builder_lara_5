@@ -43,15 +43,10 @@ class Foreign extends Field
 
     public function getDataWithWhereAndOrder(Resource $definition)
     {
-        if (request('paramsJson')) {
-            $listParams = json_decode(request('paramsJson'));
-            $definitionPath = $listParams->path_definition;
-
-            $definition = new $definitionPath();
-        }
-
+        $definition = $this->getDefinition($definition);
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $collection = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
+
         $where = $this->options->getWhereCollection();
         $order = $this->options->getOrderCollection();
 
@@ -73,12 +68,33 @@ class Foreign extends Field
     public function getValueForList($definition)
     {
         $value = $this->getValue();
-        $options = $this->getOptions($definition);
+        $definition = $this->getDefinition($definition);
+        $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
+        $record = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
 
-        if (isset($options[$value]) && Arr::get($options, $value)) {
-            return $options[$value];
+        $recordThis = $record->rememberForever()->cacheTags($this->getCacheArray($definition, $modelRelated))
+                             ->find($value);
+
+        return $recordThis->name;
+    }
+
+    private function getCacheArray($definition, $modelRelated)
+    {
+        $cacheArray[] = $definition->getCacheKey();
+        $cacheArray[] = $modelRelated->getTable();
+
+        return $cacheArray;
+    }
+
+    private function getDefinition($definition)
+    {
+        if (request('paramsJson')) {
+            $listParams = json_decode(request('paramsJson'));
+            $definitionPath = $listParams->path_definition;
+
+            return new $definitionPath();
         }
 
-        return $this->defaultValue;
+        return $definition;
     }
 }
