@@ -1,32 +1,26 @@
 [![StyleCI](https://styleci.io/repos/55775729/shield?branch=master)](https://styleci.io/repos/55775729)
 
-Подкючаем 
-```json
- composer require "vis/builder_lara_5":"1.*"
-```
-Подкючаем для laravel 6.*
+Install the cms with composer
 ```json
  composer require "vis/builder_lara_5":"2.*"
 ```
-Добавляем в файле app.php в блок providers
-```php
-  Vis\Builder\BuilderServiceProvider::class,
-```
-Добавляем в файле app.php в блок alias
-```php
-  'Jarboe' => Vis\Builder\Facades\Jarboe::class,
+
+For laravel version 8
+```json
+ composer require "vis/builder_lara_5":"2.*"
 ```
 
-Инсталим админку
+Install cms
 ```json
    php artisan admin:install
 ```
-Генерируем пароль для админа
+
+Generate a password for admin
 ```json
    php artisan admin:generatePassword
 ```
 
-Если нужно обновить css и js, то
+Yoo can publish vendor
 ```json   
    php artisan vendor:publish --tag=public --force --provider="Vis\Builder\BuilderServiceProvider"
 ```
