@@ -72,10 +72,11 @@ class Foreign extends Field
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $record = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
 
-        $recordThis = $record->rememberForever()->cacheTags($this->getCacheArray($definition, $modelRelated))
+        $recordThis = $record->rememberForever()
+                             ->cacheTags($this->getCacheArray($definition, $modelRelated))
                              ->find($value);
 
-        return $recordThis->name;
+        return $recordThis ? $recordThis->name : '';
     }
 
     private function getCacheArray($definition, $modelRelated)
