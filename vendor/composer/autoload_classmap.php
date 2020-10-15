@@ -74,6 +74,7 @@ return array(
     'Vis\\Builder\\Helpers\\URLify' => $baseDir . '/src/libs/URLify.php',
     'Vis\\Builder\\Img' => $baseDir . '/src/libs/Img.php',
     'Vis\\Builder\\InstallCommand' => $baseDir . '/src/Console/InstallCommand.php',
+    'Vis\\Builder\\Libs\\GoogleTranslateForFree' => $baseDir . '/src/libs/GoogleTranslateForFree.php',
     'Vis\\Builder\\Libs\\LaravelLogViewer' => $baseDir . '/src/libs/LaravelLogViewer.php',
     'Vis\\Builder\\LocalizationMiddlewareRedirect' => $baseDir . '/src/Http/Middleware/LocalizationMiddlewareRedirect.php',
     'Vis\\Builder\\LogViewerController' => $baseDir . '/src/Http/Controllers/LogViewerController.php',

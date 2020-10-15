@@ -22,7 +22,6 @@ class User extends EloquentUser
         return $this->hasOne(EloquentActivation::class);
     }
 
-
     /**
      * @var string
      */
