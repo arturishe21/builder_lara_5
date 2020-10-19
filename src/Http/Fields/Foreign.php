@@ -76,7 +76,7 @@ class Foreign extends Field
                              ->cacheTags($this->getCacheArray($definition, $modelRelated))
                              ->find($value);
 
-        return $recordThis ? $recordThis->name : '';
+        return optional($recordThis)->name;
     }
 
     private function getCacheArray($definition, $modelRelated)
