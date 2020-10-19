@@ -6,11 +6,13 @@ use Vis\Builder\Definitions\Resource;
 
 class ManyToManyMultiSelect extends ManyToMany
 {
-    public function save($collectionString, $model)
+    public function save($collectionArray, $model)
     {
         $model->{$this->options->getRelation()}()->detach();
 
-        $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionString);
+        if (is_array($collectionArray) && $collectionArray[0]) {
+           $model->{$this->options->getRelation()}()->syncWithoutDetaching($collectionArray);
+        }
     }
 
     public function getOptionsSelected(Resource $definition)
@@ -20,10 +22,17 @@ class ManyToManyMultiSelect extends ManyToMany
             $tableRelateModel = $definition->model()->find(request()->id)
                 ->{$this->options->getRelation()}()->getRelated()->getTable();
 
-            $selected = $definition->model()->find(request()->id)
-                ->{$this->options->getRelation()}()->pluck($this->options->getKeyField(), "{$tableRelateModel}.id");
+            $selected = $definition->model()->find(request()->id)->{$this->options->getRelation()}()
+                ->select(["{$tableRelateModel}.id", "{$tableRelateModel}.{$this->options->getKeyField()} as name"])
+                ->get();
 
-            return $selected->toArray();
+            $result = [];
+
+            foreach ($selected as $item) {
+                $result[$item->id] = $item->name;
+            }
+
+            return $result;
         }
 
         return [];

@@ -148,9 +148,7 @@ class TreeController
         $node->slug = Str::slug(request('title'));
 
         $node->save();
-
         $node->checkUnicUrl();
-
         $node->prependToNode($root)->save();
 
         $root->clearCache();

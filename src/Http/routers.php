@@ -58,7 +58,6 @@
                     'Vis\Builder\TableAdminController@actionsPage'
                 );
 
-                // view showDashboard
                 Route::get('/', 'Vis\Builder\TBController@showDashboard');
 
                 //routes for froala editor
@@ -66,6 +65,7 @@
                 Route::get('load_image', 'Vis\Builder\EditorController@loadImages');
                 Route::post('delete_image', 'Vis\Builder\EditorController@deleteImages');
                 Route::post('quick_edit', 'Vis\Builder\EditorController@doQuickEdit');
+
                 Route::post('change_skin', 'Vis\Builder\TBController@doChangeSkin');
                 Route::get('change_lang', 'Vis\Builder\TBController@doChangeLangAdmin')->name('change_lang');
                 Route::post('upload_image', 'Vis\Builder\EditorController@uploadFoto');

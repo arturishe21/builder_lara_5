@@ -5,13 +5,15 @@ namespace Vis\Builder\Definitions;
 use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
 use Vis\Builder\Fields\Definition;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
+use Vis\Builder\Definitions\Traits\{CacheResource, CloneResource};
 
 class Resource
 {
+    use CacheResource, CloneResource;
+
     protected $orderBy = 'created_at desc';
     protected $isSortable = false;
     protected $perPage = [20, 100, 1000];
@@ -59,16 +61,6 @@ class Resource
     public function getIsSortable()
     {
         return $this->isSortable;
-    }
-
-    public function getCacheKey()
-    {
-        return $this->cacheTag ?: $this->getNameDefinition();
-    }
-
-    public function clearCache()
-    {
-        Cache::tags($this->getCacheKey())->flush();
     }
 
     public function getOrderBy()
@@ -149,20 +141,7 @@ class Resource
     {
         $this->model()->destroy($id);
 
-        return [
-            'status' => 'success'
-        ];
-    }
-
-    public function clone(int $id) : array
-    {
-        $model = $this->model()->find($id);
-        $newModel = $model->replicate();
-        $newModel->push();
-
-        return [
-            'status' => 'success',
-        ];
+        return $this->returnSuccess();
     }
 
     public function changeOrder($requestOrder, $params) : array
@@ -183,9 +162,7 @@ class Resource
 
         $this->clearCache();
 
-        return [
-            'status' => 'success'
-        ];
+        return $this->returnSuccess();
     }
 
     public function showAddForm()
@@ -248,9 +225,8 @@ class Resource
     protected function updateForm($request)
     {
         $record = $this->model()->find($request['id']);
-        $recordNew = $this->saveActive($record, $request);
 
-        return $recordNew;
+        return $this->saveActive($record, $request);
     }
 
     private function getRules($fields) : array
@@ -535,55 +511,10 @@ class Resource
         return view('admin::new.list.table', compact('list', 'listingRecords'));
     }
 
-    public function cloneTree(int $id): array
+    private function returnSuccess()
     {
-        $this->cloneRecursively($id);
-
-        $this->clearCache();
-
         return [
-            'status' => 'success',
+            'status' => 'success'
         ];
-    }
-
-    private function cloneRecursively($id, $parentId = '')
-    {
-        $model = $this->model();
-
-        $page = $model::where('id', $id)->select('*')->first()->toArray();
-        $idClonePage = $page['id'];
-        unset($page['id']);
-        if ($parentId) {
-            $page['parent_id'] = $parentId;
-        }
-
-        if ($page['parent_id']) {
-            $root = $model::find($page['parent_id']);
-
-            $rec = new $model();
-            $countPages = $model::where('parent_id', $page['parent_id'])->where('slug', $page['slug'])->count();
-
-            if ($countPages) {
-                $page['slug'] = $parentId ?
-                    $page['slug'].'_'.$page['parent_id'] :
-                    $page['slug'].'_'.time();
-            }
-
-            foreach ($page as $k => $val) {
-                $rec->$k = $val;
-            }
-
-            $rec->save();
-            $lastId = $rec->id;
-
-            $rec->makeChildOf($root);
-        }
-
-        $folderCheck = $model::where('parent_id', $idClonePage)->select('*')->orderBy('lft', 'desc')->get()->toArray();
-        if (count($folderCheck)) {
-            foreach ($folderCheck as $pageChild) {
-                $this->cloneRecursively($pageChild['id'], $lastId);
-            }
-        }
     }
 }

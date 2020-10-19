@@ -19,7 +19,9 @@
                                    value="{{$field->getValueLanguage($tab['postfix'])}}"
                                    name="{{ $field->getNameField() . $tab['postfix']}}"
                                    placeholder="{{{$tab['placeholder']}}}"
-                                   class="dblclick-edit-input form-control input-sm unselectable">
+                                   class="dblclick-edit-input form-control input-sm unselectable"
+                                   data-name-input="{{$definition->getNameDefinition().$field->getNameField(). $tab['postfix']}}"
+                            >
                         </label>
                     </div>
                 </div>

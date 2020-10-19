@@ -89,6 +89,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Helpers\\URLify' => __DIR__ . '/../..' . '/src/libs/URLify.php',
         'Vis\\Builder\\Img' => __DIR__ . '/../..' . '/src/libs/Img.php',
         'Vis\\Builder\\InstallCommand' => __DIR__ . '/../..' . '/src/Console/InstallCommand.php',
+        'Vis\\Builder\\Libs\\GoogleTranslateForFree' => __DIR__ . '/../..' . '/src/libs/GoogleTranslateForFree.php',
         'Vis\\Builder\\Libs\\LaravelLogViewer' => __DIR__ . '/../..' . '/src/libs/LaravelLogViewer.php',
         'Vis\\Builder\\LocalizationMiddlewareRedirect' => __DIR__ . '/../..' . '/src/Http/Middleware/LocalizationMiddlewareRedirect.php',
         'Vis\\Builder\\LogViewerController' => __DIR__ . '/../..' . '/src/Http/Controllers/LogViewerController.php',
