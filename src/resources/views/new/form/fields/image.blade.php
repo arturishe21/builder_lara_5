@@ -1,5 +1,12 @@
 <section class="{{$field->getClassName()}}">
-    <label class="label" for="{{ $field->getNameField()}}">{{$field->getName()}}</label>
+    <label class="label" for="{{ $field->getNameField()}}">{{$field->getName()}}
+
+        @if ($field->getComment())
+            <div class="note">
+                {{$field->getComment()}}
+            </div>
+        @endif
+    </label>
     <div style="position: relative;">
         <div class="div_input">
             <div class="input_content">
@@ -51,6 +58,8 @@
                     </div>
 
                 </div>
+
+
             </div>
         </div>
     </div>
