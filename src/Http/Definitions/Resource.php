@@ -382,8 +382,9 @@ class Resource
                 return '';
             }
 
-            $attempts = 2;
-            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, $attempts);
+            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
+            $result = str_replace('/ ','/', $result);
+            $result = str_replace(' /','/', $result);
 
             return $result;
 
