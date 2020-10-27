@@ -473,6 +473,9 @@ class Resource
         $perPage = $this->getPerPageThis();
 
         if (isset($filter['filter']) && is_array($filter['filter'])) {
+
+            $allFields = $this->getAllFields();
+
             foreach ($filter['filter'] as $field => $value) {
                 if (is_null($value) || $value == '') {
                     continue;
@@ -486,13 +489,22 @@ class Resource
                     continue;
                 }
 
-                $collection = $collection->where(function ($query) use ($field, $value) {
-                    $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                $collection = $collection->where(function ($query) use ($field, $value, $allFields) {
+                    if ($this->isTextField($allFields, $field)) {
+                        $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                    } else {
+                        $query->where($field, '=', $value);
+                    }
                 });
             }
         }
 
         return $collection->orderByRaw($orderBy)->paginate($perPage);
+    }
+
+    private function isTextField($allFields, $field)
+    {
+        return Arr::exists($allFields, $field) && get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text';
     }
 
     public function head()
