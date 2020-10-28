@@ -4,7 +4,7 @@ namespace Vis\Builder\Definitions;
 
 use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
-use Vis\Builder\Fields\Definition;
+use Vis\Builder\Fields\{Definition, Password};
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
@@ -270,6 +270,10 @@ class Resource
                 }
 
                 if ($field instanceof Definition) {
+                    continue;
+                }
+
+                if ($request[$nameField] == '******' && $field instanceof Password) {
                     continue;
                 }
 

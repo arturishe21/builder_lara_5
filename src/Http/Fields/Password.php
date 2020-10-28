@@ -6,9 +6,19 @@ use Illuminate\Support\Facades\Hash;
 
 class Password extends Field
 {
+    private $defaultPassword = '******';
+
     public function getValueForList($definition)
     {
-        return '*****';
+        return $this->defaultPassword;
+    }
+
+    public function setValue($value)
+    {
+        if ($value) {
+            $this->value = $this->defaultPassword;
+        }
+
     }
 
     public function prepareSave($request)
