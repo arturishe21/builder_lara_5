@@ -140,6 +140,7 @@ class Resource
     public function remove(int $id) : array
     {
         $this->model()->destroy($id);
+        $this->clearCache();
 
         return $this->returnSuccess();
     }
