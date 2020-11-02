@@ -66,6 +66,8 @@ class TreeController
     {
         $this->definition->model()->destroy($request['id']);
 
+        $this->definition->clearCache();
+
         return [
             'status' => 'success'
         ];
