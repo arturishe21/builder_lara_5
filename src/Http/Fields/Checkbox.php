@@ -6,7 +6,7 @@ class Checkbox extends Field
 {
     public function getValueForList($definition) : string
     {
-        if ($this->getValue()) {
+        if ($this->value == 1) {
             return '<span class="glyphicon glyphicon-ok"></span>';
         }
 
@@ -19,5 +19,18 @@ class Checkbox extends Field
             '0' => __cms('Нет'),
             '1' => __cms('Да')
         ];
+    }
+
+    public function getValue()
+    {
+        if ($this->value === '' && $this->defaultValue) {
+            return true;
+        }
+
+        if ($this->value) {
+            return true;
+        }
+
+        return false;
     }
 }
