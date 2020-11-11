@@ -509,7 +509,12 @@ class Resource
 
     private function isTextField($allFields, $field)
     {
-        return Arr::exists($allFields, $field) && get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text';
+        return Arr::exists($allFields, $field) &&
+            (get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text' ||
+             get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Textarea' ||
+             get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Froala'
+            )
+            ;
     }
 
     public function head()
