@@ -606,6 +606,21 @@ alert('sdsd');
         });
     }, // end doDelete
 
+    getHtmlFroala : function(values) {
+        $('.text_block').each(function ( index ) {
+            var nameFroala = $(this).attr('name');
+
+            try {
+                var valueFroala = $('[name=' + nameFroala + ']').froalaEditor('codeView.get');
+            } catch (error) {
+                var valueFroala = $('[name=' + nameFroala + ']').froalaEditor('html.get');
+            }
+            values.push({ name: nameFroala, value: valueFroala });
+        });
+
+        return values;
+    },
+
     doEdit: function (id, table, foreign_field_id, foreign_attributes) {
         var form = '#edit_form_' + table;
 
@@ -618,6 +633,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = $(TableBuilder.edit_form).serializeArray();
+        values = TableBuilder.getHtmlFroala(values);
 
         values.push({ name: 'id', value: id });
         values.push({ name: 'query_type', value: "save_edit_form" });
@@ -746,6 +762,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = jQuery(TableBuilder.create_form).serializeArray();
+        values = TableBuilder.getHtmlFroala(values);
 
         values.push({ name: "query_type", value: "save_add_form" });
         values.push({ name: "__node", value: TableBuilder.getUrlParameter('node') });
