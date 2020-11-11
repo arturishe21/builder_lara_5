@@ -633,7 +633,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = $(TableBuilder.edit_form).serializeArray();
-        values = TableBuilder.getHtmlFroala(values);
+     //   values = TableBuilder.getHtmlFroala(values);
 
         values.push({ name: 'id', value: id });
         values.push({ name: 'query_type', value: "save_edit_form" });
@@ -762,7 +762,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = jQuery(TableBuilder.create_form).serializeArray();
-        values = TableBuilder.getHtmlFroala(values);
+       // values = TableBuilder.getHtmlFroala(values);
 
         values.push({ name: "query_type", value: "save_add_form" });
         values.push({ name: "__node", value: TableBuilder.getUrlParameter('node') });
