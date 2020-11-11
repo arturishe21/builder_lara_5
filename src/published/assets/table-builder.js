@@ -325,8 +325,6 @@ var TableBuilder = {
                     console.log( errors[index] );
                 });
 
-alert('sdsd');
-
                 TableBuilder.showErrorNotification(errorResult.message);
                 TableBuilder.hidePreloader();
             }
@@ -606,14 +604,17 @@ alert('sdsd');
         });
     }, // end doDelete
 
-    getHtmlFroala : function(values) {
-        $('.text_block').each(function ( index ) {
+    getHtmlFroala : function(values, form) {
+
+        var textBlock = form + ' .text_block';
+
+        $(textBlock).each(function ( index ) {
             var nameFroala = $(this).attr('name');
 
             try {
-                var valueFroala = $('[name=' + nameFroala + ']').froalaEditor('codeView.get');
+                var valueFroala = $(this).froalaEditor('codeView.get');
             } catch (error) {
-                var valueFroala = $('[name=' + nameFroala + ']').froalaEditor('html.get');
+                var valueFroala = $(this).froalaEditor('html.get');
             }
             values.push({ name: nameFroala, value: valueFroala });
         });
@@ -633,7 +634,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = $(TableBuilder.edit_form).serializeArray();
-     //   values = TableBuilder.getHtmlFroala(values);
+        values = TableBuilder.getHtmlFroala(values, form);
 
         values.push({ name: 'id', value: id });
         values.push({ name: 'query_type', value: "save_edit_form" });
@@ -762,8 +763,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = jQuery(TableBuilder.create_form).serializeArray();
-       // values = TableBuilder.getHtmlFroala(values);
-
+      
         values.push({ name: "query_type", value: "save_add_form" });
         values.push({ name: "__node", value: TableBuilder.getUrlParameter('node') });
 
