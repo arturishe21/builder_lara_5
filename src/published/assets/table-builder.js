@@ -763,7 +763,7 @@ var TableBuilder = {
         $('.fr-popup').remove();
 
         var values = jQuery(TableBuilder.create_form).serializeArray();
-      
+
         values.push({ name: "query_type", value: "save_add_form" });
         values.push({ name: "__node", value: TableBuilder.getUrlParameter('node') });
 
