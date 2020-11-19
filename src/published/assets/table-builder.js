@@ -1224,7 +1224,7 @@ var TableBuilder = {
 
         var section = thisFileElement.parents('.pictures_input_field');
 
-        section.find("#files_uploaded_table_" + name).show();
+        section.find("#files_uploaded_table_" + baseName).show();
 
         var data = {
             query_type: "select_with_uploaded_images",
@@ -1233,13 +1233,13 @@ var TableBuilder = {
             page_id : pageId,
             path_model: thisFileElement.attr('data-name-model')
         };
-        section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
+        section.find('#files_uploaded_table_' + baseName + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(
             '/admin/photo/select_photos',
             data,
             function (response) {
-                section.find('#files_uploaded_table_' + name + ' tbody').html(response.data);
-                section.find('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
+                section.find('#files_uploaded_table_' + baseName + ' tbody').html(response.data);
+                section.find('#files_uploaded_table_' + baseName + ' tbody').attr('data-type', type);
             },
             'json'
         );
@@ -1281,6 +1281,7 @@ var TableBuilder = {
             });
         } else {
             var img = section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').attr('data-path');
+            
             if (img != undefined) {
                 section.find('[type=hidden]').val(img);
                 section.find('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');

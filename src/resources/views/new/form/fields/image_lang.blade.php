@@ -66,7 +66,7 @@
 
                                 </div>
                             </div>
-                            <div class="modal files_uploaded_table" id ='files_uploaded_table_{{ $field->getNameField()}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+                            <div class="modal files_uploaded_table" id ='files_uploaded_table_{{ $field->getNameField(). $tab['postfix']}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
                                 <div class="modal-dialog">
                                     <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
                                     <div class="modal-content">
