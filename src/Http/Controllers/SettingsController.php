@@ -133,8 +133,8 @@ class SettingsController extends Controller
      */
     public function doFastSave()
     {
-        if (Input::has('id') && Input::has('value')) {
-            $setting = Setting::find(request('id'));
+        if (Input::has('pk')) {
+            $setting = Setting::find(request('pk'));
             $setting->value = trim(request('value'));
             $setting->save();
 
