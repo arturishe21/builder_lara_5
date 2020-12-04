@@ -31,8 +31,8 @@
   @else
         <span class="dblclick-edit selectable"
               data-type="text"
-              data-pk="{{$el->id}}}"
-              data-url="/admin/handle/settings/fast-edit"
+              data-pk="{{$el->id}}"
+              data-url="/admin/settings/fast_save"
               data-name="value"
               data-title="Введите:"
         >{{$el->value}}</span>
