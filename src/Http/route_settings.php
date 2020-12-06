@@ -4,16 +4,14 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(
         ['prefix' => 'admin', 'middleware' => 'auth.admin'],
         function () {
-            Route::any('/settings/settings_all', 'Vis\Builder\SettingsController@fetchIndex')
-                    ->name('m.show_settings');
+            Route::any('/settings/settings_all', 'Vis\Builder\SettingsController@fetchIndex')->name('m.show_settings');
 
             if (Request::ajax()) {
-                Route::post('/settings/create_pop', 'Vis\Builder\SettingsController@fetchCreate');
-                Route::post('/settings/add_record', 'Vis\Builder\SettingsController@doSave');
-                Route::post('/settings/delete', 'Vis\Builder\SettingsController@doDelete');
-                Route::post('/settings/edit_record', 'Vis\Builder\SettingsController@fetchEdit');
-                Route::post('/settings/del_select', 'Vis\Builder\SettingsController@doDeleteSettingSelect');
-                Route::post('/settings/fast_save', 'Vis\Builder\SettingsController@doFastSave');
+                Route::post('/settings/create', 'Vis\Builder\SettingsController@create');
+                Route::post('/settings/{setting}/update', 'Vis\Builder\SettingsController@update');
+                Route::post('/settings/store', 'Vis\Builder\SettingsController@update');
+                Route::post('/settings/{setting}/edit', 'Vis\Builder\SettingsController@edit');
+                Route::post('/settings/fast-save/{setting}', 'Vis\Builder\SettingsController@fastSave');
             }
         }
     );

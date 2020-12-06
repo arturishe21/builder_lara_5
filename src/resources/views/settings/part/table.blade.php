@@ -16,7 +16,7 @@
      <tbody >
        @forelse($data as $k=>$el )
             <tr class="tr_{{$el->id}} " id_page="{{$el->id}}">
-                @include("admin::settings.part.one_record")
+                @include("admin::settings.part.record")
             </tr>
         @empty
               <tr>

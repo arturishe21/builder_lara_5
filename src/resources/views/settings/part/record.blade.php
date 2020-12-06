@@ -7,12 +7,6 @@
 <td>
   @if($el->type==1 || $el->type==6)
         <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Текстовое поле')}}</a>
-  @elseif($el->type==2)
-        <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Список')}}</a>
-  @elseif($el->type==3)
-        <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Двойной список')}} </a>
-   @elseif($el->type==5)
-         <a onclick="Settings.getEdit({{$el->id}})">{{__cms('Тройной список')}}</a>
   @elseif($el->type==4)
         <a href="{{$el->value}}" target="_blank">{{basename($el->value)}}</a>
   @elseif($el->type==7)
@@ -32,7 +26,7 @@
         <span class="dblclick-edit selectable"
               data-type="text"
               data-pk="{{$el->id}}"
-              data-url="/admin/settings/fast_save"
+              data-url="/admin/settings/fast-save/{{$el->id}}"
               data-name="value"
               data-title="Введите:"
         >{{$el->value}}</span>

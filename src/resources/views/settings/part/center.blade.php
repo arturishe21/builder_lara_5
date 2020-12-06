@@ -27,7 +27,7 @@
                 @endif
         </header>
         <div class="table_center no-padding">
-            @include("admin::settings.part.table_center")
+            @include("admin::settings.part.table")
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
 
 <!-- END MAIN CONTENT -->
 <div id="modal_wrapper">
-   @include("admin::settings.part.pop_settings_add")
+   @include("admin::settings.part.popup")
 </div>
 <link rel="stylesheet" type="text/css" href="/packages/vis/builder/css/settings.css">
 <script src="/packages/vis/builder/js/settings.js"></script>

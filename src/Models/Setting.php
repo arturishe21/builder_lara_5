@@ -4,8 +4,6 @@ namespace Vis\Builder;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Validator;
 use Venturecraft\Revisionable\RevisionableTrait;
 use Vis\Builder\Helpers\Traits\Rememberable;
 use Illuminate\Support\Str;
@@ -13,11 +11,6 @@ use Illuminate\Support\Str;
 class Setting extends Model
 {
     use RevisionableTrait, Rememberable;
-
-    public static $rules = [
-        'title' => 'required',
-        'slug'  => 'required|max:256|unique:settings,slug,',
-    ];
 
     protected $fillable = [
         'type',
@@ -75,21 +68,12 @@ class Setting extends Model
         return self::get($slug, $default, true);
     }
 
-    public static function getItem($ids)
-    {
-        if (! $ids) {
-            return [];
-        }
-
-        return SettingSelect::find($ids);
-    }
-
-    public static function doSaveSetting($data, $file)
+    public function doSave($data, $file)
     {
         if ($data['id'] == 0) {
-            $settings = new self();
+            $settings = new Setting();
         } else {
-            $settings = self::find($data['id']);
+            $settings = Setting::find($data['id']);
         }
 
         $settings->title = $data['title'];
@@ -131,156 +115,14 @@ class Setting extends Model
 
         $settings->save();
 
-        //если тип список
-        if ($data['type'] == 2) {
-            $i = 0;
-            foreach ($data['select'] as $k => $el) {
-                $i++;
-                if ($el) {
-                    if (is_numeric($k)) {
-                        $el = trim($el);
-                        if ($el) {
-                            $SettingSelect = SettingSelect::find($k);
-                            $SettingSelect->id_setting = $settings->id;
-                            $SettingSelect->value = $el;
-                            $SettingSelect->priority = $i;
-                            $SettingSelect->save();
-                        }
-                    } else {
-                        foreach ($data['select']['new'] as $el_new) {
-                            $el_new = trim($el_new);
-                            if ($el_new) {
-                                $SettingSelect = new SettingSelect();
-                                $SettingSelect->id_setting = $settings->id;
-                                $SettingSelect->value = $el_new;
-                                $SettingSelect->priority = $i;
-                                $SettingSelect->save();
-                                $i++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //if type double list
-        if ($data['type'] == 3) {
-            $i = 0;
-            foreach ($data['select21'] as $k => $el) {
-                $i++;
-                if ($el) {
-                    if (is_numeric($k)) {
-                        $el = trim($el);
-                        if ($el) {
-                            $SettingSelect = SettingSelect::find($k);
-                            $SettingSelect->id_setting = $settings->id;
-                            $SettingSelect->value = $el;
-                            $SettingSelect->value2 = $data['select22'][$k];
-                            $SettingSelect->priority = $i;
-                            $SettingSelect->save();
-                        }
-                    } else {
-                        foreach ($data['select21']['new'] as $k_new => $el_new) {
-                            $el_new = trim($el_new);
-                            if ($el_new) {
-                                $SettingSelect = new SettingSelect();
-                                $SettingSelect->id_setting = $settings->id;
-                                $SettingSelect->value = $el_new;
-                                $SettingSelect->value2
-                                    = $data['select22']['new'][$k_new];
-                                $SettingSelect->priority = $i;
-                                $SettingSelect->save();
-                                $i++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //if the triple list
-        if ($data['type'] == 5) {
-            $i = 0;
-            foreach ($data['select31'] as $k => $el) {
-                $i++;
-                if ($el) {
-                    if (is_numeric($k)) {
-                        $el = trim($el);
-                        if ($el) {
-                            $SettingSelect = SettingSelect::find($k);
-                            $SettingSelect->id_setting = $settings->id;
-                            $SettingSelect->value = $el;
-                            $SettingSelect->value2 = $data['select32'][$k];
-                            $SettingSelect->value3 = $data['select33'][$k];
-                            $SettingSelect->priority = $i;
-                            $SettingSelect->save();
-                        }
-                    } else {
-                        foreach ($data['select31']['new'] as $k_new => $el_new) {
-                            $el_new = trim($el_new);
-                            if ($el_new) {
-                                $SettingSelect = new SettingSelect();
-                                $SettingSelect->id_setting = $settings->id;
-                                $SettingSelect->value = $el_new;
-                                $SettingSelect->value2
-                                    = $data['select32']['new'][$k_new];
-                                $SettingSelect->value3
-                                    = $data['select33']['new'][$k_new];
-                                $SettingSelect->priority = $i;
-                                $SettingSelect->save();
-                                $i++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        self::reCacheSettings();
+        $this->clearCache();
 
         return $settings;
     }
 
-    public static function reCacheSettings()
+    public function clearCache()
     {
         Cache::tags('settings')->flush();
     }
 
-    public static function doDelete($id)
-    {
-        if (is_numeric($id)) {
-            $id_page = request('id');
-            $page = self::find($id_page);
-
-            Event::fire('setting.delete', [$page]);
-
-            $page->delete();
-
-            self::reCacheSettings();
-        }
-    }
-
-    public static function isValid($data, $id)
-    {
-        self::$rules['slug'] .= $id;
-
-        $validator = Validator::make($data, self::$rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status'          => 'error',
-                'errors_messages' => $validator->messages(),
-            ]);
-        }
-
-        return false;
-    }
-
-    public function selectValues()
-    {
-        return $this->hasMany(SettingSelect::class, 'id_setting')
-            ->orderBy('priority')
-            ->get()
-            ->toArray();
-    }
 }

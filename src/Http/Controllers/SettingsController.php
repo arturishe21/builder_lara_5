@@ -6,9 +6,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
-/**
- * Class SettingsController.
- */
 class SettingsController extends Controller
 {
     /**
@@ -31,7 +28,7 @@ class SettingsController extends Controller
         $data = $data->paginate(20);
         $groups = config('builder.settings.groups');
 
-        $view = Request::ajax() ? 'settings.part.settings_center' : 'settings.settings_all';
+        $view = Request::ajax() ? 'settings.part.center' : 'settings.settings_all';
 
         return view('admin::'.$view, compact('title', 'breadcrumb', 'data', 'groups'));
     }
@@ -39,50 +36,25 @@ class SettingsController extends Controller
     /**
      * @return \Illuminate\Contracts\View\View
      */
-    public function fetchCreate()
+    public function create()
     {
-        $type = config('builder.settings.type');
-        $groups = config('builder.settings.groups');
-
-        return view('admin::settings.part.form_settings', compact('type', 'groups'));
+        return view('admin::settings.part.form');
     }
 
     /**
      * @return bool|\Illuminate\Http\JsonResponse
      */
-    public function doSave()
+    public function update(Setting $setting)
     {
         $file = request()->file('file');
         parse_str(request('data'), $data);
 
-        $validation = Setting::isValid($data, $data['id']);
-
-        if ($validation) {
-            return $validation;
-        }
-
-        Setting::doSaveSetting($data, $file);
-
-        $message = $data['id'] != 0 && is_numeric($data['id']) ? 'Запись успешно обновлена' : 'Запись успешно добавлена';
+        $setting->doSave($data, $file);
 
         return Response::json(
             [
                 'status'            => 'ok',
-                'ok_messages'       => $message,
-            ]
-        );
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function doDelete()
-    {
-        Setting::doDelete(request('id'));
-
-        return Response::json(
-            [
-                'status' => 'ok',
+                'ok_messages'       => __cms('Сохренено'),
             ]
         );
     }
@@ -90,52 +62,22 @@ class SettingsController extends Controller
     /**
      * @return \Illuminate\Contracts\View\View
      */
-    public function fetchEdit()
+    public function edit(Setting $setting)
     {
-        $id = request('id');
+        $info = $setting;
 
-        $info = Setting::findOrFail($id);
-        $type = config('builder.settings.type');
-        $groups = config('builder.settings.groups');
-
-        $select_info = [];
-        if ($info->type == 2 || $info->type == 3 || $info->type == 5) {
-            $select_info = SettingSelect::where('id_setting', $info->id)
-                ->orderBy('priority')
-                ->get()
-                ->toArray();
-        }
-
-        return view('admin::settings.part.form_settings',
-            compact('info', 'type', 'select_info', 'groups'));
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function doDeleteSettingSelect()
-    {
-        SettingSelect::doDelete(request('id'));
-
-        return Response::json(
-            [
-                'status' => 'ok',
-                'text'   => 'Запись успешно удалена',
-            ]
-        );
+        return view('admin::settings.part.form', compact('info'));
     }
 
     /**
      * quick edit in list.
      */
-    public function doFastSave()
+    public function fastSave(Setting $setting)
     {
-        if (request('pk')) {
-            $setting = Setting::find(request('pk'));
-            $setting->value = trim(request('value'));
-            $setting->save();
+        $setting->update([
+            'value' => request('value')
+        ]);
 
-            Setting::reCacheSettings();
-        }
+        $setting->clearCache();
     }
 }
