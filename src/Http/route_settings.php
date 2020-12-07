@@ -13,7 +13,7 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('/settings/delete', 'Vis\Builder\SettingsController@doDelete');
                 Route::post('/settings/edit_record', 'Vis\Builder\SettingsController@fetchEdit');
                 Route::post('/settings/del_select', 'Vis\Builder\SettingsController@doDeleteSettingSelect');
-                Route::post('/settings/fast_save', 'Vis\Builder\SettingsController@doFastSave');
+                Route::post('/settings/fast_edit', 'Vis\Builder\SettingsController@doFastSave');
             }
         }
     );
