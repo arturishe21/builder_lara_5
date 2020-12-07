@@ -56,7 +56,7 @@ var Trans = {
         $("#modal_form").modal('show');
         Trans.preloadPage();
         $.post(
-            "/admin/translations_cms/create_pop",
+            "/admin/translations_cms/create",
             {},
             function (data) {
                 $("#modal_form .modal-content").html(data);

@@ -33,11 +33,11 @@
             <div class="btn-group hidden-phone pull-right">
                 <a class="btn dropdown-toggle btn-default" data-toggle="dropdown"><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-                    @include('admin::tree.partials.update', ['type' => 'update'])
-                    @include('admin::tree.partials.preview', ['type' => 'preview'])
-                    @include('admin::tree.partials.clone', ['type' => 'clone'])
-                    @include('admin::tree.partials.revisions', ['type' => 'revisions'])
-                    @include('admin::tree.partials.delete', ['type' => 'delete'])
+                    @include('admin::new.tree.partials.update', ['type' => 'update'])
+                    @include('admin::new.tree.partials.preview', ['type' => 'preview'])
+                    @include('admin::new.tree.partials.clone', ['type' => 'clone'])
+                    @include('admin::new.tree.partials.revisions', ['type' => 'revisions'])
+                    @include('admin::new.tree.partials.delete', ['type' => 'delete'])
                 </ul>
             </div>
         </div>

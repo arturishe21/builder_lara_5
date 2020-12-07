@@ -15,7 +15,7 @@ class TranslateController extends Controller
     /**
      * @return mixed
      */
-    public function fetchIndex()
+    public function index()
     {
         $search = request('search_q');
         $countShow = request('count_show') ? request('count_show') : '20';
@@ -30,7 +30,7 @@ class TranslateController extends Controller
 
         $breadcrumb[__cms('Переводы CMS')] = '';
 
-        $view = Request::ajax() ? 'admin::translation_cms.part.translate_cms_center' : 'admin::translation_cms.trans';
+        $view = Request::ajax() ? 'admin::translation_cms.part.center' : 'admin::translation_cms.trans';
 
         $langs = config('builder.translations.cms.languages');
 
@@ -45,17 +45,17 @@ class TranslateController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function fetchCreate()
+    public function create()
     {
         $langs = config('builder.translations.cms.languages');
 
-        return view('admin::translation_cms.part.form_trans')->with('langs', $langs);
+        return view('admin::translation_cms.part.form', compact('langs'));
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function doSaveTranslate()
+    public function addTraslate()
     {
         parse_str(request('data'), $data);
 
@@ -98,9 +98,9 @@ class TranslateController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function doDelelePhrase()
+    public function destroy(Trans $trans)
     {
-        Trans::find(request('id'))->delete();
+        $trans->delete();
 
         Trans::reCacheTrans();
 
@@ -115,11 +115,12 @@ class TranslateController extends Controller
        return $trans->generateTranslate(request('lang'), request('phrase'));
     }
 
-    public function doSavePhrase()
+    public function changeTranslate()
     {
         $lang = request('name');
         $phrase = request('value');
         $id = request('pk');
+
         if ($id && $phrase && $lang) {
             $phrase_change = Translate::where('translations_phrases_cms_id', $id)->where('lang', $lang)->first();
             $phrase_change->translate = $phrase;

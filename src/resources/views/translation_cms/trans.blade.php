@@ -15,6 +15,6 @@
 
 @section('main')
  <div class="table_center_translate">
-      @include("admin::translation_cms.part.translate_cms_center")
+      @include("admin::translation_cms.part.center")
  </div>
 @stop

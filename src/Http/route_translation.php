@@ -4,14 +4,14 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(
         ['prefix' => 'admin', 'middleware' => 'auth.admin'],
         function () {
-            Route::any('translations_cms/phrases', 'Vis\TranslationsCMS\TranslateController@fetchIndex');
+            Route::any('translations_cms/phrases', 'Vis\TranslationsCMS\TranslateController@index');
 
             if (Request::ajax()) {
-                Route::post('translations_cms/create_pop', 'Vis\TranslationsCMS\TranslateController@fetchCreate');
+                Route::post('translations_cms/create', 'Vis\TranslationsCMS\TranslateController@create');
                 Route::post('translations_cms/translate', 'Vis\TranslationsCMS\TranslateController@doTranslate');
-                Route::post('translations_cms/add_record', 'Vis\TranslationsCMS\TranslateController@doSaveTranslate');
-                Route::post('translations_cms/change_text_lang', 'Vis\TranslationsCMS\TranslateController@doSavePhrase');
-                Route::post('translations_cms/del_record', 'Vis\TranslationsCMS\TranslateController@doDelelePhrase');
+                Route::post('translations_cms/add-record', 'Vis\TranslationsCMS\TranslateController@addTraslate');
+                Route::post('translations_cms/change-text-lang', 'Vis\TranslationsCMS\TranslateController@changeTranslate');
+                Route::delete('translations_cms/{trans}', 'Vis\TranslationsCMS\TranslateController@destroy');
             }
         }
     );
