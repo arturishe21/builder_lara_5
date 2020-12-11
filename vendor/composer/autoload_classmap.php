@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'CreateActivationsTable' => $baseDir . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
     'CreatePersistencesTable' => $baseDir . '/src/Migrations/2018_02_22_103113_create_persistences_table.php',
     'CreateRemindersTable' => $baseDir . '/src/Migrations/2018_02_22_103444_create_reminders_table.php',
@@ -90,6 +91,7 @@ return array(
     'Vis\\Builder\\LogViewerController' => $baseDir . '/src/Http/Controllers/LogViewerController.php',
     'Vis\\Builder\\LoginController' => $baseDir . '/src/Http/Controllers/LoginController.php',
     'Vis\\Builder\\OptmizationImg' => $baseDir . '/src/libs/OptmizationImg.php',
+    'Vis\\Builder\\Permission' => $baseDir . '/src/Http/Middleware/Permission.php',
     'Vis\\Builder\\Revision' => $baseDir . '/src/Models/Revision.php',
     'Vis\\Builder\\Setting' => $baseDir . '/src/Models/Setting.php',
     'Vis\\Builder\\SettingSelect' => $baseDir . '/src/Models/SettingSelect.php',

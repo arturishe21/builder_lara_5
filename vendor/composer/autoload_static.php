@@ -21,6 +21,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'CreateActivationsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
         'CreatePersistencesTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103113_create_persistences_table.php',
         'CreateRemindersTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103444_create_reminders_table.php',
@@ -105,6 +106,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\LogViewerController' => __DIR__ . '/../..' . '/src/Http/Controllers/LogViewerController.php',
         'Vis\\Builder\\LoginController' => __DIR__ . '/../..' . '/src/Http/Controllers/LoginController.php',
         'Vis\\Builder\\OptmizationImg' => __DIR__ . '/../..' . '/src/libs/OptmizationImg.php',
+        'Vis\\Builder\\Permission' => __DIR__ . '/../..' . '/src/Http/Middleware/Permission.php',
         'Vis\\Builder\\Revision' => __DIR__ . '/../..' . '/src/Models/Revision.php',
         'Vis\\Builder\\Setting' => __DIR__ . '/../..' . '/src/Models/Setting.php',
         'Vis\\Builder\\SettingSelect' => __DIR__ . '/../..' . '/src/Models/SettingSelect.php',
