@@ -21,7 +21,9 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'CreateActivationsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
+        'CreateIndexUsersRoles' => __DIR__ . '/../..' . '/src/Migrations/2020_10_13_195654_create_index_users_roles.php',
         'CreatePersistencesTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103113_create_persistences_table.php',
         'CreateRemindersTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_103444_create_reminders_table.php',
         'CreateRevisions' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_141402_create_revisions.php',
@@ -47,6 +49,8 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Definitions\\Resource' => __DIR__ . '/../..' . '/src/Http/Definitions/Resource.php',
         'Vis\\Builder\\Definitions\\ResourceAdditionTree' => __DIR__ . '/../..' . '/src/Http/Definitions/ResourceAdditionTree.php',
         'Vis\\Builder\\Definitions\\ResourceTree' => __DIR__ . '/../..' . '/src/Http/Definitions/ResourceTree.php',
+        'Vis\\Builder\\Definitions\\Traits\\CacheResource' => __DIR__ . '/../..' . '/src/Http/Definitions/Traits/CacheResource.php',
+        'Vis\\Builder\\Definitions\\Traits\\CloneResource' => __DIR__ . '/../..' . '/src/Http/Definitions/Traits/CloneResource.php',
         'Vis\\Builder\\EditorController' => __DIR__ . '/../..' . '/src/Http/Controllers/EditorController.php',
         'Vis\\Builder\\Event' => __DIR__ . '/../..' . '/src/Models/Event.php',
         'Vis\\Builder\\Fields\\Checkbox' => __DIR__ . '/../..' . '/src/Http/Fields/Checkbox.php',
@@ -99,6 +103,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Revision' => __DIR__ . '/../..' . '/src/Models/Revision.php',
         'Vis\\Builder\\Services\\Actions' => __DIR__ . '/../..' . '/src/Http/Services/Actions.php',
         'Vis\\Builder\\Services\\Export' => __DIR__ . '/../..' . '/src/Http/Services/Export.php',
+        'Vis\\Builder\\Services\\Import' => __DIR__ . '/../..' . '/src/Http/Services/Import.php',
         'Vis\\Builder\\Services\\Listing' => __DIR__ . '/../..' . '/src/Http/Services/Listing.php',
         'Vis\\Builder\\Services\\Revisions' => __DIR__ . '/../..' . '/src/Http/Services/Revisions.php',
         'Vis\\Builder\\Setting' => __DIR__ . '/../..' . '/src/Models/Setting.php',

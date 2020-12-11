@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'CreateActivationsTable' => $baseDir . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
+    'CreateIndexUsersRoles' => $baseDir . '/src/Migrations/2020_10_13_195654_create_index_users_roles.php',
     'CreatePersistencesTable' => $baseDir . '/src/Migrations/2018_02_22_103113_create_persistences_table.php',
     'CreateRemindersTable' => $baseDir . '/src/Migrations/2018_02_22_103444_create_reminders_table.php',
     'CreateRevisions' => $baseDir . '/src/Migrations/2018_02_22_141402_create_revisions.php',
@@ -32,6 +34,8 @@ return array(
     'Vis\\Builder\\Definitions\\Resource' => $baseDir . '/src/Http/Definitions/Resource.php',
     'Vis\\Builder\\Definitions\\ResourceAdditionTree' => $baseDir . '/src/Http/Definitions/ResourceAdditionTree.php',
     'Vis\\Builder\\Definitions\\ResourceTree' => $baseDir . '/src/Http/Definitions/ResourceTree.php',
+    'Vis\\Builder\\Definitions\\Traits\\CacheResource' => $baseDir . '/src/Http/Definitions/Traits/CacheResource.php',
+    'Vis\\Builder\\Definitions\\Traits\\CloneResource' => $baseDir . '/src/Http/Definitions/Traits/CloneResource.php',
     'Vis\\Builder\\EditorController' => $baseDir . '/src/Http/Controllers/EditorController.php',
     'Vis\\Builder\\Event' => $baseDir . '/src/Models/Event.php',
     'Vis\\Builder\\Fields\\Checkbox' => $baseDir . '/src/Http/Fields/Checkbox.php',
@@ -84,6 +88,7 @@ return array(
     'Vis\\Builder\\Revision' => $baseDir . '/src/Models/Revision.php',
     'Vis\\Builder\\Services\\Actions' => $baseDir . '/src/Http/Services/Actions.php',
     'Vis\\Builder\\Services\\Export' => $baseDir . '/src/Http/Services/Export.php',
+    'Vis\\Builder\\Services\\Import' => $baseDir . '/src/Http/Services/Import.php',
     'Vis\\Builder\\Services\\Listing' => $baseDir . '/src/Http/Services/Listing.php',
     'Vis\\Builder\\Services\\Revisions' => $baseDir . '/src/Http/Services/Revisions.php',
     'Vis\\Builder\\Setting' => $baseDir . '/src/Models/Setting.php',
