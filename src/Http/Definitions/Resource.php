@@ -22,10 +22,11 @@ class Resource
     protected $updateHasOneList = [];
     protected $updateMorphOneList = [];
     protected $relations = [];
+    protected $filterScope;
 
     public function actions()
     {
-        return Actions::make()->insert()->update()->preview()->clone()->delete();
+        return Actions::make()->insert()->update()->clone()->delete();
     }
 
     public function model()
@@ -476,6 +477,7 @@ class Resource
         $filter = $this->getFilter();
         $orderBy = $this->getOrderBy();
         $perPage = $this->getPerPageThis();
+        $collection = $this->getFilterScope($collection);
 
         if (isset($filter['filter']) && is_array($filter['filter'])) {
 
@@ -505,6 +507,20 @@ class Resource
         }
 
         return $collection->orderByRaw($orderBy)->paginate($perPage);
+    }
+
+    public function getFilterScope($collection)
+    {
+        if (!$this->filterScope) {
+            return $collection;
+        }
+
+        return $collection->{$this->filterScope}();
+    }
+
+    public function filterScope($scope)
+    {
+        $this->filterScope = $scope;
     }
 
     private function isTextField($allFields, $field)
