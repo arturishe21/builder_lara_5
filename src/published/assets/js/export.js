@@ -16,8 +16,6 @@ var Export = {
 
         var url = TableBuilder.options.action_url + '/export?' + out.join('&');
 
-        alert(url);
-
         location.href = url;
     }
 };
