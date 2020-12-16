@@ -53,6 +53,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Definitions\\Traits\\CloneResource' => __DIR__ . '/../..' . '/src/Http/Definitions/Traits/CloneResource.php',
         'Vis\\Builder\\EditorController' => __DIR__ . '/../..' . '/src/Http/Controllers/EditorController.php',
         'Vis\\Builder\\Event' => __DIR__ . '/../..' . '/src/Models/Event.php',
+        'Vis\\Builder\\ExportController' => __DIR__ . '/../..' . '/src/Http/Controllers/ExportController.php',
         'Vis\\Builder\\Fields\\Checkbox' => __DIR__ . '/../..' . '/src/Http/Fields/Checkbox.php',
         'Vis\\Builder\\Fields\\Color' => __DIR__ . '/../..' . '/src/Http/Fields/Color.php',
         'Vis\\Builder\\Fields\\Date' => __DIR__ . '/../..' . '/src/Http/Fields/Date.php',

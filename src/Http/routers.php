@@ -58,6 +58,11 @@
                     'Vis\Builder\TableAdminController@actionsPage'
                 );
 
+                Route::get(
+                    '/actions/{page_admin}/export',
+                    'Vis\Builder\ExportController@download'
+                );
+
                 Route::get('/', 'Vis\Builder\TBController@showDashboard');
 
                 //routes for froala editor

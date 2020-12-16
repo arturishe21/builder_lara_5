@@ -38,6 +38,7 @@ return array(
     'Vis\\Builder\\Definitions\\Traits\\CloneResource' => $baseDir . '/src/Http/Definitions/Traits/CloneResource.php',
     'Vis\\Builder\\EditorController' => $baseDir . '/src/Http/Controllers/EditorController.php',
     'Vis\\Builder\\Event' => $baseDir . '/src/Models/Event.php',
+    'Vis\\Builder\\ExportController' => $baseDir . '/src/Http/Controllers/ExportController.php',
     'Vis\\Builder\\Fields\\Checkbox' => $baseDir . '/src/Http/Fields/Checkbox.php',
     'Vis\\Builder\\Fields\\Color' => $baseDir . '/src/Http/Fields/Color.php',
     'Vis\\Builder\\Fields\\Date' => $baseDir . '/src/Http/Fields/Date.php',

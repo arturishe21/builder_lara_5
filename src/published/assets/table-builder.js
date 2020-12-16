@@ -11,7 +11,6 @@ var TableBuilder = {
     form_preloader: '.form-preloader',
     form: '#modal_form',
     form_edit: '#modal_form_edit',
-    export_form: '#tb-export-form',
     form_label: '#modal_form_edit_label',
     form_wrapper: '#modal_wrapper',
     create_form: '#create_form',
@@ -1390,30 +1389,6 @@ var TableBuilder = {
             doAjaxLoadContent(location.href);
         });
     }, // end setPerPageAmount
-
-    doExport: function (type, urlBasic) {
-        var values = $(TableBuilder.export_form).serializeArray();
-        values.push({ name: 'type', value: type });
-        values.push({ name: 'query_type', value: "export" });
-
-        var out = new Array();
-        $.each(values, function (index, val) {
-            out.push(val['name'] + '=' + val['value']);
-        });
-
-        if (urlBasic == undefined) {
-            urlBasic = document.location.pathname;
-        }
-
-        if (document.location.search) {
-            var url = urlBasic + document.location.search + '&' + out.join('&');
-        } else {
-            var url = urlBasic + '?' + out.join('&');
-        }
-
-        location.href = url;
-
-    }, // end doExport
 
     flushStorage: function () {
         TableBuilder.storage = {};

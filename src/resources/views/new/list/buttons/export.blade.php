@@ -8,17 +8,17 @@
             {{ __cms('Экспорт') }}
         </button>
 
-        <ul class="dropdown-menu pull-right" style="min-width: {{ $def['width'] ?? '260' }}px; padding-bottom: 0;">
+        <ul class="dropdown-menu pull-right" style="min-width: 260px; padding-bottom: 0;">
 
             <form id="tb-export-form" class="smart-form">
                 <fieldset style="padding: 12px 12px 0;">
                     <section>
                         <div class="row">
                             <div class="col col-6">
-                                <input placeholder="От" type="text" id="export-date-from" name="d[from]" class="form-control input-small datepicker">
+                                <input placeholder="{{__cms('От')}}" type="text" id="export-date-from" name="d[from]" class="form-control input-small datepicker">
                             </div>
                             <div class="col col-6">
-                                <input placeholder="До" type="text" id="export-date-to" name="d[to]" class="form-control input-small datepicker">
+                                <input placeholder="{{__cms('До')}}" type="text" id="export-date-to" name="d[to]" class="form-control input-small datepicker">
                             </div>
                         </div>
                     </section>
@@ -40,9 +40,9 @@
 
             <div class="btn-group btn-group-justified">
                 <a href="javascript:void(0);"
-                   onclick="TableBuilder.doExport('xls');"
+                   onclick="Export.download('{{$class}}');"
                    class="btn btn-default">
-                    Экспорт
+                    {{ __cms('Экспорт') }}
                 </a>
             </div>
 

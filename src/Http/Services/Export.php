@@ -48,6 +48,8 @@ class Export implements FromCollection, WithHeadings
 
     public function show($list)
     {
-        return view('admin::new.list.buttons.export', compact('list'));
+        $class = addslashes(get_class($this));
+
+        return view('admin::new.list.buttons.export', compact('list', 'class'));
     }
 }

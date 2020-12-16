@@ -2,13 +2,11 @@
 
 namespace Vis\Builder;
 
-use Carbon\Carbon;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Vis\Builder\Services\Actions;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Vis\Builder\ControllersNew\{TreeController};
-use Vis\Builder\Services\Export;
 
 /**
  * Class TableAdminController.
@@ -43,10 +41,6 @@ class TableAdminController extends Controller
 
         if (!class_exists($modelDefinition)) {
             throw new \Exception('Not found class '. $modelDefinition);
-        }
-
-        if (request('query_type') == 'export') {
-            return (new Export($modelDefinition))->download($page . '_' . Carbon::now() . '.xlsx');
         }
 
         $model = new $modelDefinition();
