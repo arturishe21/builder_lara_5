@@ -27,6 +27,7 @@
             "src/Http/Controllers",
             "src/Http/ControllersNew",
             "src/Http/Services",
+            "src/Http/Interfaces",
             "src/Http/Definitions",
             "src/Http/Fields",
             "src/Http/Traits",

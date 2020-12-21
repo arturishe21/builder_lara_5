@@ -16,7 +16,7 @@
                                     <input type="file" name="file"
 										   accept=".xlsx, .xls"
 										   onclick="this.value = null;"
-										   onchange="TableBuilder.doImport(this, 'xlsx', '{{$nameDefinition}}/import');"
+										   onchange="TableBuilder.doImport(this, 'xlsx', '/admin/{{$nameDefinition}}/import');"
 									>
                                     {{__cms('Выбрать')}}
                                 </span>

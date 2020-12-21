@@ -12,7 +12,7 @@ class Img
     private $pathFolder;
     private $width = null;
     private $height = null;
-    private $quality = 80;
+    private $quality = 90;
 
     public function get($source, $options)
     {
@@ -24,11 +24,15 @@ class Img
         $source = '/'.ltrim($source, '/');
         $sourceArray = pathinfo($source);
 
+        if (!$this->checkFileCorrect($sourceArray)) {
+            return false;
+        }
+
         $filename = $sourceArray['filename'];
         $extension = $sourceArray['extension'];
         $dirname = $sourceArray['dirname'];
 
-        $this->nameFile = $this->quality == 80 ?
+        $this->nameFile = $this->quality == 90 ?
                 $filename.'.'.$extension :
                 $filename.'_'.$this->quality.'.'.$extension;
 
@@ -59,6 +63,12 @@ class Img
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    private function checkFileCorrect($sourceArray)
+    {
+       return !isset($sourceArray['extension']) || !isset($sourceArray['extension']) || !isset($sourceArray['dirname']) ?
+               false : true;
     }
 
     protected function setOptions($options)

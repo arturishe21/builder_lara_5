@@ -2,20 +2,15 @@
 
 namespace Vis\Builder\Services;
 
+use Illuminate\Contracts\View\View;
+use Vis\Builder\Interfaces\Button;
 
-class Import
+class Import extends ButtonBase implements Button
 {
-    private $definition;
-
-    public function __construct($definition)
+    public function show():View
     {
-        $this->definition = (new $definition()) ;
-    }
+        $nameDefinition = mb_strtolower(class_basename($this->listing->getDefinition()));
 
-    public function show($list)
-    {
-        $nameDefinition = mb_strtolower(class_basename($this->definition));
-
-        return view('admin::new.list.buttons.import', compact('list', 'nameDefinition'));
+        return view('admin::new.list.buttons.import', compact( 'nameDefinition'));
     }
 }

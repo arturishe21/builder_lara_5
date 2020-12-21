@@ -25,9 +25,9 @@
                     <section>
                         <div class="row">
                             <div class="col col-12">
-                                @foreach ($list->head() as $field)
+                                @foreach ($list as $field)
                                     <label class="checkbox">
-                                        <input type="checkbox" name="b[{{ $field->getNameFieldInBd() }}]">
+                                        <input type="checkbox" checked name="b[{{ $field->getNameFieldInBd() }}]">
                                         <i></i>
                                         {{ $field->getName()}}
                                     </label>

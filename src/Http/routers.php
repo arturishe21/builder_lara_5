@@ -1,6 +1,6 @@
 <?php
 
-    Route::pattern('tree_name', '[a-z0-9-_]+');
+    Route::pattern('tree', '[a-z0-9-_]+');
     Route::pattern('any', '[a-z0-9-_/\]+');
 
     Route::group(['middleware' => ['web']], function () {
@@ -26,16 +26,17 @@
 
                 Route::any(
                     '/tree',
-                    'Vis\Builder\TableAdminController@showTreeNew'
+                    'Vis\Builder\TreeAdminController@index'
                 );
+
                 Route::any(
                     '/actions/tree',
-                    'Vis\Builder\TableAdminController@handleTreeNew'
+                    'Vis\Builder\TreeAdminController@handle'
                 );
 
                 Route::post(
-                    '/show_all_tree/{tree_name}',
-                    'Vis\Builder\TableAdminController@showTreeAll'
+                    '/show_all_tree/{Tree}',
+                    'Vis\Builder\TreeAdminController@showAll'
                 );
 
                 Route::post(

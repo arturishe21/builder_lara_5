@@ -4,7 +4,7 @@ namespace Vis\Builder\Definitions;
 
 use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
-use Vis\Builder\Fields\{Definition, Password};
+use Vis\Builder\Fields\{Definition, Password, Virtual};
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
@@ -271,7 +271,7 @@ class Resource
                     continue;
                 }
 
-                if ($field instanceof Definition) {
+                if ($field instanceof Definition || $field instanceof Virtual) {
                     continue;
                 }
 
@@ -490,7 +490,7 @@ class Resource
 
                 if (is_array($value)) {
                     if ($value['from'] && $value['to']) {
-                        $collection = $collection->whereBetween($field, [$value['from'], $value['to']]);
+                        $collection = $collection->whereBetween($field, [$value['from'], $value['to'].' 23:59:59']);
                     }
 
                     continue;

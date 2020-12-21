@@ -5,6 +5,7 @@ namespace Vis\Builder;
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Vis\Builder\Services\Listing;
 
 class ExportController extends Controller
 {
@@ -13,7 +14,9 @@ class ExportController extends Controller
        $modelDefinition = $this->getModelDefinition($definition);
        $modelExport = request('model');
 
-       return (new $modelExport($modelDefinition))->download($definition . '_' . Carbon::now() . '.xlsx');
+       $listing = new Listing(new $modelDefinition());
+
+       return (new $modelExport($listing))->download($definition . '_' . Carbon::now() . '.xlsx');
     }
 
     private function getModelDefinition($definition)

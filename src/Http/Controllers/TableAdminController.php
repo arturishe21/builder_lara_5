@@ -2,11 +2,9 @@
 
 namespace Vis\Builder;
 
-use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Vis\Builder\Services\Actions;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Vis\Builder\ControllersNew\{TreeController};
 
 /**
  * Class TableAdminController.
@@ -16,20 +14,6 @@ class TableAdminController extends Controller
     /**
      * @return mixed
      */
-    public function showTreeNew()
-    {
-        $modelDefinition = "App\\Cms\\Tree\\" . Str::title('tree');
-
-        return (new TreeController($modelDefinition))->list();
-    }
-
-    public function handleTreeNew()
-    {
-        $modelDefinition = "App\\Cms\\Tree\\" . Str::title('tree');
-
-        return (new TreeController($modelDefinition))->handle();
-    }
-
     /**
      * @param string $page
      *
@@ -93,17 +77,5 @@ class TableAdminController extends Controller
 
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
-
-    public function showTreeAll($page)
-    {
-        $modelPath = "App\\Models\\" . ucfirst(Str::camel($page));
-
-        $model = new $modelPath();
-        $tree = $model::with('children')->defaultOrder()->get()->toTree();
-        $parentIDs = [];
-
-        return view('admin::tree.tree', compact('tree', 'parentIDs'));
-    }
-
 
 }

@@ -55,4 +55,9 @@ class BaseTree
     {
         $this->model()->clearCache();
     }
+
+    public function definition()
+    {
+        return \App\Cms\Definitions\Tree::class;
+    }
 }

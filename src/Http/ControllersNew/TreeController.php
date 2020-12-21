@@ -11,7 +11,8 @@ class TreeController
 
     public function __construct($definition)
     {
-        $this->definition = new $definition;
+        $this->definition = $definition;
+
         $this->model = $this->definition->model();
     }
 
