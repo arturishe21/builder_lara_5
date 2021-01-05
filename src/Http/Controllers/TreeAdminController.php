@@ -5,7 +5,7 @@ namespace Vis\Builder;
 use Illuminate\Routing\Controller;
 use Vis\Builder\ControllersNew\TreeController;
 use App\Cms\Tree\Tree as CmsTree;
-use App\Models\Tree;
+use Illuminate\Http\Request;
 
 class TreeAdminController extends Controller
 {
@@ -26,9 +26,9 @@ class TreeAdminController extends Controller
         return $this->tree->handle();
     }
 
-    public function showAll(Tree $tree)
+    public function showAll(Request $request)
     {
-        $tree = $tree::with('children')->defaultOrder()->get()->toTree();
+        $tree = resolve($request->model)::with('children')->defaultOrder()->get()->toTree();
         $parentIDs = [];
 
         return view('admin::tree.tree', compact('tree', 'parentIDs'));

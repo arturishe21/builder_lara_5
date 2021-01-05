@@ -35,7 +35,7 @@
                 );
 
                 Route::post(
-                    '/show_all_tree/{Tree}',
+                    '/show-all-tree',
                     'Vis\Builder\TreeAdminController@showAll'
                 );
 

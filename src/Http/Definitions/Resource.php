@@ -26,7 +26,7 @@ class Resource
 
     public function actions()
     {
-        return Actions::make()->insert()->update()->clone()->delete();
+        return Actions::make()->insert()->update()->clone()->revisions()->delete();
     }
 
     public function model()
@@ -353,7 +353,9 @@ class Resource
                     }
                 }
 
-                $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
+                $record->$relationMorphOne && $record->$relationMorphOne->id
+                    ? $record->$relationMorphOne()->update($data)
+                    : $record->$relationMorphOne()->create($data);
             }
         }
 

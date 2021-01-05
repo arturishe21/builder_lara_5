@@ -22,8 +22,6 @@
 @include('admin::new.tree.create', ['treeName' => $treeName])
 
 <script>
-
-    Tree.admin_prefix = '{{ config('builder.admin.uri') }}';
     Tree.parent_id = '{{ $current->id }}';
 
     showTree = 0;
@@ -35,7 +33,9 @@
 
             if (showTree == 0) {
                 $(".tree_top_content").html("<p style='padding:10px'>Загрузка..</p>");
-                $.post("/admin/show_all_tree/{{$treeName}}", {},
+                $.post("/admin/show-all-tree", {
+                        'model' : '<?=addslashes(get_class($current))?>'
+                        },
                     function(data){
                         $(".tree_top_content").html(data);
                         Tree.init();
@@ -47,9 +47,6 @@
             $(".show_hide_tree").text("{{__cms('Показать дерево')}}")
         }
     });
-
-    $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{__cms('Структура сайта')}}</li>");
-    $("title").text("{{__cms('Структура сайта')}} - {{ __cms('Административная часть сайта')}}");
 
     try {
         Tree.sortTable();

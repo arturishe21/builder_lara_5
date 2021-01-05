@@ -7,20 +7,20 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title" id="modal_form_edit_label">{{__cms('Версии')}}</h4>
+                <h4 class="modal-title" id="modal_form_edit_label">{{__cms('История изменений')}}</h4>
             </div>
             <div class="content_revisions">
 
-                <table class="revisions">
+                <table class="revisions table  table-hover table-bordered">
                     <thead>
                     <tr>
-                        <td>#</td>
-                        <td>{{__cms('Пользователь')}}</td>
-                        <td>{{__cms('Поле')}}</td>
-                        <td>{{__cms('Старое значение')}}</td>
-                        <td>{{__cms('Новое значение')}}</td>
-                        <td>{{__cms('Дата/Время')}}</td>
-                        <td></td>
+                        <th>#</th>
+                        <th>{{__cms('Пользователь')}}</th>
+                        <th>{{__cms('Поле')}}</th>
+                        <th>{{__cms('Старое значение')}}</th>
+                        <th>{{__cms('Новое значение')}}</th>
+                        <th>{{__cms('Дата/Время')}}</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,7 +32,9 @@
                             <td><div class="value_old_new">{{{ $historyRecord->old_value}}}</div></td>
                             <td><div class="value_old_new">{{{ $historyRecord->new_value}}}</div></td>
                             <td>{{{ $historyRecord->created_at}}}</td>
-                            <td><a onclick="TableBuilder.getReturnHistory({{$historyRecord->id}});">{{__cms('Вернуть изменения')}}</a></td>
+                            <td>
+                                <a onclick="TableBuilder.getReturnHistory({{$historyRecord->id}});">{{__cms('Вернуть изменения')}}</a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
