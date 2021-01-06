@@ -149,7 +149,7 @@ class Actions
 
     private function returnRevisions($request)
     {
-        return $this->revision->doReturn($request['id'], $this->definition);
+        return $this->revision->doReturn($request['id']);
     }
 
     private function setPerPage($request)

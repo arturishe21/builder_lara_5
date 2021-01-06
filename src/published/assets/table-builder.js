@@ -506,6 +506,7 @@ var TableBuilder = {
             {name: "query_type", value: "show_revisions"},
             {name: "id", value: id},
         ];
+
         jQuery.ajax({
             type: "POST",
             url: TableBuilder.getActionUrl(context),
