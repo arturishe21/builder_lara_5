@@ -35,7 +35,7 @@ class Export extends ButtonBase implements FromCollection, WithHeadings, Button
         }
 
         if (request('d')['to']) {
-            $results->where('created_at', '<=', request('d')['to']);
+            $results->where('created_at', '<=', request('d')['to']. " 23:59:59");
         }
 
         return $results->get();
