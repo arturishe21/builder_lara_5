@@ -30,19 +30,7 @@
               data-name="value"
               data-title="Введите:"
         >{{$el->value}}</span>
-        <div class="fast-edit-buttons">
-            <div class="input_field">
-                <div class="div_input">
-                    <div class="input_content">
-                        <label class="input">
-                            <input class="dblclick-edit-input form-control input-sm unselectable settings_fast_edit_input" value="{{$el->value}}" name="title_{{$el->id}}" type="text" placeholder="Введите значение" >
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <span class="fa fa-save" onclick="Settings.saveFastEdit(this, {{$el->id}});"></span>
-            <i class="glyphicon glyphicon-remove btn-cancel" onclick="TableBuilder.closeFastEdit(this, 'cancel');"></i>
-        </div>
+
   @endif
 </td>
 <td>

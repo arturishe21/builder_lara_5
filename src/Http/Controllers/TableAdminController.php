@@ -61,6 +61,15 @@ class TableAdminController extends Controller
         return (new Actions(new $modelDefinition()))->router(request('query_type'));
     }
 
+    public function fastEdit($page, $id)
+    {
+        $modelDefinition = $this->getModelDefinition($page);
+
+        request()->merge(['ident' => request('name')]);
+
+        return (new Actions(new $modelDefinition()))->router('do_fast_change_field');
+    }
+
     private function getModelDefinition($page)
     {
         if (request('foreign_attributes')) {

@@ -196,6 +196,11 @@ class Actions
        return (new TreeController($this->definition))->doChangePosition();
     }
 
+    private function doFastChangeField($request)
+    {
+        return $this->getThisField()->fastSave($this->definition, $request);
+    }
+
     private function search($request)
     {
         session()->put($this->definition->getSessionKeyFilter(), $request);

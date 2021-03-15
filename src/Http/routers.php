@@ -93,6 +93,10 @@
                     '/{page_admin}',
                     'Vis\Builder\TableAdminController@actionsPage'
                 );
+                Route::post(
+                    '/{page_admin}/fast-save/{id}',
+                    'Vis\Builder\TableAdminController@fastEdit'
+                );
             }
         );
     });

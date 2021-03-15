@@ -9,6 +9,7 @@ class Field
     protected $name;
     protected $attribute;
     protected $onlyForm = false;
+    protected $fastEdit = false;
     public $value = '';
     protected $valueLanguage;
     protected $isSortable = false;
@@ -23,6 +24,7 @@ class Field
     protected $relationHasOne;
     protected $relationMorphOne;
     protected $classNameField;
+    protected $allData;
 
     public function __construct(string $name, $attribute = null)
     {
@@ -32,6 +34,8 @@ class Field
 
     public function setValue($value)
     {
+        $this->allData = $value;
+
         if ($this->getHasOne()) {
             $relation = $value->{$this->getHasOne()};
 
@@ -89,6 +93,11 @@ class Field
         return $this->classNameField ? 'section_field '. $this->classNameField : '';
     }
 
+    public function getId()
+    {
+        return isset($this->allData->id) ? $this->allData->id : '';
+    }
+
     public function getValue()
     {
         return $this->value ? $this->value : $this->defaultValue;
@@ -130,6 +139,15 @@ class Field
 
     public function getValueForList($definition)
     {
+        if ($this->fastEdit) {
+
+            $idRecord = $this->getId();
+            $value = $this->getValue();
+            $field = $this->getNameFieldInBd();
+
+            return view('admin::new.list.fast_edit.field_base', compact('idRecord', 'value', 'field'));
+        }
+
         return $this->getValue();
     }
 
@@ -224,6 +242,13 @@ class Field
     public function onlyForm(bool $flag = true)
     {
         $this->onlyForm = $flag;
+
+        return $this;
+    }
+
+    public function fastEdit(bool $flag = true)
+    {
+        $this->fastEdit = $flag;
 
         return $this;
     }
@@ -347,6 +372,15 @@ class Field
         $nameField = $this->getNameField();
 
         return $request[$nameField];
+    }
+
+    public function fastSave($definition, $request)
+    {
+        $model = $definition->model()->find($request['pk']);
+        $model->{$request['ident']} = $request['value'];
+        $model->save();
+
+        $definition->clearCache();
     }
 
 }

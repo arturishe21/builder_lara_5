@@ -163,18 +163,20 @@ var Tree =
 
         }, // end saveMenuPreference
 
-        activeToggle: function(id, isActive)
+        activeToggle: function(id, isActive, field)
         {
             isActive = isActive ? 1 : 0;
+
             jQuery.ajax({
                 url: window.location.href,
                 type: 'POST',
                 dataType: 'json',
                 cache: false,
                 data: {
-                    id: id,
-                    is_active: isActive,
-                    query_type: 'do_change_active_status'
+                    pk: id,
+                    value: isActive,
+                    ident: field,
+                    query_type: 'do_fast_change_field'
                 },
                 success: function(response) {
                 },

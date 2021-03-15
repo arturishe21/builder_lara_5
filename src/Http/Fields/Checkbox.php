@@ -6,6 +6,15 @@ class Checkbox extends Field
 {
     public function getValueForList($definition) : string
     {
+        if ($this->fastEdit) {
+
+            $idRecord = $this->getId();
+            $isChecked = $this->getValue();
+            $field = $this->getNameFieldInBd();
+
+            return view('admin::new.list.fast_edit.checkbox', compact('idRecord', 'isChecked', 'field'));
+        }
+
         if ($this->value == 1) {
             return '<span class="glyphicon glyphicon-ok"></span>';
         }
