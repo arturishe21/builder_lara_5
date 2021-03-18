@@ -196,4 +196,13 @@ class TreeController
     {
         return $this->revision->doReturn($request['id']);
     }
+
+    private function doFastChangeField()
+    {
+        $tree = $this->model::find(request('pk'));
+        $tree->is_active = request('value');
+        $tree->save();
+
+        $tree->clearCache();
+    }
 }
