@@ -16,7 +16,7 @@ abstract class AdminBase
             return [];
         }
 
-        return explode(',', setting('ip'));
+        return array_map('trim', explode(',', setting('ip')));
     }
 
     public function getCaption()
