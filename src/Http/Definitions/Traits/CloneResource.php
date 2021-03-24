@@ -2,8 +2,6 @@
 
 namespace Vis\Builder\Definitions\Traits;
 
-use Illuminate\Support\Facades\Cache;
-
 trait CloneResource
 {
     public function cloneTree(int $id): array
@@ -19,46 +17,36 @@ trait CloneResource
     {
         $model = $this->model();
 
-        $page = $model::where('id', $id)->select('*')->first()->toArray();
-        $idClonePage = $page['id'];
-        unset($page['id']);
-        if ($parentId) {
-            $page['parent_id'] = $parentId;
+        $pageOld = $model->find($id);
+
+        $parentId = $parentId ?: $pageOld->parent_id;
+
+        $root = $model::find($parentId);
+
+        $page = $model->find($id)->duplicate();
+        $page->makeChildOf($root);
+
+        $countPages = $model::where('parent_id', $page->parent_id)->where('slug', $page->slug)->count();
+
+        if ($countPages) {
+            $page->slug = $page->slug. '_' .time();
+            $page->save();
         }
 
-        if ($page['parent_id']) {
-            $root = $model::find($page['parent_id']);
+        $folderCheck = $model::where('parent_id', $pageOld->id)->orderBy('lft', 'desc')->get();
 
-            $rec = new $model();
-            $countPages = $model::where('parent_id', $page['parent_id'])->where('slug', $page['slug'])->count();
-
-            if ($countPages) {
-                $page['slug'] = $parentId ?
-                    $page['slug'].'_'.$page['parent_id'] :
-                    $page['slug'].'_'.time();
-            }
-
-            foreach ($page as $k => $val) {
-                $rec->$k = $val;
-            }
-
-            $rec->save();
-            $lastId = $rec->id;
-
-            $rec->makeChildOf($root);
-        }
-
-        $folderCheck = $model::where('parent_id', $idClonePage)->select('*')->orderBy('lft', 'desc')->get()->toArray();
         if (count($folderCheck)) {
             foreach ($folderCheck as $pageChild) {
-                $this->cloneRecursively($pageChild['id'], $lastId);
+                $this->cloneRecursively($pageChild->id, $page->id);
             }
         }
+
+        return;
     }
 
     public function clone(int $id) : array
     {
-        $this->model()->find($id)->replicate()->push();
+        $this->model()->find($id)->duplicate();
 
         return $this->returnSuccess();
     }
