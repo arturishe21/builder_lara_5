@@ -83,7 +83,11 @@ class Field
 
     public function className($class)
     {
-        $this->classNameField = $class;
+        if (is_null($this->classNameField)) {
+            $this->classNameField = $class;
+        } else {
+            $this->classNameField .= " $class";
+        }
 
         return $this;
     }
