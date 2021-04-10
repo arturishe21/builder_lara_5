@@ -261,7 +261,7 @@ class Tree extends Model
     /**
      * @return bool|mixed
      */
-    private function getCacheTags()
+    protected function getCacheTags()
     {
         return ['tree'];
     }

@@ -14,6 +14,23 @@ if (! function_exists('setting')) {
     }
 }
 
+if (! function_exists('settingForMail')) {
+    /**
+     * @param string $value
+     * @param string $default
+     * @param bool   $useLocale
+     *
+     * @return mixed|string
+     */
+    function settingForMail($value, $default = '', $useLocale = false)
+    {
+        $setting = Vis\Builder\Setting::get($value, $default, $useLocale);
+        $settingCollecttion =  array_map('trim', explode(',', $setting));
+
+        return $settingCollecttion;
+    }
+}
+
 if (! function_exists('settingWithLang')) {
     /**
      * @param string $value
