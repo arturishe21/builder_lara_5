@@ -3,8 +3,8 @@
 namespace Vis\TranslationsCMS;
 
 use Illuminate\Database\Eloquent\Model;
-use Yandex\Translate\Translator;
 use Illuminate\Support\Facades\Cache;
+use Vis\Builder\Libs\GoogleTranslateForFree;
 
 class Translate extends Model
 {
@@ -14,27 +14,6 @@ class Translate extends Model
 
     protected $fillable = ['lang', 'translate'];
 
-    public function generateTranslate($language, $phrase)
-    {
-        try {
-            $languageDefault = config('builder.translations.cms.language_default');
-
-            if ($language == $languageDefault) {
-                return json_encode(['lang' => $language, 'text' => $phrase]);
-            }
-
-            $translator = new Translator(config('builder.translations.cms.api_yandex_key'));
-
-            $translation = $translator->translate($phrase, $languageDefault . '-' . $language);
-
-            if (isset($translation->getResult()[0])) {
-                return json_encode(['lang' => $language, 'text' => $translation->getResult()[0]]);
-            }
-        } catch (\Yandex\Translate\Exception $e) {
-            return json_encode(['lang' => $language, 'text' => $phrase]);
-        }
-    }
-
     public function createNewTranslate($phrase)
     {
         $languages = config('builder.translations.cms.languages');
@@ -43,11 +22,18 @@ class Translate extends Model
             'phrase' => $phrase
         ]);
 
-        foreach ($languages as $slug => $value) {
+        foreach ($languages as $lang => $value) {
 
-            $collection = json_decode($this->generateTranslate($slug, $phrase), true);
-            $collection['translate'] = $collection['text'];
-            unset($collection['text']);
+            try {
+                $translate = (new GoogleTranslateForFree())->translate('ru', $lang, $phrase, 2);
+            } catch (\Exception $e) {
+                $translate = $phrase;
+            }
+
+            $collection = [
+                'lang' => $lang,
+                'translate' => $translate
+            ];
 
             $newPhrase->translationsPhrases()->create($collection);
         }

@@ -118,14 +118,15 @@ class TranslateController extends Controller
     public function changeTranslate()
     {
         $lang = request('name');
-        $phrase = request('value');
+        $value = request('value');
         $id = request('pk');
 
-        if ($id && $phrase && $lang) {
-            $phrase_change = Translate::where('translations_phrases_cms_id', $id)->where('lang', $lang)->first();
-            $phrase_change->translate = $phrase;
-            $phrase_change->save();
-        }
+        $phrase = Translate::where('translations_phrases_cms_id', $id)
+                    ->where('lang', $lang)->first();
+
+        $phrase->translate = $value;
+        $phrase->save();
+
         Trans::reCacheTrans();
     }
 }
