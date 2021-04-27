@@ -16,7 +16,7 @@
         <div id="logout" class="btn-header transparent pull-right">
             <span> <a href="/admin/logout" title="{{__cms("Выход")}}" data-action="userLogout" ><i class="fal fa-sign-out"></i></a> </span>
         </div>
-        
+
         <div id="search-mobile" class="btn-header transparent pull-right">
             <span> <a href="javascript:void(0)" title="Search"><i class="fal fa-search"></i></a> </span>
         </div>
