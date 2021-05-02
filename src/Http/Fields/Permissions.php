@@ -11,7 +11,7 @@ class Permissions extends Field
         $permissions = $this->generatePermissions();
         $groupPermissionsThis = $this->getValue();
 
-        return view('admin::new.form.fields.permissions', compact('permissions', 'groupPermissionsThis'))->render();
+        return view('admin::form.fields.permissions', compact('permissions', 'groupPermissionsThis'))->render();
     }
 
     public function prepareSave($request)

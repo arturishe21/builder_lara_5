@@ -9,6 +9,6 @@ class ButtonExample extends ButtonBase implements Button
 {
     public function show():View
     {
-        return view('admin::new.list.buttons.button_example');
+        return view('admin::list.buttons.button_example');
     }
 }

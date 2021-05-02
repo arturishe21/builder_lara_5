@@ -46,6 +46,6 @@ class Export extends ButtonBase implements FromCollection, WithHeadings, Button
         $class = addslashes(get_class($this));
         $list = $this->listing->head();
 
-        return view('admin::new.list.buttons.export', compact('list', 'class'));
+        return view('admin::list.buttons.export', compact('list', 'class'));
     }
 }

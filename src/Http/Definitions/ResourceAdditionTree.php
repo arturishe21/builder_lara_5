@@ -9,7 +9,7 @@ class ResourceAdditionTree extends Resource
 {
     public function getTableView()
     {
-        return 'admin::new.addition_tree.table';
+        return 'admin::addition_tree.table';
     }
 
     public function getList()
@@ -19,7 +19,7 @@ class ResourceAdditionTree extends Resource
         $current = $this->model()->findOrFail(request('node', 1));
         $definition = $this;
 
-        return view('admin::new.addition_tree.list.table',
+        return view('admin::addition_tree.list.table',
             compact('list', 'listingRecords', 'current', 'definition'));
     }
 
@@ -56,7 +56,7 @@ class ResourceAdditionTree extends Resource
             $recordNew->fields[$key]->value = $item2->getValueForList($definition);
         });
 
-        return view('admin::new.addition_tree.list.single_row',
+        return view('admin::addition_tree.list.single_row',
             [
                 'list' => $list,
                 'record' => $recordNew

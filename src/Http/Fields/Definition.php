@@ -99,7 +99,7 @@ class Definition extends Field
         $isSortable = $this->getDefinitionRelation($definition)->getIsSortable();
 
         return [
-            'html' => view('admin::new.form.fields.partials.input_definition_table_data',
+            'html' => view('admin::form.fields.partials.input_definition_table_data',
                             compact('fieldsDefinition', 'list', 'attributes', 'urlAction', 'isSortable'))->render(),
             'count_records' => 0
         ];

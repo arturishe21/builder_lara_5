@@ -154,7 +154,7 @@ class Field
             $idRecord = $this->getId();
             $field = $this->getNameFieldInBd();
 
-            return view('admin::new.list.fast_edit.field_base', compact('idRecord', 'value', 'field'));
+            return view('admin::list.fast_edit.field_base', compact('idRecord', 'value', 'field'));
         }
 
         return $value;
@@ -194,7 +194,7 @@ class Field
     {
         $this->filter = $type ?:$this->getClassNameString();
 
-        if (!view()->exists('admin::new.list.filters.'.$this->filter)) {
+        if (!view()->exists('admin::list.filters.'.$this->filter)) {
             $this->filter = 'text';
         }
 
@@ -208,7 +208,7 @@ class Field
             $filterValue = $this->getFilter($list);
             $definition = $list->getDefinition();
 
-            return view('admin::new.list.filters.' . $this->filter, compact('field', 'filterValue', 'definition'));
+            return view('admin::list.filters.' . $this->filter, compact('field', 'filterValue', 'definition'));
         }
     }
 
@@ -339,7 +339,7 @@ class Field
             $nameField .= '_lang';
         }
 
-        return view('admin::new.form.fields.' . $nameField, compact('definition', 'field'))->render();
+        return view('admin::form.fields.' . $nameField, compact('definition', 'field'))->render();
     }
 
     protected function getClassNameString() : string

@@ -46,7 +46,7 @@ class Resource
 
     public function getTableView()
     {
-        return 'admin::new.table';
+        return 'admin::table';
     }
 
     public function getTitle() : string
@@ -173,7 +173,7 @@ class Resource
         $fields = $this->fields();
 
         return [
-            view('admin::new.form.create', compact('definition', 'fields'))->render()
+            view('admin::form.create', compact('definition', 'fields'))->render()
         ];
     }
 
@@ -198,7 +198,7 @@ class Resource
         }
 
         return [
-            'html' => view('admin::new.form.edit', compact('definition', 'fields'))->render(),
+            'html' => view('admin::form.edit', compact('definition', 'fields'))->render(),
             'status' => true
         ];
     }
@@ -442,7 +442,7 @@ class Resource
             $recordNew->fields[$key]->value = $item2->getValueForList($definition);
         });
 
-        return view('admin::new.list.single_row',
+        return view('admin::list.single_row',
             [
                 'list' => $list,
                 'record' => $recordNew
@@ -554,7 +554,7 @@ class Resource
         $list = new Listing($this);
         $listingRecords = $list->body();
 
-        return view('admin::new.list.table', compact('list', 'listingRecords'));
+        return view('admin::list.table', compact('list', 'listingRecords'));
     }
 
     private function returnSuccess()

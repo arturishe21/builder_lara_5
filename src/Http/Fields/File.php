@@ -73,7 +73,7 @@ class File extends Field
 
         return [
             'status' => 'success',
-            'data'   => view('admin::new.form.fields.partials.files_list', compact('list'))->render(),
+            'data'   => view('admin::form.fields.partials.files_list', compact('list'))->render(),
         ];
     }
 }

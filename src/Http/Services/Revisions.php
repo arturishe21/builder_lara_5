@@ -12,7 +12,7 @@ class Revisions {
         $history = $model->revisionHistory()->orderBy('created_at', 'desc')->get();
 
         return [
-            'html' => view('admin::new.list.modal_revision', compact('history'))->render(),
+            'html' => view('admin::list.modal_revision', compact('history'))->render(),
             'status' => true
         ];
     }

@@ -38,7 +38,7 @@ class LoginController extends Controller
             return redirect()->route($this->routeLogin);
         }
 
-        return view('admin::vis-login', [
+        return view('admin::login', [
             'login' => $this->login,
             'admin' => $this->admin,
         ]);

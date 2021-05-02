@@ -2,38 +2,30 @@
     <div class="smart-form">
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th style="width: 10px"></th>
-                    <th>{{__cms('Название')}}</th>
-                    @if(config('builder.'.$treeName.'.list_fields'))
-                        @foreach(config('builder.'.$treeName.'.list_fields') as $field)
-                            <th>
-                               {{$field['name']}}
-                            </th>
-                        @endforeach
-                    @else
-                        <th>{{ __cms('Шаблон') }}</th>
-                        <th>Slug</th>
-                        <th style="width: 60px">{{__cms('Активный')}}</th>
-                    @endif
+            <tr>
+                <th style="width: 10px"></th>
+                <th>{{__cms('Название')}}</th>
+                <th>{{ __cms('Шаблон') }}</th>
+                <th>Slug</th>
+                <th style="width: 60px">{{__cms('Активный')}}</th>
 
-                    <th style="width: 80px">
-                        <a href="javascript:void(0);" onclick="Tree.showCreateForm('{{$current->id}}');" style="min-width: 70px;" class="btn btn-success btn-sm">{{__cms('Добавить')}}</a>
-                    </th>
-                </tr>
+                <th style="width: 80px">
+                    <a href="javascript:void(0);" onclick="Tree.showCreateForm('{{$current->id}}');" style="min-width: 70px;" class="btn btn-success btn-sm">{{__cms('Добавить')}}</a>
+                </th>
+            </tr>
             </thead>
-            <tbody class="ui-sortable">
+            <tbody class="ui-sortable" id="wid-id-1">
 
-                @if($current->parent_id)
-                    <tr>
-                        <td colspan="6">
-                            <a href="?node={{$current->parent_id}}" class="node_link">&larr; Назад</a>
-                        </td>
-                    </tr>
-                @endif
-                @foreach($children as $item)
-                    @include('admin::tree.content_row')
-                @endforeach
+            @if($current->parent_id)
+                <tr>
+                    <td colspan="6">
+                        <a href="?node={{$current->parent_id}}" class="node_link">&larr; {{__cms('Назад')}}</a>
+                    </td>
+                </tr>
+            @endif
+            @foreach($children as $item)
+                @include('admin::tree.row')
+            @endforeach
             </tbody>
 
             <tfoot>
@@ -67,7 +59,7 @@
 
     <script>
         $(document).ready(function () {
-            var action_url = "/admin/handle/{{$treeName}}";
+            var action_url = "/admin/actions/{{$treeName}}";
 
             TableBuilder.optionsInit({
                 action_url: action_url
@@ -77,9 +69,9 @@
             $('.tpl-editable').editable2({
                 url: window.location.href,
                 source: [
-                @foreach ($templates as $capt => $tpl)
-                    { value: '{{$capt}}', text: '{{isset($tpl['title']) ? $tpl['title'] : $capt}}' },
-                @endforeach
+                        @foreach ($templates as $slug => $template)
+                             { value: '{{$slug}}', text: '{{$template}}' },
+                        @endforeach
                 ],
                 display: function(value, response) {
                     return false;   //disable this method
@@ -89,7 +81,7 @@
                 },
                 params: function(params) {
                     //originally params contain pk, name and value
-                    params.query_type = 'do_update_node';
+                    params.query_type = 'do_change_template';
                     return params;
                 }
             });

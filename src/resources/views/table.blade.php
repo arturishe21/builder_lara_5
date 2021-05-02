@@ -1,7 +1,7 @@
 @extends('admin::layouts.default')
 
 @section('main')
-     {!! $table !!}
+	{!! $data !!}
 @stop
 
 

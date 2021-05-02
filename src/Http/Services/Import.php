@@ -11,6 +11,6 @@ class Import extends ButtonBase implements Button
     {
         $nameDefinition = mb_strtolower(class_basename($this->listing->getDefinition()));
 
-        return view('admin::new.list.buttons.import', compact( 'nameDefinition'));
+        return view('admin::list.buttons.import', compact( 'nameDefinition'));
     }
 }

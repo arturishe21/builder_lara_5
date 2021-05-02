@@ -1,2 +1,2 @@
 
-{{$item->title}}
+{{$item->t('title')}}

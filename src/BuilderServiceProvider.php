@@ -4,6 +4,7 @@ namespace Vis\Builder;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class BuilderServiceProvider.
@@ -47,6 +48,9 @@ class BuilderServiceProvider extends ServiceProvider
         $this->publishes([
             realpath(__DIR__.'/Migrations') => $this->app->databasePath().'/migrations',
         ]);
+
+        View::composer(['admin::partials.change_lang', 'admin::partials.scripts'],
+                    'Vis\Builder\Http\ViewComposers\ChangeLang');
     }
 
     /**

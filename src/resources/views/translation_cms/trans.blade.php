@@ -1,4 +1,4 @@
-@extends('admin::new.layouts.default')
+@extends('admin::layouts.default')
 
 @section('title')
   {{__cms('Переводы CMS')}}

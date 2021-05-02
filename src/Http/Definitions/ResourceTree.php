@@ -34,7 +34,7 @@ class ResourceTree extends Resource
 
         return [
             'id' => $item->id,
-            'html' => view('admin::new.tree.row', compact('item', 'definition'))->render()
+            'html' => view('admin::tree.row', compact('item', 'definition'))->render()
         ];
     }
 

@@ -4,6 +4,7 @@ namespace Vis\Builder\ControllersNew;
 
 use Illuminate\Support\Str;
 use Vis\Builder\Services\Revisions;
+use Vis\Builder\Libs\GoogleTranslateForFree;
 
 class TreeController
 {
@@ -36,12 +37,12 @@ class TreeController
         $templates = $this->definition->getTemplates();
         $definition = $this->definition;
 
-        $content = view('admin::new.tree.content',
+        $content = view('admin::tree.content',
             compact('current', 'treeName', 'children', 'perPage', 'templates', 'definition'));
 
         $view = request()->ajax() ? 'center' : 'table';
 
-        return view('admin::new.tree.' . $view,
+        return view('admin::tree.' . $view,
             compact( 'treeName', 'current', 'children', 'content', 'definition', 'templates'));
     }
 
@@ -150,7 +151,17 @@ class TreeController
         $node = new $model();
 
         $node->parent_id = request('node', 1);
-        $node->title = request('title');
+
+        foreach (config('builder.translations.config.languages') as $slug => $language) {
+            $translations[$language['caption']] =
+                (new GoogleTranslateForFree())->translate(
+                    array_key_first(config('builder.translations.config.languages')),
+                    $slug,
+                    request('title'),
+                    1);
+        }
+
+        $node->title = json_encode($translations);
         $node->template = request('template') ?: '';
         $node->slug = Str::slug(request('title'));
 

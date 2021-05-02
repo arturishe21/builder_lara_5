@@ -12,7 +12,7 @@ class Checkbox extends Field
             $isChecked = $this->getValue();
             $field = $this->getNameFieldInBd();
 
-            return view('admin::new.list.fast_edit.checkbox', compact('idRecord', 'isChecked', 'field'));
+            return view('admin::list.fast_edit.checkbox', compact('idRecord', 'isChecked', 'field'));
         }
 
         if ($this->value == 1) {

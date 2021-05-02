@@ -25,7 +25,7 @@ class Actions
 
     public function fetch($type, $record = null)
     {
-        return view("admin::new.list.actions.{$type}", compact('record'));
+        return view("admin::list.actions.{$type}", compact('record'));
     }
 
     public function list($record)
@@ -33,7 +33,7 @@ class Actions
         $collectionActions = $this->definition->actions()->getActionsAccess();
         $collectionActions = Arr::except($collectionActions, 'insert');
 
-        return view('admin::new.list.actions.all', [
+        return view('admin::list.actions.all', [
             'record' => $record,
             'action' => $this,
             'collectionActions' => $collectionActions
