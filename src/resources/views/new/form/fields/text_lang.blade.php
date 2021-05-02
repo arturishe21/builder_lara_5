@@ -5,7 +5,7 @@
             <label class="label pull-left" style="line-height: 32px;">{{$field->getName()}}</label>
             @foreach ($field->getLanguage() as $tab)
                 <li class="{{$loop->first ? 'active' : ''}}">
-                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{__cms($tab['caption'])}}</a>
+                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab['caption']}}</a>
                 </li>
             @endforeach
         </ul>
