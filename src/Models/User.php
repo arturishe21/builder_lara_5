@@ -54,4 +54,12 @@ class User extends EloquentUser
     {
         return $this->first_name.' '.$this->last_name;
     }
+
+
+    public function hasAccessForCms($link)
+    {
+        $link = str_replace(['/', '_'], [''], $link).'.view';
+
+        return $this->hasAccess([$link]);
+    }
 }

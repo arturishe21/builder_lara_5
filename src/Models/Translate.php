@@ -13,7 +13,7 @@ class Translate extends Model
     public $timestamps = false;
 
     protected $fillable = ['lang', 'translate'];
-    
+
     public function createNewTranslate($phrase)
     {
         $languages = config('builder.translations.cms.languages');

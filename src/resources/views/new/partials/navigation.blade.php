@@ -1,9 +1,7 @@
-
 <aside id="left-panel">
     <div class="login-info">
         <span>
             <a>
-                <img src="" class="online">
                 <span>
                     {{$user->getFullName()}}
                 </span>
@@ -13,66 +11,50 @@
     <!-- end user info -->
     <nav>
         <ul style="display: block;">
-            @foreach($menu as $k=>$el)
-                @if(app('user')->hasAccess([str_replace(['/', '_'], [''], $el['link']).'.view']))
+            @foreach($menu as $menuItemLevel0)
+                @if(app('user')->hasAccessForCms($menuItemLevel0['link']))
 
                     <li class="level1">
-                        <a  {!! isset($el['link']) && !isset($el['submenu'])? "href='/admin".$el['link']."'" : "" !!}>
-                            @if (isset($el['icon']))
-                                <i class="fal fa-lg fa-fw fa-{{$el['icon']}}"></i>
+                        <a
+                            @if (isset($menuItemLevel0['link']) && !isset($menuItemLevel0['submenu']))
+                            href="/admin{{$menuItemLevel0['link']}}"
                             @endif
-                            @if (isset($el['title']))
-                                <span class="menu-item-parent">{{__cms($el['title'])}}</span>
+                        >
+                            @if (isset($menuItemLevel0['icon']))
+                                <i class="fal fa-lg fa-fw fa-{{$menuItemLevel0['icon']}}"></i>
                             @endif
-                            @if (isset($el['badge']))
-                                <?php $badgeValue = $el['badge'](); ?>
-                                <span
-                                    class="badge bg-color-greenLight inbox-badge"
-                                    style="@if(!$badgeValue) display: none @endif"
-                                >
-                                        {{is_numeric($badgeValue) ? $badgeValue : ''}}
-                                    </span>
-                            @endif
+
+                            <span class="menu-item-parent">{{__cms($menuItemLevel0['title'])}}</span>
+
+                            @include('admin::new.partials.navigation_badge', ['menu' => $menuItemLevel0])
                         </a>
 
-                        @if(isset($el['submenu']))
+                        @if(isset($menuItemLevel0['submenu']))
                             <ul>
-                                @foreach($el['submenu'] as $k_sub_menu=>$sub_menu)
-                                    @if(app('user')->hasAccess([str_replace(['/', '_'], [''], $sub_menu['link']).'.view']))
+                                @foreach($menuItemLevel0['submenu'] as $subMenu)
+                                    @if(app('user')->hasAccessForCms($subMenu['link']))
+
                                         <li>
                                             <a
-                                                {!! isset($sub_menu['link']) && !isset($sub_menu['submenu']) ? "href='/admin".$sub_menu['link']."'" : "" !!}
-                                            >{{__cms($sub_menu['title'])}}
-
-                                                @if (isset($sub_menu['badge']))
-                                                    <?php $badgeValue = $sub_menu['badge'](); ?>
-
-                                                    <span
-                                                        class="badge bg-color-greenLight  inbox-badge"
-                                                        style="@if(!$badgeValue) display: none @endif"
-                                                    >
-                                                        {{is_numeric($badgeValue) ? $badgeValue : ''}}
-                                                    </span>
+                                                @if (isset($subMenu['link']) && !isset($subMenu['submenu']))
+                                                href='/admin{{$subMenu['link']}}'
                                                 @endif
+                                            >{{__cms($subMenu['title'])}}
+
+                                                @include('admin::new.partials.navigation_badge', ['menu' => $subMenu])
                                             </a>
-                                            @if(isset($sub_menu['submenu']))
-
+                                            @if(isset($subMenu['submenu']))
                                                 <ul>
-                                                    @foreach($sub_menu['submenu'] as $k_sub_menu2=>$sub_menu2)
+                                                    @foreach($subMenu['submenu'] as $subMenu2)
 
-                                                        @if(app('user')->hasAccess([str_replace(['/', '_'], [''], $sub_menu2['link']).'.view']))
+                                                        @if(app('user')->hasAccessForCms($subMenu2['link']))
                                                             <li
-                                                                @if (isset($sub_menu2['badge']))
+                                                                @if (isset($subMenu2['badge']))
                                                                 style="align-items: center;justify-content: space-between;display: flex;"
                                                                 @endif>
-                                                                <a {!!isset($sub_menu2['link']) && !isset($sub_menu2['submenu']) ? "href='/admin".$sub_menu2['link']."'" : "" !!}>{{__cms($sub_menu2['title'])}}</a>
+                                                                <a {!!isset($subMenu2['link']) && !isset($subMenu2['submenu']) ? "href='/admin".$subMenu2['link']."'" : "" !!}>{{__cms($subMenu2['title'])}}</a>
 
-                                                                @if (isset($sub_menu2['badge']))
-                                                                    <?php $countBadge = $sub_menu2['badge'](); ?>
-                                                                    @if (is_numeric($countBadge))
-                                                                        <span class="badge bg-color-greenLight inbox-badge">{{$countBadge}}</span>
-                                                                    @endif
-                                                                @endif
+                                                                @include('admin::new.partials.navigation_badge', ['menu' => $subMenu2])
                                                             </li>
                                                         @endif
                                                     @endforeach

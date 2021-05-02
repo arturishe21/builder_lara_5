@@ -46,8 +46,18 @@ View::composer('admin::new.partials.navigation', function (ViewParam $view) {
     $user = Sentinel::getUser();
     $menu =  (new \App\Cms\Admin())->menu();
 
-
     $view->with(compact('user', 'menu'));
+});
+
+
+View::composer('admin::new.partials.navigation_badge', function (ViewParam $view) {
+
+    if(isset($view->menu['badge'])) {
+
+        $badgeValue = $view->menu['badge']();
+
+        $view->with(compact('badgeValue'));
+    }
 });
 
 

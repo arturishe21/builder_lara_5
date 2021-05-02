@@ -14,7 +14,7 @@
         </td>
     @endif
 
-    @foreach ($record->fields as $ident => $field)
+    @foreach ($record->fields as $field)
         <td unselectable>
             <span>{!! $field->value !!}</span>
         </td>

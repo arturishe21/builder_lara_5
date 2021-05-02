@@ -24,6 +24,7 @@ class Image extends Field
         return "<a class='screenshot' rel='{$imgHover}'><img src='{$img}'></a>";
     }
 
+
     public function selectWithUploadedImages($definition)
     {
         return $this->getImagesWithImageStorage($definition);

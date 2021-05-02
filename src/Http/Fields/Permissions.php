@@ -31,7 +31,7 @@ class Permissions extends Field
 
         foreach ($permissionsMenu as $permission) {
             if (isset($permission['link']) && isset($permission['title'])) {
-                $slug = str_replace(['/', '_'], [''], $permission['link']);
+                $slug = $this->prepareSlug($permission['link']);
 
                 $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
@@ -61,7 +61,7 @@ class Permissions extends Field
             if (isset($permission['submenu'])) {
                 foreach ($permission['submenu'] as $subMenu) {
                     if (isset($subMenu['link'])) {
-                        $slug =  str_replace(['/', '_'], [''], $subMenu['link']);
+                        $slug = $this->prepareSlug($subMenu['link']);
                         $actions = config('builder.tb-definitions.'.$slug.'.actions');
 
                         if (isset($subMenu['link']) && isset($subMenu['title'])) {
@@ -73,13 +73,25 @@ class Permissions extends Field
                                         = $action['caption'];
                                 }
                             }
+
+                            if (isset($subMenu['submenu'])) {
+                                foreach ($subMenu['submenu'] as $subMenuLevel2) {
+                                    $slug = $this->prepareSlug($subMenuLevel2['link']);
+                                    $permissions[$permission['title']][$subMenu['title']][$subMenuLevel2['title']][$slug.'.view'] = 'Просмотр';
+                                }
+                            }
+
                         }
                     }
                 }
             }
-
         }
 
         return $permissions;
+    }
+
+    private function prepareSlug($link)
+    {
+        return str_replace(['/', '_'], [''], $link);
     }
 }

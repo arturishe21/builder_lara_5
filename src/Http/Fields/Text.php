@@ -2,6 +2,8 @@
 
 namespace Vis\Builder\Fields;
 
+use Illuminate\Support\Facades\App;
+
 class Text extends Field
 {
     protected $transliterationField;

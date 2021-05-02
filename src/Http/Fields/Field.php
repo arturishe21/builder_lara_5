@@ -25,11 +25,13 @@ class Field
     protected $relationMorphOne;
     protected $classNameField;
     protected $allData;
+    protected $locale;
 
     public function __construct(string $name, $attribute = null)
     {
         $this->name = $name;
         $this->attribute = $attribute ?? str_replace(' ', '_', Str::lower($name));
+        $this->locale = config('app.locale');
     }
 
     public function setValue($value)
@@ -42,7 +44,7 @@ class Field
             if ($this->getLanguage()) {
                 foreach ($this->getLanguage() as $lang) {
                     if ($relation) {
-                        $this->valueLanguage[$lang['postfix']] = $relation->{$this->attribute.$lang['postfix']};
+                        $this->valueLanguage[$lang['caption']] = $relation->{$this->attribute.$lang['caption']};
                     }
                 }
 
@@ -60,7 +62,7 @@ class Field
             if ($this->getLanguage()) {
                 foreach ($this->getLanguage() as $lang) {
                     if ($relation) {
-                        $this->valueLanguage[$lang['postfix']] = $relation->{$this->attribute.$lang['postfix']};
+                        $this->valueLanguage[$lang['caption']] = $relation->{$this->attribute.$lang['caption']};
                     }
                 }
 
@@ -73,9 +75,7 @@ class Field
         }
 
         if ($this->getLanguage()) {
-            foreach ($this->getLanguage() as $lang) {
-                $this->valueLanguage[$lang['postfix']] = $value[$this->attribute.$lang['postfix']];
-            }
+            $this->valueLanguage = json_decode($value[$this->attribute]);
         }
 
         $this->value = $value[$this->attribute];
@@ -119,7 +119,7 @@ class Field
 
     public function getValueLanguage($postfix)
     {
-        return $this->valueLanguage[$postfix] ?? '';
+        return $this->valueLanguage->$postfix ?? '';
     }
 
     public function getName()
@@ -136,6 +136,12 @@ class Field
         return $this->attribute;
     }
 
+    public function getNameFieldLangTab($definition, $tab)
+    {
+        return $definition->getNameDefinition() . $this->getNameField() . $tab['caption'];
+    }
+
+
     public function getNameFieldInBd()
     {
         return $this->attribute;
@@ -143,16 +149,19 @@ class Field
 
     public function getValueForList($definition)
     {
+        $arrayValue = json_decode($this->getValue());
+
+        $value = $arrayValue->{$this->locale} ?? $this->getValue();
+
         if ($this->fastEdit) {
 
             $idRecord = $this->getId();
-            $value = $this->getValue();
             $field = $this->getNameFieldInBd();
 
             return view('admin::new.list.fast_edit.field_base', compact('idRecord', 'value', 'field'));
         }
 
-        return $this->getValue();
+        return $value;
     }
 
     public function isOrder($list)

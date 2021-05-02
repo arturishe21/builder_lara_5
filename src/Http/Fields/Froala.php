@@ -35,6 +35,10 @@ class Froala extends Field
 
     public function getValueForList($definition)
     {
-        return  Str::limit(strip_tags($this->getValue()), 70);
+        $arrayValue = json_decode($this->getValue());
+
+        $value = $arrayValue->{$this->locale} ?? $this->getValue();
+
+        return  Str::limit(strip_tags($value), 70);
     }
 }

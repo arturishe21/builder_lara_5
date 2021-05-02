@@ -254,6 +254,7 @@ class Resource
 
                 if ($field->getLanguage() && !$field->getMorphOne() && !$field->getHasOne()) {
                     $this->saveLanguage($field, $record, $request);
+                    continue;
                 }
 
                 if ($field->getHasOne()) {
@@ -369,21 +370,21 @@ class Resource
         $nameField = $field->getNameField();
 
         foreach ($field->getLanguage() as $slugLang => $langPrefix) {
-            $langField = $nameField . $langPrefix['postfix'];
 
-            if (isset($request[$langField]) && $request[$langField]) {
-                $translate = $request[$langField];
-            } else {
-                $translate = $this->getTranslate($field, $slugLang, $request[$nameField]);
-            }
+            $translate = $request[$nameField][$langPrefix['caption']] ?:
+                $this->getTranslate($field, $slugLang, $request[$nameField][config('app.locale')]);
 
-            $record->$langField = $translate;
+            $translateArray[$langPrefix['caption']] = $translate;
         }
+
+        $record->$nameField = json_encode($translateArray);
     }
 
     private function getTranslate($field, $slugLang, $phrase)
     {
         try {
+
+
             $langDef = $field->getLanguageDefault();
 
             if ($langDef == $slugLang || !$phrase) {
