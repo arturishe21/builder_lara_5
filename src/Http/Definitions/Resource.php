@@ -296,7 +296,7 @@ class Resource
 
         if (count($this->updateManyToManyList)) {
             foreach ($this->updateManyToManyList as $item) {
-                    $item['field']->save($item['collectionsIds'], $record);
+                $item['field']->save($item['collectionsIds'], $record);
             }
         }
 
@@ -343,11 +343,17 @@ class Resource
                     if ($item['field']->getLanguage()) {
                         foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
 
-                            $fieldLanguage = $item['field']->getNameField().$language['postfix'];
+                            $fieldLanguage = $item['field']->getNameField();
 
-                            $data[$item['field']->getNameField().$language['postfix']] = $request[$fieldLanguage] ? :
-                                $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
+                            $translateArray[$language['caption']] = $request[$fieldLanguage][$language['caption']] ? :
+                                $this->getTranslate(
+                                    $item['field'],
+                                    $slugLanguage,
+                                    $request[$item['field']->getNameField()][config('app.locale')]
+                                );
                         }
+
+                        $data[$item['field']->getNameField()] = json_encode($translateArray);
 
                     } else {
                         $data[$item['field']->getNameField()] = $item['value'];
@@ -383,8 +389,6 @@ class Resource
     private function getTranslate($field, $slugLang, $phrase)
     {
         try {
-
-
             $langDef = $field->getLanguageDefault();
 
             if ($langDef == $slugLang || !$phrase) {
@@ -530,8 +534,8 @@ class Resource
     {
         return Arr::exists($allFields, $field) &&
             (get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text' ||
-             get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Textarea' ||
-             get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Froala'
+                get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Textarea' ||
+                get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Froala'
             )
             ;
     }

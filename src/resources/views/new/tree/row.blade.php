@@ -4,7 +4,7 @@
     </td>
     <td>
         <i class="{{$item->isHasChildren() ? 'fa fa-folder' : 'fal fa-file'}}"></i>&nbsp;
-        <a href="?node={{ $item->id }}" class="node_link">{{ $item->title }}</a>
+        <a href="?node={{ $item->id }}" class="node_link">{{ $item->t('title') }}</a>
     </td>
         <td>
             <a class="tpl-editable" href="javascript:void(0);"

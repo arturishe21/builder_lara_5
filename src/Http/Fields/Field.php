@@ -42,10 +42,8 @@ class Field
             $relation = $value->{$this->getHasOne()};
 
             if ($this->getLanguage()) {
-                foreach ($this->getLanguage() as $lang) {
-                    if ($relation) {
-                        $this->valueLanguage[$lang['caption']] = $relation->{$this->attribute.$lang['caption']};
-                    }
+                if ($relation) {
+                    $this->valueLanguage = json_decode($relation->{$this->attribute});
                 }
 
                 return;
@@ -60,10 +58,8 @@ class Field
             $relation = $value->{$this->getMorphOne()};
 
             if ($this->getLanguage()) {
-                foreach ($this->getLanguage() as $lang) {
-                    if ($relation) {
-                        $this->valueLanguage[$lang['caption']] = $relation->{$this->attribute.$lang['caption']};
-                    }
+                if ($relation) {
+                    $this->valueLanguage = json_decode($relation->{$this->attribute});
                 }
 
                 return;
@@ -176,7 +172,7 @@ class Field
         $filter = session($list->getDefinition()->getSessionKeyFilter());
 
         return $filter && isset($filter['filter'][$this->getNameField()]) ?
-                    $filter['filter'][$this->getNameField()] : '';
+            $filter['filter'][$this->getNameField()] : '';
     }
 
     public function isNull()
@@ -196,13 +192,13 @@ class Field
 
     public function filter($type = null)
     {
-       $this->filter = $type ?:$this->getClassNameString();
+        $this->filter = $type ?:$this->getClassNameString();
 
-       if (!view()->exists('admin::new.list.filters.'.$this->filter)) {
-           $this->filter = 'text';
-       }
+        if (!view()->exists('admin::new.list.filters.'.$this->filter)) {
+            $this->filter = 'text';
+        }
 
-       return $this;
+        return $this;
     }
 
     public function getFilterInput($list)

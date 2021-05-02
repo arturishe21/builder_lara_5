@@ -32,18 +32,18 @@
                                         {{__cms('Загрузить')}}
                             </span>
                                     <input type="text" id="{{$field->getNameField() . $tab['caption']}}" placeholder="{{__cms('Выберите изображение для загрузки')}}" readonly="readonly">
-                                    <input type="hidden" value="{{$field->getValueLanguage($tab['caption'])}}" name="{{ $field->getNameField() . $tab['caption'] }}">
+                                    <input type="hidden" value="{{$field->getValueLanguage($tab['caption'])}}" name="{{ $field->getNameField()}}[{{$tab['caption']}}]">
                                 </div>
                                 <div class="tb-uploaded-image-container image-container_{{ $field->getNameField() . $tab['caption'] }}">
-
-
+                                    
                                     @if ($field->getValueLanguage($tab['caption']))
                                         <div class="{{$field->isTransparent() ? 'transparent-image' : ''}}" style="position: relative; display: inline-block;" >
                                             <img class="image-attr-editable"
                                                  data-tbident="{{$field->getNameField() . $tab['caption']}}"
                                                  @if (strpos($field->getValueLanguage($tab['caption']), ".svg"))
                                                     width="200"
-                                                    src="{{ $field->getValueLanguage($tab['caption'])}}" src_original="{{$field->getValueLanguage($tab['caption'])}}"
+                                                    src="{{ $field->getValueLanguage($tab['caption'])}}"
+                                                    src_original="{{$field->getValueLanguage($tab['caption'])}}"
                                                  @else
                                                     src="{{ glide($field->getValueLanguage($tab['caption']), ['w' => 200, 'h' => 200]) }}"
                                                     src_original="{{$field->getValueLanguage($tab['caption'])}}"
