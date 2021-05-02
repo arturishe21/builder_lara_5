@@ -8,9 +8,9 @@
 		@endif
 
 		if (runTrans) {
-			$('[data-name-input={{$definition->getNameDefinition().$field->getNameField()}}]').keyup(function(){
-				$('[name={{ $field->getTraslationField() }}]').val(TableBuilder.urlRusLat($(this).val()));
-			});
+            $('[data-name-input={{$definition->getNameDefinition().$field->getNameField()}}]').keyup(function(){
+                $('[data-name-input={{ $definition->getNameDefinition().$field->getTraslationField() }}]').val(TableBuilder.urlRusLat($(this).val()));
+            });
 		}
     @endif
 </script>

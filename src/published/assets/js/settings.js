@@ -87,7 +87,7 @@ var Settings =
             $("#modal_form").modal('show');
             Settings.preloadPage();
 
-            $.post("/admin/settings/create_pop", {},
+            $.post("/admin/settings/create", {},
                 function(data) {
                     $("#modal_form .modal-content").html(data);
                     Settings.handleSaveSetting();
@@ -99,13 +99,18 @@ var Settings =
 
             Settings.loadAction();
 
+            console.log($('#form_page').serializeArray());
+
             var fileData = $("#modal_form [name=file]").prop("files")[0];
             var formData = new FormData();
+            var id = $('#form_page [name=id]').val();
             formData.append("file", fileData)
             formData.append("data", $('#form_page').serialize());
 
+            var url = id ? '/admin/settings/' + id + '/update' : '/admin/settings/store';
+
             $.ajax({
-                url: "/admin/settings/add_record",
+                url: url,
                 dataType: 'json',
                 cache: false,
                 contentType: false,
@@ -138,37 +143,11 @@ var Settings =
         {
             var value = checked ? 1 : 0;
 
-            $.post("/admin/settings/fast_save", {id : idPage, value : value },
+            $.post("/admin/settings/fast-save/" + idPage, {value : value },
                 function(data){
-                    doAjaxLoadContent(window.location.href);
+
                 });
         },
-
-        doDelete: function(id, context)
-        {
-            jQuery.SmartMessageBox({
-                title : "Удалить?",
-                content : "Эту операцию нельзя будет отменить.",
-                buttons : '[Нет][Да]'
-            }, function(ButtonPressed) {
-                if (ButtonPressed === "Да") {
-                    jQuery.ajax({
-                        type: "POST",
-                        url: "/admin/settings/delete",
-                        data: { id: id},
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.status) {
-                                TableBuilder.showSuccessNotification("Запись удалена успешно");
-                                $(".tr_" + id).remove();
-                            } else {
-                                TableBuilder.showErrorNotification("Что-то пошло не так, попробуйте позже");
-                            }
-                        }
-                    });
-                }
-            });
-        }, // end doDelete
 
         getEdit: function(idPage)
         {
@@ -186,7 +165,7 @@ var Settings =
 
             window.history.pushState(urlPage, '', urlPage);
 
-            $.post("/admin/settings/edit_record", {id: idPage },
+            $.post("/admin/settings/" + idPage +  "/edit", {},
                 function(data) {
                     $("#modal_form .modal-content").html(data);
 
@@ -221,19 +200,6 @@ var Settings =
             }
         }, // end loadAction
 
-        doDeleteSelect: function(idSelect)
-        {
-            $.post("/admin/settings/del_select", {id: idSelect },
-                function(data){
-                    $(".tr_select_" + idSelect).remove();
-                });
-        }, //end doDeleteSelect
-
-        addOption: function(optionId)
-        {
-            var insert_tr =  $(".type_" + optionId + " .last_tr").html();
-            $(".type_" + optionId + " tbody").append("<tr>" + insert_tr + "</tr>");
-        }, // end addOption
 
         typeChange: function(type)
         {
@@ -241,26 +207,6 @@ var Settings =
             $(".type_" + type.value).show();
         }, // end typeChange
 
-        saveFastEdit : function (context, rowId) {
-
-            var field = $('[name=title_' + rowId + ']'),
-                value;
-
-            if (field.attr('type') == 'checkbox') {
-                if (field.is(':checked')) {
-                    value = 1;
-                } else {
-                    value = 0;
-                }
-            } else {
-                value = field.val();
-            }
-
-            $.post("/admin/settings/fast_save", {id : rowId, value : value },
-                function(data){
-                    doAjaxLoadContent(window.location.href);
-                });
-        }
     };
 
 jQuery(document).ready(function() {

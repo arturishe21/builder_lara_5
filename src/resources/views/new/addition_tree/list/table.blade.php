@@ -15,50 +15,52 @@
                  data-widget-deletebutton="false"
                  data-widget-sortable="false">
                 {!!  $filterView ?? '' !!}
-                <header>
-                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                    <h2>
-                        <?php
-                        $ancestors = $current::ancestorsAndSelf($current->id); ?>
 
-                        @foreach ($ancestors as $ancestor)
-                            <a href="?node={{ $ancestor->id }}" style="color: #fff" class="node_link">{{ $ancestor->title}}</a> /
-                        @endforeach
+                <table id="tb-tree-table" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-left">
+                            <?php
+                            $ancestors = $current::ancestorsAndSelf($current->id); ?>
 
-                    </h2>
-                    {!! isset($def['buttons']) && $def['buttons'] ?  $controller->buttons->fetch() : '' !!}
-                    {!! isset($def['import']) && $def['import']  ? $controller->import->fetch() : '' !!}
-                    {!! isset($def['export']) && $def['export'] ? $controller->export->fetch() : '' !!}
-                </header>
-                <div>
-                    <div class="jarviswidget-editbox"></div>
-                    <div class="widget-body no-padding">
-                        <form
-                            action="{{$list->getUrlAction()}}"
-                            method="post"
-                            class="form-horizontal tb-table"
-                            target="submiter" >
-                            <table  class="table  table-hover table-bordered">
-                                <thead>
-                                @include('admin::new.addition_tree.list.head')
-                                </thead>
-                                <tbody class="ui-sortable">
-                                @include('admin::new.addition_tree.list.body')
-                                </tbody>
+                            @foreach ($ancestors as $ancestor)
+                                <a href="?node={{ $ancestor->id }}" style="color: #fff" class="node_link">{{ $ancestor->title}}</a> /
+                            @endforeach
+                                <a onclick="TableBuilder.getEditForm(<?=$current->id?>, $(this));" style="min-width: 70px; float: right">{{__cms('Редактировать')}}</a>
 
-                            </table>
-                            @include('admin::new.addition_tree.list.pagination')
-                        </form>
-                    </div>
-                </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tree-td tree-dark" style="padding: 0px; vertical-align: top;text-align: left;">
+                                <form
+                                        action="{{$list->getUrlAction()}}"
+                                        method="post"
+                                        class="form-horizontal tb-table"
+                                        target="submiter" >
+                                    <table  class="table  table-hover table-bordered">
+                                        <thead>
+                                        @include('admin::new.addition_tree.list.head')
+                                        </thead>
+                                        <tbody class="ui-sortable">
+                                        @include('admin::new.addition_tree.list.body')
+                                        </tbody>
+
+                                    </table>
+                                    @include('admin::new.addition_tree.list.pagination')
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
         </article>
     </div>
 </section>
 
 <script>
-    $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{ $list->title() }}</li>");
-    $("title").text("{{ $list->title() }} - {{ __cms('Административная часть сайта') }}");
 
     TableBuilder.optionsInit({
         action_url: '{{ $list->getUrlAction() }}'
@@ -66,8 +68,6 @@
 
     TableBuilder.action_url = '{{ $list->getUrlAction() }}';
 
-
-    Tree.admin_prefix = '{{ config('builder.admin.uri') }}';
     Tree.parent_id = '{{ $current->id }}';
 
     showTree = 0;
@@ -79,7 +79,9 @@
 
             if (showTree == 0) {
                 $(".tree_top_content").html("<p style='padding:10px'>Загрузка..</p>");
-                $.post("/admin/show_all_tree/{{$list->getThisUrl()}}", {},
+                $.post("/admin/show-all-tree", {
+                        'model' : '<?=addslashes(get_class($current))?>'
+                        },
                     function(data){
                         $(".tree_top_content").html(data);
                         Tree.init();
@@ -91,9 +93,6 @@
             $(".show_hide_tree").text("{{__cms('Показать дерево')}}")
         }
     });
-
-    $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{__cms('Структура сайта')}}</li>");
-    $("title").text("{{__cms('Структура сайта')}} - {{ __cms('Административная часть сайта')}}");
 
     try {
         Tree.sortTable();

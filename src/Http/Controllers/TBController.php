@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use App\Cms\Admin;
 
 /**
  * Class TBController.
@@ -15,15 +16,9 @@ class TBController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function showDashboard()
+    public function showDashboard(Admin $admin)
     {
-        $onLoginFunction = 'builder.login.on_login';
-
-        if (config($onLoginFunction) && config($onLoginFunction)()) {
-            return config($onLoginFunction)();
-        }
-
-        return Redirect::to('/admin/tree');
+        return resolve($admin->login())->onLogin();
     }
 
     /**

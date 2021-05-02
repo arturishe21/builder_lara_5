@@ -11,7 +11,6 @@ var TableBuilder = {
     form_preloader: '.form-preloader',
     form: '#modal_form',
     form_edit: '#modal_form_edit',
-    export_form: '#tb-export-form',
     form_label: '#modal_form_edit_label',
     form_wrapper: '#modal_wrapper',
     create_form: '#create_form',
@@ -325,8 +324,6 @@ var TableBuilder = {
                     console.log( errors[index] );
                 });
 
-alert('sdsd');
-
                 TableBuilder.showErrorNotification(errorResult.message);
                 TableBuilder.hidePreloader();
             }
@@ -509,6 +506,7 @@ alert('sdsd');
             {name: "query_type", value: "show_revisions"},
             {name: "id", value: id},
         ];
+
         jQuery.ajax({
             type: "POST",
             url: TableBuilder.getActionUrl(context),
@@ -606,6 +604,24 @@ alert('sdsd');
         });
     }, // end doDelete
 
+    getHtmlFroala : function(values, form) {
+
+        var textBlock = form + ' .text_block';
+
+        $(textBlock).each(function ( index ) {
+            var nameFroala = $(this).attr('name');
+
+            try {
+                var valueFroala = $(this).froalaEditor('codeView.get');
+            } catch (error) {
+                var valueFroala = $(this).froalaEditor('html.get');
+            }
+            values.push({ name: nameFroala, value: valueFroala });
+        });
+
+        return values;
+    },
+
     doEdit: function (id, table, foreign_field_id, foreign_attributes) {
         var form = '#edit_form_' + table;
 
@@ -618,6 +634,7 @@ alert('sdsd');
         $('.fr-popup').remove();
 
         var values = $(TableBuilder.edit_form).serializeArray();
+        values = TableBuilder.getHtmlFroala(values, form);
 
         values.push({ name: 'id', value: id });
         values.push({ name: 'query_type', value: "save_edit_form" });
@@ -1207,7 +1224,7 @@ alert('sdsd');
 
         var section = thisFileElement.parents('.pictures_input_field');
 
-        section.find("#files_uploaded_table_" + name).show();
+        section.find("#files_uploaded_table_" + baseName).show();
 
         var data = {
             query_type: "select_with_uploaded_images",
@@ -1216,13 +1233,13 @@ alert('sdsd');
             page_id : pageId,
             path_model: thisFileElement.attr('data-name-model')
         };
-        section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
+        section.find('#files_uploaded_table_' + baseName + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(
             '/admin/photo/select_photos',
             data,
             function (response) {
-                section.find('#files_uploaded_table_' + name + ' tbody').html(response.data);
-                section.find('#files_uploaded_table_' + name + ' tbody').attr('data-type', type);
+                section.find('#files_uploaded_table_' + baseName + ' tbody').html(response.data);
+                section.find('#files_uploaded_table_' + baseName + ' tbody').attr('data-type', type);
             },
             'json'
         );
@@ -1264,6 +1281,7 @@ alert('sdsd');
             });
         } else {
             var img = section.find('#files_uploaded_table_' + name + ' .one_img_uploaded.selected img').attr('data-path');
+            
             if (img != undefined) {
                 section.find('[type=hidden]').val(img);
                 section.find('.image-container_' + name).html('<div style="position: relative; display: inline-block;"><img src="' + img + '" width="200px"><div class="tb-btn-delete-wrap"><button class="btn btn-default btn-sm tb-btn-image-delete" type="button" onclick="TableBuilder.deleteSingleImage(\'picture\', this);"><i class="fa fa-times"></i></button></div></div>');
@@ -1372,30 +1390,6 @@ alert('sdsd');
             doAjaxLoadContent(location.href);
         });
     }, // end setPerPageAmount
-
-    doExport: function (type, urlBasic) {
-        var values = $(TableBuilder.export_form).serializeArray();
-        values.push({ name: 'type', value: type });
-        values.push({ name: 'query_type', value: "export" });
-
-        var out = new Array();
-        $.each(values, function (index, val) {
-            out.push(val['name'] + '=' + val['value']);
-        });
-
-        if (urlBasic == undefined) {
-            urlBasic = document.location.pathname;
-        }
-
-        if (document.location.search) {
-            var url = urlBasic + document.location.search + '&' + out.join('&');
-        } else {
-            var url = urlBasic + '?' + out.join('&');
-        }
-
-        location.href = url;
-
-    }, // end doExport
 
     flushStorage: function () {
         TableBuilder.storage = {};

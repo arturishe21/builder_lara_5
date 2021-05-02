@@ -2,13 +2,9 @@
 
 namespace Vis\Builder;
 
-use Carbon\Carbon;
-use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Vis\Builder\Services\Actions;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Vis\Builder\ControllersNew\{TreeController};
-use Vis\Builder\Services\Export;
 
 /**
  * Class TableAdminController.
@@ -18,20 +14,6 @@ class TableAdminController extends Controller
     /**
      * @return mixed
      */
-    public function showTreeNew()
-    {
-        $modelDefinition = "App\\Cms\\Tree\\" . Str::title('tree');
-
-        return (new TreeController($modelDefinition))->list();
-    }
-
-    public function handleTreeNew()
-    {
-        $modelDefinition = "App\\Cms\\Tree\\" . Str::title('tree');
-
-        return (new TreeController($modelDefinition))->handle();
-    }
-
     /**
      * @param string $page
      *
@@ -43,10 +25,6 @@ class TableAdminController extends Controller
 
         if (!class_exists($modelDefinition)) {
             throw new \Exception('Not found class '. $modelDefinition);
-        }
-
-        if (request('query_type') == 'export') {
-            return (new Export($modelDefinition))->download($page . '_' . Carbon::now() . '.xlsx');
         }
 
         $model = new $modelDefinition();
@@ -83,6 +61,15 @@ class TableAdminController extends Controller
         return (new Actions(new $modelDefinition()))->router(request('query_type'));
     }
 
+    public function fastEdit($page, $id)
+    {
+        $modelDefinition = $this->getModelDefinition($page);
+
+        request()->merge(['ident' => request('name')]);
+
+        return (new Actions(new $modelDefinition()))->router('do_fast_change_field');
+    }
+
     private function getModelDefinition($page)
     {
         if (request('foreign_attributes')) {
@@ -99,17 +86,5 @@ class TableAdminController extends Controller
 
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
-
-    public function showTreeAll($page)
-    {
-        $modelPath = "App\\Models\\" . ucfirst(Str::camel($page));
-
-        $model = new $modelPath();
-        $tree = $model::with('children')->defaultOrder()->get()->toTree();
-        $parentIDs = [];
-
-        return view('admin::tree.tree', compact('tree', 'parentIDs'));
-    }
-
 
 }

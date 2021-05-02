@@ -129,9 +129,9 @@ trait ImagesTrait
         $imagesRes = [];
         foreach ($images as $imgOne) {
             if ($paramImg) {
-                $imagesRes['/'.$imgOne] = glide($imgOne, $paramImg);
+                $imagesRes[$imgOne] = glide($imgOne, $paramImg);
             } else {
-                $imagesRes[] = '/'.$imgOne;
+                $imagesRes[] = $imgOne;
             }
         }
 

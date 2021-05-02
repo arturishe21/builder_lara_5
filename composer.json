@@ -17,7 +17,8 @@
         "intervention/imagecache": "2.*",
         "predis/predis" : "v1.1.1",
         "maatwebsite/excel": "3.*",
-        "barryvdh/laravel-debugbar": "3.*"
+        "barryvdh/laravel-debugbar": "^3.2",
+        "bkwld/cloner": "^3.9"
     },
     "autoload": {
         "classmap": [
@@ -26,6 +27,7 @@
             "src/Http/Controllers",
             "src/Http/ControllersNew",
             "src/Http/Services",
+            "src/Http/Interfaces",
             "src/Http/Definitions",
             "src/Http/Fields",
             "src/Http/Traits",

@@ -36,6 +36,7 @@ $selected = $field->getOptionsSelected($definition);
                         @endif
                         ident: '{!! $field->getNameField() !!}',
                         query_type: 'many_to_many_ajax_search',
+                        paramsJson : '{ "model_parent" : "{{addslashes(addslashes($definition->getFullPathDefinition()))}}"}'
                     };
                 },
                 results: function (data, page) {

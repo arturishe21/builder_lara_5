@@ -14,7 +14,8 @@ class BaseModel extends Model
         \Vis\Builder\Helpers\Traits\ImagesTrait,
         \Vis\Builder\Helpers\Traits\QuickEditTrait,
         \Venturecraft\Revisionable\RevisionableTrait,
-        \Vis\Builder\Helpers\Traits\Rememberable;
+        \Vis\Builder\Helpers\Traits\Rememberable,
+        \Bkwld\Cloner\Cloneable;
 
     protected $revisionFormattedFieldNames = [
         'title'             => 'Название',

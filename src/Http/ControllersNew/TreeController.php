@@ -3,16 +3,19 @@
 namespace Vis\Builder\ControllersNew;
 
 use Illuminate\Support\Str;
+use Vis\Builder\Services\Revisions;
 
 class TreeController
 {
     protected $definition;
     protected $model;
+    protected $revision;
 
     public function __construct($definition)
     {
-        $this->definition = new $definition;
+        $this->definition = $definition;
         $this->model = $this->definition->model();
+        $this->revision = new Revisions();
     }
 
     public function list()
@@ -44,7 +47,9 @@ class TreeController
 
     public function handle()
     {
-        if (in_array(request('query_type'), ['delete_foreign_row', 'get_html_foreign_definition'])) {
+
+        if (in_array(request('query_type'),
+            ['delete_foreign_row', 'get_html_foreign_definition', 'show_revisions', 'return_revisions'])) {
             $method = Str::camel(request('query_type'));
 
             return $this->$method(request()->except('query_type'));
@@ -65,6 +70,8 @@ class TreeController
     public function doDeleteNode($request)
     {
         $this->definition->model()->destroy($request['id']);
+
+        $this->definition->clearCache();
 
         return [
             'status' => 'success'
@@ -160,8 +167,7 @@ class TreeController
 
     private function getHtmlForeignDefinition($request)
     {
-        $model = $this->getDefinitionModel($request);
-        $definition = new $model();
+        $definition = resolve($this->getDefinitionModel($request));
 
         $parseJsonData = (array) json_decode($request['paramsJson']);
         $field = $definition->getAllFields()[$parseJsonData['ident']];
@@ -171,12 +177,32 @@ class TreeController
 
     private function deleteForeignRow($request)
     {
-        $model = $this->getDefinitionModel($request);
-        $definition = new $model();
+        $definition = resolve($this->getDefinitionModel($request));
 
         $parseJsonData = (array) json_decode($request['paramsJson']);
         $field = $definition->getAllFields()[$parseJsonData['ident']];
 
         return $field->remove($definition, $parseJsonData);
+    }
+
+    private function showRevisions($request)
+    {
+        $definition = resolve($this->getDefinitionModel($request));
+
+        return $this->revision->show($request['id'], $definition);
+    }
+
+    private function returnRevisions($request)
+    {
+        return $this->revision->doReturn($request['id']);
+    }
+
+    private function doFastChangeField()
+    {
+        $tree = $this->model::find(request('pk'));
+        $tree->is_active = request('value');
+        $tree->save();
+
+        $tree->clearCache();
     }
 }

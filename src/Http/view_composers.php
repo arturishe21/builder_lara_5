@@ -73,12 +73,12 @@ View::composer(['admin::tree.create_modal', 'admin::tree.content'], function (Vi
     $view->with('templates', $templates);
 });
 
-View::composer(['admin::tree.partials.update',
-                     'admin::tree.partials.preview',
-                     'admin::tree.partials.clone',
-                     'admin::tree.partials.revisions',
-                     'admin::tree.partials.delete',
-                     'admin::tree.partials.constructor',
+View::composer(['admin::new.tree.partials.update',
+                     'admin::new.tree.partials.preview',
+                     'admin::new.tree.partials.clone',
+                     'admin::new.tree.partials.revisions',
+                     'admin::new.tree.partials.delete',
+                     'admin::new.tree.partials.constructor',
 ], function (ViewParam $view) {
     $type = $view->getData()['type'];
     $active = true;

@@ -4,7 +4,7 @@ namespace Vis\Builder\Definitions;
 
 use Vis\Builder\Services\Listing;
 use Illuminate\Support\Arr;
-use Vis\Builder\Fields\Definition;
+use Vis\Builder\Fields\{Definition, Password, Virtual};
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
@@ -22,10 +22,11 @@ class Resource
     protected $updateHasOneList = [];
     protected $updateMorphOneList = [];
     protected $relations = [];
+    protected $filterScope;
 
     public function actions()
     {
-        return Actions::make()->insert()->update()->preview()->clone()->delete();
+        return Actions::make()->insert()->update()->clone()->revisions()->delete();
     }
 
     public function model()
@@ -140,6 +141,7 @@ class Resource
     public function remove(int $id) : array
     {
         $this->model()->destroy($id);
+        $this->clearCache();
 
         return $this->returnSuccess();
     }
@@ -269,7 +271,11 @@ class Resource
                     continue;
                 }
 
-                if ($field instanceof Definition) {
+                if ($field instanceof Definition || $field instanceof Virtual) {
+                    continue;
+                }
+
+                if ($request[$nameField] == '******' && $field instanceof Password) {
                     continue;
                 }
 
@@ -347,7 +353,9 @@ class Resource
                     }
                 }
 
-                $record->$relationMorphOne ? $record->$relationMorphOne()->update($data) : $record->$relationMorphOne()->create($data);
+                $record->$relationMorphOne && $record->$relationMorphOne->id
+                    ? $record->$relationMorphOne()->update($data)
+                    : $record->$relationMorphOne()->create($data);
             }
         }
 
@@ -382,8 +390,9 @@ class Resource
                 return '';
             }
 
-            $attempts = 2;
-            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, $attempts);
+            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
+            $result = str_replace('/ ','/', $result);
+            $result = str_replace(' /','/', $result);
 
             return $result;
 
@@ -470,8 +479,12 @@ class Resource
         $filter = $this->getFilter();
         $orderBy = $this->getOrderBy();
         $perPage = $this->getPerPageThis();
+        $collection = $this->getFilterScope($collection);
 
         if (isset($filter['filter']) && is_array($filter['filter'])) {
+
+            $allFields = $this->getAllFields();
+
             foreach ($filter['filter'] as $field => $value) {
                 if (is_null($value) || $value == '') {
                     continue;
@@ -479,19 +492,47 @@ class Resource
 
                 if (is_array($value)) {
                     if ($value['from'] && $value['to']) {
-                        $collection = $collection->whereBetween($field, [$value['from'], $value['to']]);
+                        $collection = $collection->whereBetween($field, [$value['from'], $value['to'].' 23:59:59']);
                     }
 
                     continue;
                 }
 
-                $collection = $collection->where(function ($query) use ($field, $value) {
-                    $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                $collection = $collection->where(function ($query) use ($field, $value, $allFields) {
+                    if ($this->isTextField($allFields, $field)) {
+                        $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                    } else {
+                        $query->where($field, '=', $value);
+                    }
                 });
             }
         }
 
         return $collection->orderByRaw($orderBy)->paginate($perPage);
+    }
+
+    public function getFilterScope($collection)
+    {
+        if (!$this->filterScope) {
+            return $collection;
+        }
+
+        return $collection->{$this->filterScope}();
+    }
+
+    public function filterScope($scope)
+    {
+        $this->filterScope = $scope;
+    }
+
+    private function isTextField($allFields, $field)
+    {
+        return Arr::exists($allFields, $field) &&
+            (get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text' ||
+             get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Textarea' ||
+             get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Froala'
+            )
+            ;
     }
 
     public function head()

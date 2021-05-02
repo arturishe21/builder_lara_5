@@ -13,6 +13,6 @@
 @stop
 @section('main')
      <div>
-        @include("admin::settings.part.settings_center")
+        @include("admin::settings.part.center")
      </div>
 @stop

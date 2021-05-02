@@ -149,7 +149,7 @@ class Actions
 
     private function returnRevisions($request)
     {
-        return $this->revision->doReturn($request['id'], $this->definition);
+        return $this->revision->doReturn($request['id']);
     }
 
     private function setPerPage($request)
@@ -194,6 +194,11 @@ class Actions
     private function doChangePosition($request)
     {
        return (new TreeController($this->definition))->doChangePosition();
+    }
+
+    private function doFastChangeField($request)
+    {
+        return $this->getThisField()->fastSave($this->definition, $request);
     }
 
     private function search($request)

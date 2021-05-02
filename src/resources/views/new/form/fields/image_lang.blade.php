@@ -5,14 +5,14 @@
             <label class="label pull-left" style="line-height: 32px;">{{$field->getName()}}</label>
             @foreach ($field->getLanguage() as $tab)
                 <li class="{{$loop->first ? 'active' : ''}}">
-                    <a href="#{{$field->getNameField() . $tab['postfix']}}" data-toggle="tab">{{__cms($tab['caption'])}}</a>
+                    <a href="#{{$definition->getNameDefinition() . $field->getNameField() . $tab['postfix']}}" data-toggle="tab">{{__cms($tab['caption'])}}</a>
                 </li>
             @endforeach
         </ul>
 
         <div class="tab-content padding-5">
             @foreach ($field->getLanguage() as $tab)
-                <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="{{$field->getNameField() . $tab['postfix']}}">
+                <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="{{$definition->getNameDefinition() .$field->getNameField() . $tab['postfix']}}">
                     <div style="position: relative;">
                         <div class="pictures_input_field">
                             <div class="picture_block">
@@ -66,7 +66,7 @@
 
                                 </div>
                             </div>
-                            <div class="modal files_uploaded_table" id ='files_uploaded_table_{{ $field->getNameField()}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+                            <div class="modal files_uploaded_table" id ='files_uploaded_table_{{ $field->getNameField(). $tab['postfix']}}' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
                                 <div class="modal-dialog">
                                     <div class="form-preloader smoke_lol"><i class="fa fa-gear fa-4x fa-spin"></i></div>
                                     <div class="modal-content">

@@ -59,7 +59,7 @@
 
     <script>
         $(document).ready(function () {
-            var action_url = "/admin/handle/{{$treeName}}";
+            var action_url = "/admin/actions/{{$treeName}}";
 
             TableBuilder.optionsInit({
                 action_url: action_url

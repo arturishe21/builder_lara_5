@@ -2,25 +2,20 @@
 
 namespace Vis\Builder\Services;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Vis\Builder\Interfaces\Button;
 
-class Export implements FromCollection, WithHeadings
+class Export extends ButtonBase implements FromCollection, WithHeadings, Button
 {
     use Exportable;
 
-    private $definition;
-
-    public function __construct($definition)
-    {
-        $this->definition = (new $definition()) ;
-    }
-
     public function headings(): array
     {
-        foreach ($this->definition->head() as $field) {
+        foreach ($this->listing->head() as $field) {
             $fields[$field->getNameFieldInBd()] = $field->getNameFieldInBd();
         }
 
@@ -31,7 +26,7 @@ class Export implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $model = $this->definition->model();
+        $model = $this->listing->getDefinition()->model();
 
         $results = $model::select(array_keys(request('b')));
 
@@ -40,14 +35,17 @@ class Export implements FromCollection, WithHeadings
         }
 
         if (request('d')['to']) {
-            $results->where('created_at', '<=', request('d')['to']);
+            $results->where('created_at', '<=', request('d')['to']. " 23:59:59");
         }
 
         return $results->get();
     }
 
-    public function show($list)
+    public function show():View
     {
-        return view('admin::new.list.buttons.export', compact('list'));
+        $class = addslashes(get_class($this));
+        $list = $this->listing->head();
+
+        return view('admin::new.list.buttons.export', compact('list', 'class'));
     }
 }

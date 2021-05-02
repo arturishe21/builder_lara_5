@@ -19,6 +19,7 @@ class Tree extends Model
         \Vis\Builder\Helpers\Traits\ViewPageTrait,
         \Venturecraft\Revisionable\RevisionableTrait,
         \Vis\Builder\Helpers\Traits\QuickEditTrait,
+        \Bkwld\Cloner\Cloneable,
         NodeTrait;
 
     public function getLftName()
@@ -260,7 +261,7 @@ class Tree extends Model
     /**
      * @return bool|mixed
      */
-    private function getCacheTags()
+    protected function getCacheTags()
     {
         return ['tree'];
     }

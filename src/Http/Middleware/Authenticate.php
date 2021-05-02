@@ -8,9 +8,17 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
+use App\Cms\Admin;
 
 class Authenticate
 {
+    private $adminClass;
+
+    public function __construct(Admin $admin)
+    {
+        $this->adminClass = new Admin();
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -65,6 +73,15 @@ class Authenticate
 
     private function checkIp($request)
     {
+        $ip = $this->adminClass->accessIp();
+
+        if (count($ip)) {
+
+            if (!in_array($request->ip(), $ip)) {
+                return abort(403);
+            }
+        }
+
         return true;
     }
 }

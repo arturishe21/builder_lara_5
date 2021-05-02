@@ -13,25 +13,7 @@ class Translate extends Model
     public $timestamps = false;
 
     protected $fillable = ['lang', 'translate'];
-
-    public function generateTranslate($language, $phrase)
-    {
-        try {
-            $langDef = config('builder.translations.cms.language_default');
-
-            if ($langDef == $language || !$phrase) {
-                return json_encode(['lang' => $language, 'text' => $phrase]);
-            }
-
-            $result = (new GoogleTranslateForFree())->translate($langDef, $language, $phrase, 2);
-
-            return json_encode(['lang' => $language, 'text' => $result]);
-
-        } catch (\Exception $e) {
-            return json_encode(['lang' => $language, 'text' => $phrase]);
-        }
-    }
-
+    
     public function createNewTranslate($phrase)
     {
         $languages = config('builder.translations.cms.languages');
@@ -40,11 +22,18 @@ class Translate extends Model
             'phrase' => $phrase
         ]);
 
-        foreach ($languages as $slug => $value) {
+        foreach ($languages as $lang => $value) {
 
-            $collection = json_decode($this->generateTranslate($slug, $phrase), true);
-            $collection['translate'] = $collection['text'];
-            unset($collection['text']);
+            try {
+                $translate = (new GoogleTranslateForFree())->translate('ru', $lang, $phrase, 2);
+            } catch (\Exception $e) {
+                $translate = $phrase;
+            }
+
+            $collection = [
+                'lang' => $lang,
+                'translate' => $translate
+            ];
 
             $newPhrase->translationsPhrases()->create($collection);
         }
