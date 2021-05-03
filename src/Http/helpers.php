@@ -1,5 +1,8 @@
 <?php
 
+use Vis\Builder\Models\TranslationsCms;
+use Vis\Builder\Models\TranslationsPhrasesCms;
+
 if (! function_exists('setting')) {
     /**
      * @param string $value
@@ -158,11 +161,11 @@ if (! function_exists('__cms')) {
     {
         $thisLang = Cookie::get('lang_admin', config('builder.translations.cms.language_default'));
 
-        $arrayTranslate = Vis\TranslationsCMS\Trans::fillCacheTrans();
+        $arrayTranslate = TranslationsPhrasesCms::fillCacheTrans();
 
         if (!isset($arrayTranslate[$phrase][$thisLang])) {
             if ($phrase) {
-                (new \Vis\TranslationsCMS\Translate())->createNewTranslate($phrase);
+                (new TranslationsCms())->createNewTranslate($phrase);
             }
         }
 

@@ -22,18 +22,23 @@
             </div>
             <div class="row">
 
-                 @forelse($langs as $lang => $value)
-                     <section class="col" style="float: none">
-                       <label class="label" for="title">{{$value}}</label>
-                       <div style="position: relative;">
-                         <label class="input">
-                            <input type="text" name="{{$lang}}" class="dblclick-edit-input form-control input-sm unselectable langs_input">
-                         </label>
-                       </div>
-                     </section>
-                  @empty
-                     Нет массива с языками
-                  @endforelse
+                @foreach($langs as $languageSlug => $language)
+                    <section class="col" style="float: none">
+                        <label class="label" for="title">{{$language}}</label>
+                        <div style="position: relative;">
+                            <label class="input">
+                                <input type="text"
+                                       value=""
+                                       name="translation[{{$languageSlug}}]"
+                                       data-lang="{{$languageSlug}}"
+                                       placeholder=""
+                                       class="dblclick-edit-input form-control input-sm unselectable langs_input"
+                                       id="langs_input_{{$languageSlug}}"
+                                >
+                            </label>
+                        </div>
+                    </section>
+                @endforeach
             </div>
 
       </fieldset>

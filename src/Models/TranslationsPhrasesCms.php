@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\TranslationsCMS;
+namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class Trans.
  */
-class Trans extends Model
+class TranslationsPhrasesCms extends Model
 {
     /**
      * @var string
@@ -35,7 +35,7 @@ class Trans extends Model
 
     public function translationsPhrases()
     {
-        return $this->hasMany('Vis\TranslationsCMS\Translate', 'translations_phrases_cms_id');
+        return $this->hasMany(TranslationsCms::class, 'translations_phrases_cms_id');
     }
 
     /**
@@ -43,7 +43,7 @@ class Trans extends Model
      */
     public function getTrans()
     {
-        $res = $this->hasMany('Vis\TranslationsCMS\Translate', 'translations_phrases_cms_id')->get()->toArray();
+        $res = $this->hasMany(TranslationsCms::class, 'translations_phrases_cms_id')->get()->toArray();
 
         if ($res) {
             foreach ($res as $el) {

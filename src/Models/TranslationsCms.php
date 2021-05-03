@@ -1,12 +1,12 @@
 <?php
 
-namespace Vis\TranslationsCMS;
+namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Vis\Builder\Libs\GoogleTranslateForFree;
 
-class Translate extends Model
+class TranslationsCms extends Model
 {
     protected $table = 'translations_cms';
 
@@ -18,7 +18,7 @@ class Translate extends Model
     {
         $languages = config('builder.translations.cms.languages');
 
-        $newPhrase = Trans::create([
+        $newPhrase = TranslationsPhrasesCms::create([
             'phrase' => $phrase
         ]);
 
@@ -39,6 +39,6 @@ class Translate extends Model
         }
 
         Cache::tags('translations')->flush();
-        Trans::fillCacheTrans();
+        TranslationsPhrasesCms::fillCacheTrans();
     }
 }

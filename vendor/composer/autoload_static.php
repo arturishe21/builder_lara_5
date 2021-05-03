@@ -93,6 +93,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Helpers\\Traits\\ViewPageTrait' => __DIR__ . '/../..' . '/src/Http/Traits/ViewPageTrait.php',
         'Vis\\Builder\\Helpers\\Traits\\ViewedTrait' => __DIR__ . '/../..' . '/src/Http/Traits/ViewedTrait.php',
         'Vis\\Builder\\Helpers\\URLify' => __DIR__ . '/../..' . '/src/libs/URLify.php',
+        'Vis\\Builder\\Http\\Controllers\\TranslateCmsController' => __DIR__ . '/../..' . '/src/Http/Controllers/TranslateCmsController.php',
         'Vis\\Builder\\Img' => __DIR__ . '/../..' . '/src/libs/Img.php',
         'Vis\\Builder\\InstallCommand' => __DIR__ . '/../..' . '/src/Console/InstallCommand.php',
         'Vis\\Builder\\Interfaces\\Button' => __DIR__ . '/../..' . '/src/Http/Interfaces/Button.php',
@@ -101,6 +102,8 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\LocalizationMiddlewareRedirect' => __DIR__ . '/../..' . '/src/Http/Middleware/LocalizationMiddlewareRedirect.php',
         'Vis\\Builder\\LogViewerController' => __DIR__ . '/../..' . '/src/Http/Controllers/LogViewerController.php',
         'Vis\\Builder\\LoginController' => __DIR__ . '/../..' . '/src/Http/Controllers/LoginController.php',
+        'Vis\\Builder\\Models\\TranslationsCms' => __DIR__ . '/../..' . '/src/Models/TranslationsCms.php',
+        'Vis\\Builder\\Models\\TranslationsPhrasesCms' => __DIR__ . '/../..' . '/src/Models/TranslationsPhrasesCms.php',
         'Vis\\Builder\\OptmizationImg' => __DIR__ . '/../..' . '/src/libs/OptmizationImg.php',
         'Vis\\Builder\\PhotoController' => __DIR__ . '/../..' . '/src/Http/Controllers/PhotoController.php',
         'Vis\\Builder\\Revision' => __DIR__ . '/../..' . '/src/Models/Revision.php',
@@ -124,9 +127,6 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\TreeController' => __DIR__ . '/../..' . '/src/Http/Controllers/TreeController.php',
         'Vis\\Builder\\User' => __DIR__ . '/../..' . '/src/Models/User.php',
         'Vis\\Builder\\Watermark' => __DIR__ . '/../..' . '/src/libs/Watermark.php',
-        'Vis\\TranslationsCMS\\Trans' => __DIR__ . '/../..' . '/src/Models/Trans.php',
-        'Vis\\TranslationsCMS\\Translate' => __DIR__ . '/../..' . '/src/Models/Translate.php',
-        'Vis\\TranslationsCMS\\TranslateController' => __DIR__ . '/../..' . '/src/Http/Controllers/TranslateController.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
