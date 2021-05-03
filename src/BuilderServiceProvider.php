@@ -28,7 +28,6 @@ class BuilderServiceProvider extends ServiceProvider
 
         require __DIR__.'/../vendor/autoload.php';
         require __DIR__.'/Http/helpers.php';
-        require __DIR__.'/Http/view_composers.php';
 
         $this->setupRoutes($this->app->router);
 
@@ -49,8 +48,31 @@ class BuilderServiceProvider extends ServiceProvider
             realpath(__DIR__.'/Migrations') => $this->app->databasePath().'/migrations',
         ]);
 
-        View::composer(['admin::partials.change_lang', 'admin::partials.scripts'],
-                    'Vis\Builder\Http\ViewComposers\ChangeLang');
+        $this->viewComposersInit();
+    }
+
+    private function viewComposersInit()
+    {
+        View::composer([
+            'admin::partials.change_lang',
+            'admin::partials.scripts'
+        ],
+            'Vis\Builder\Http\ViewComposers\ChangeLang');
+
+        View::composer('admin::partials.navigation_badge', 'Vis\Builder\Http\ViewComposers\NavigationBadge');
+        View::composer('admin::partials.navigation', 'Vis\Builder\Http\ViewComposers\Navigation');
+
+        View::composer(['admin::tree.partials.update',
+            'admin::tree.partials.preview',
+            'admin::tree.partials.clone',
+            'admin::tree.partials.revisions',
+            'admin::tree.partials.delete',
+            'admin::tree.partials.constructor',
+        ], 'Vis\Builder\Http\ViewComposers\ActivitiesTree');
+
+
+        View::composer('admin::layouts.default', 'Vis\Builder\Http\ViewComposers\LayoutDefault');
+
     }
 
     /**
