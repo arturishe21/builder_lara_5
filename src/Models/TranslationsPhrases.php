@@ -50,23 +50,22 @@ class TranslationsPhrases extends Model
                 $newPhrase = self::create(['phrase' => $phrase]);
 
                 $langsDef = config('app.locale');
-                $langsAll = array_keys(config('builder.translations.config.languages'));
+                $languages = array_keys(config('builder.translations.config.languages'));
 
-                foreach ($langsAll as $lang) {
-                    $lang = str_replace('ua', 'uk', $lang);
+                foreach ($languages as $language) {
+                    $language = str_replace('ua', 'uk', $language);
                     $langsDef = str_replace('ua', 'uk', $langsDef);
-                    $translate = $phrase;
 
                     try {
-                        $translate = (new GoogleTranslateForFree())->translate($langsDef, $lang, $phrase, 2);
+                        $translate = (new GoogleTranslateForFree())->translate($langsDef, $language, $phrase, 1);
                     } catch (\Exception $e) {
                         $translate = $phrase;
                     }
 
-                    Translate::create(
+                    Translations::create(
                         [
                             'id_translations_phrase' => $newPhrase->id,
-                            'lang'                   => str_replace('uk', 'ua', $lang),
+                            'lang'                   => str_replace('uk', 'ua', $language),
                             'translate'              => $translate,
                         ]
                     );
@@ -78,7 +77,7 @@ class TranslationsPhrases extends Model
                 return $arrayTranslate[$phrase][$thisLang] ?? 'error translation';
             }
 
-            $translatePhrase = Translate::where('id_translations_phrase', $checkPresentPhrase->id)
+            $translatePhrase = Translations::where('id_translations_phrase', $checkPresentPhrase->id)
                 ->where('lang', 'like', $thisLang)->first();
 
             if ($translatePhrase) {

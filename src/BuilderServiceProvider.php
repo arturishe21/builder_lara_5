@@ -5,6 +5,8 @@ namespace Vis\Builder;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Vis\Builder\Models\Translations;
+use Vis\Builder\Models\TranslationsPhrases;
 
 /**
  * Class BuilderServiceProvider.
@@ -125,6 +127,10 @@ class BuilderServiceProvider extends ServiceProvider
 
         $this->app->singleton($this->commandAdminCreateImgWebp, function () {
             return new CreateImgWebp();
+        });
+
+        $this->app->singleton('arrayTranslate', function () {
+            return TranslationsPhrases::fillCacheTrans();
         });
 
         $this->commands($this->commandAdminInstall);
