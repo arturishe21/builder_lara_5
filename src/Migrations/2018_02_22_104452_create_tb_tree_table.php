@@ -21,8 +21,8 @@ class CreateTbTreeTable extends Migration
             $table->integer('lft');
             $table->integer('rgt');
             $table->integer('depth');
-            $table->json('title');
-            $table->json('description');
+            $table->json('title')->nullable();
+            $table->json('description')->nullable();
             $table->string('slug');
             $table->string('template', 120);
             $table->string('picture');

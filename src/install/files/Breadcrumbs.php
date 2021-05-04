@@ -1,6 +1,8 @@
 <?php
 
-class Breadcrumbs extends ArrayObject
+namespace App\Services;
+
+class Breadcrumbs extends \ArrayObject
 {
     private $breadcrumbs = [];
 
