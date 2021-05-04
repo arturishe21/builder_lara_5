@@ -18,7 +18,7 @@
 @if($current->parent_id)
     <tr>
         <td colspan="{{count($list->head()) + 2}}" style="text-align: left">
-            <a href="?node={{$current->parent_id}}" class="node_link">&larr; Назад</a>
+            <a href="?node={{$current->parent_id}}" class="node_link">&larr; {{__cms('Назад')}}</a>
         </td>
     </tr>
 @endif

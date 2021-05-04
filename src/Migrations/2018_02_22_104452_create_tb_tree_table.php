@@ -21,18 +21,13 @@ class CreateTbTreeTable extends Migration
             $table->integer('lft');
             $table->integer('rgt');
             $table->integer('depth');
-            $table->string('title');
-            $table->text('description');
+            $table->json('title');
+            $table->json('description');
             $table->string('slug');
             $table->string('template', 120);
             $table->string('picture');
             $table->text('additional_pictures');
             $table->tinyInteger('is_active');
-            $table->string('seo_title');
-            $table->string('seo_description');
-            $table->string('seo_keywords');
-            $table->tinyInteger('is_show_in_menu');
-            $table->tinyInteger('is_show_in_footer_menu');
             $table->timestamps();
 
             $table->index('lft');

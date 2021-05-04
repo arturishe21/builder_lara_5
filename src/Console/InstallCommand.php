@@ -149,14 +149,9 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/public/robots.txt', public_path().'/robots.txt');
         $this->info('Replace robots.txt - OK');
 
-        if (! is_dir(app_path().'/Models')) {
-            File::makeDirectory(app_path().'/Models', 0777, true);
-            $this->info('Folder app/Models is created');
-        }
-
         if (! is_dir(app_path().'/Services')) {
             File::makeDirectory(app_path().'/Services', 0777, true);
-            $this->info('Folder app/Models is Services');
+            $this->info('Folder app/Services is Services');
         }
 
         if (! is_dir(app_path().'/Http/ViewComposers')) {
@@ -173,26 +168,13 @@ class InstallCommand extends Command
         copy($this->installPath.'/files/app/Http/ViewComposers/HeaderComposer.php', app_path().'/Http/ViewComposers/HeaderComposer.php');
         $this->info('Created app/Http/ViewComposers/HeaderComposer.php- OK');
 
-        copy($this->installPath.'/files/BaseModel.php', app_path().'/Models/BaseModel.php');
-        $this->info('Created app/Models/BaseModel.php - OK');
-
-        copy($this->installPath.'/files/Tree.php', app_path().'/Models/Tree.php');
-        $this->info('Created app/Models/Tree.php - OK');
-
-        copy($this->installPath.'/files/Article.php', app_path().'/Models/Article.php');
-        $this->info('Created app/Models/Article.php - OK');
-
-        copy($this->installPath.'/files/User.php', app_path().'/Models/User.php');
-        $this->info('Created app/Models/User.php - OK');
-
-        copy($this->installPath.'/files/Group.php', app_path().'/Models/Group.php');
-        $this->info('Created app/Models/Group.php - OK');
-
         copy($this->installPath.'/files/HomeController.php', app_path().'/Http/Controllers/HomeController.php');
         $this->info('Created app/Http/Controllers/HomeController.php- OK');
 
         copy($this->installPath.'/files/Breadcrumbs.php', app_path().'/Services/Breadcrumbs.php');
-        $this->info('Created app/Models/Breadcrumbs.php- OK');
+        $this->info('Created app/Services/Breadcrumbs.php- OK');
+
+        \File::copyDirectory( $this->installPath . '/files/Models', app_path('Models'));
 
         if (! is_dir(base_path().'/resources/views/layouts')) {
             File::makeDirectory(base_path().'/resources/views/layouts', 0777, true);
@@ -222,6 +204,9 @@ class InstallCommand extends Command
         if (! is_dir(base_path().'/resources/lang/ua')) {
             File::makeDirectory(base_path().'/resources/lang/ua', 0777, true);
         }
+
+        copy($this->installPath.'/files/seo.blade.php',
+            base_path().'/resources/views/partials/seo.blade.php');
 
         copy(
             $this->installPath.'/files/resources/lang/ru/validation.php',

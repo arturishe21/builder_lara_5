@@ -24,7 +24,7 @@
                             $ancestors = $current::ancestorsAndSelf($current->id); ?>
 
                             @foreach ($ancestors as $ancestor)
-                                <a href="?node={{ $ancestor->id }}" style="color: #fff" class="node_link">{{ $ancestor->title}}</a> /
+                                <a href="?node={{ $ancestor->id }}" style="color: #fff" class="node_link">{{ $ancestor->t('title')}}</a> /
                             @endforeach
                                 <a onclick="TableBuilder.getEditForm(<?=$current->id?>, $(this));" style="min-width: 70px; float: right">{{__cms('Редактировать')}}</a>
 
@@ -78,7 +78,7 @@
             $(".show_hide_tree").text("{{__cms('Спрятать дерево')}}");
 
             if (showTree == 0) {
-                $(".tree_top_content").html("<p style='padding:10px'>Загрузка..</p>");
+                $(".tree_top_content").html("<p style='padding:10px'>{{__cms('Загрузка')}}..</p>");
                 $.post("/admin/show-all-tree", {
                         'model' : '<?=addslashes(get_class($current))?>'
                         },

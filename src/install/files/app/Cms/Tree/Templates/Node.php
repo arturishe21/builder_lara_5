@@ -16,8 +16,8 @@ class Node extends ResourceTree
         return [
             'Общее' => [
                 Id::make('#', 'id')->sortable(),
-                Text::make('Заголовок', 'title'),
-                Froala::make('Описание', 'description'),
+                Text::make('Заголовок', 'title')->language(),
+                Froala::make('Описание', 'description')->language(),
                 Text::make('Url', 'slug'),
                 Image::make('Картинка', 'picture'),
                 MultiImage::make('Дополнительные картинки', 'additional_pictures'),
