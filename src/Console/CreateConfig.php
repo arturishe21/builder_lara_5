@@ -104,7 +104,7 @@ class CreateConfig extends Command
 
     private function createMigration()
     {
-        $nameMigration = date('Y_m_d_his').'_create_'.$this->table.'.php';
+        $nameMigration = date('Y_m_d_His').'_create_'.$this->table.'_table.php';
         $fileMigration = base_path().'/database/migrations/'.$nameMigration;
 
         copy(
