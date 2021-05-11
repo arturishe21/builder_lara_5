@@ -123,7 +123,7 @@ class CreateConfig extends Command
         $file = file_get_contents($fileReplace);
         $file = str_replace(
             ['modelName', 'tableName', 'tableUpName', 'modelPluralName'],
-            [$this->model, $this->table, ucfirst(Str::camel($this->table)), Str::plural($this->model)],
+            [$this->model, $this->table, ucfirst(Str::camel($this->table . '_table')), Str::plural($this->model)],
             $file);
 
         file_put_contents($fileReplace, $file);
@@ -168,7 +168,7 @@ class CreateConfig extends Command
             case 'text':
                 return 'Textarea';
                 break;
-            case 'tinyInteger':
+            case 'tinyInteger' || 'boolean':
                 return 'Checkbox';
                 break;
             case 'datetime':

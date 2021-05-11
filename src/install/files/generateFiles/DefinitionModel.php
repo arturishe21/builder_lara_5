@@ -4,7 +4,7 @@ namespace App\Cms\Definitions;
 
 use Vis\Builder\Services\Actions;
 use App\Models\modelName;
-use Vis\Builder\Fields\{Datetime, Id, Text};
+use Vis\Builder\Fields\{Datetime, Id, Text, Checkbox, Textarea};
 use Vis\Builder\Definitions\Resource;
 
 class modelPluralName extends Resource
