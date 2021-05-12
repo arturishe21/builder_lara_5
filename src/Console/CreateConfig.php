@@ -162,18 +162,13 @@ class CreateConfig extends Command
     private function adaptiveFieldForConfig($type)
     {
         switch ($type) {
-            case 'string':
-                return 'Text';
-                break;
+            case 'tinyInteger':
+            case 'boolean':
+                return 'Checkbox';
             case 'text':
                 return 'Textarea';
-                break;
-            case 'tinyInteger' || 'boolean':
-                return 'Checkbox';
-                break;
             case 'datetime':
                 return 'Datetime';
-                break;
             default:
                 return 'Text';
         }
