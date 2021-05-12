@@ -14,7 +14,7 @@ class modelPluralName extends Resource
     protected $orderBy = 'priority asc';
     protected $isSortable = true;
 
-    public function fields()
+    public function fields(): array
     {
         return [
             'test' => [
@@ -26,7 +26,7 @@ class modelPluralName extends Resource
     }
 
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->preview()->clone()->delete();
     }
