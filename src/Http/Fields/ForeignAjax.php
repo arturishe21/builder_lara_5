@@ -16,7 +16,7 @@ class ForeignAjax extends Foreign
 
     public function getValueForList($definition)
     {
-        return $this->getValue();
+        return parseIfJson($this->getValue());
     }
 
     public function getValueForInput($definition)
@@ -52,7 +52,7 @@ class ForeignAjax extends Foreign
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $where = $this->options->getWhereCollection();
 
-        $modelRelated = $modelRelated->where($keyField, 'like', request()->q . "%");
+        $modelRelated = $modelRelated->where($keyField, 'like', "%" . request()->q . "%");
 
         if (count($where)) {
             foreach ($where as $param) {
@@ -60,7 +60,10 @@ class ForeignAjax extends Foreign
             }
         }
 
-        $result = $modelRelated->take(10)->get(['id', $keyField . ' as name'])->toArray();
+        $result = $modelRelated
+            ->take(10)->get(['id', $keyField . ' as name'])
+            ->map(fn($item) => ['id' => $item->id, 'name' => parseIfJson($item->name)])
+            ->toArray();
 
         return [
             'results' => $result

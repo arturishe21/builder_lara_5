@@ -74,7 +74,7 @@ class Field
             $this->valueLanguage = json_decode($value[$this->attribute]);
         }
 
-        $this->value = $value[$this->attribute];
+        $this->value = parseIfJson($value[$this->attribute]);
     }
 
     public function className($class)

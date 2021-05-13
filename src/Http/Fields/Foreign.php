@@ -2,7 +2,6 @@
 
 namespace Vis\Builder\Fields;
 
-use Illuminate\Support\Arr;
 use Vis\Builder\Definitions\Resource;
 
 class Foreign extends Field
@@ -28,7 +27,7 @@ class Foreign extends Field
         }
 
         foreach ($collection as $item) {
-            $data[$item->id] = $item->name;
+            $data[$item->id] = parseIfJson($item->name);
         }
 
         return $data;
@@ -73,10 +72,12 @@ class Foreign extends Field
         $record = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
 
         $recordThis = $record->rememberForever()
-                             ->cacheTags($this->getCacheArray($definition, $modelRelated))
-                             ->find($value);
+            ->cacheTags($this->getCacheArray($definition, $modelRelated))
+            ->find($value);
 
-        return optional($recordThis)->name;
+        $value = optional($recordThis)->name;
+
+        return parseIfJson($value);
     }
 
     private function getCacheArray($definition, $modelRelated)
