@@ -104,7 +104,7 @@ class CreateConfig extends Command
 
     private function createMigration()
     {
-        $nameMigration = date('Y_m_d_his').'_create_'.$this->table.'.php';
+        $nameMigration = date('Y_m_d_His').'_create_'.$this->table.'_table.php';
         $fileMigration = base_path().'/database/migrations/'.$nameMigration;
 
         copy(
@@ -123,7 +123,7 @@ class CreateConfig extends Command
         $file = file_get_contents($fileReplace);
         $file = str_replace(
             ['modelName', 'tableName', 'tableUpName', 'modelPluralName'],
-            [$this->model, $this->table, ucfirst(Str::camel($this->table)), Str::plural($this->model)],
+            [$this->model, $this->table, ucfirst(Str::camel($this->table . '_table')), Str::plural($this->model)],
             $file);
 
         file_put_contents($fileReplace, $file);
@@ -162,18 +162,13 @@ class CreateConfig extends Command
     private function adaptiveFieldForConfig($type)
     {
         switch ($type) {
-            case 'string':
-                return 'Text';
-                break;
+            case 'tinyInteger':
+            case 'boolean':
+                return 'Checkbox';
             case 'text':
                 return 'Textarea';
-                break;
-            case 'tinyInteger':
-                return 'Checkbox';
-                break;
             case 'datetime':
                 return 'Datetime';
-                break;
             default:
                 return 'Text';
         }
