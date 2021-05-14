@@ -24,43 +24,26 @@ class Setting extends Model
 
     public static function get($slug, $default = '', $useLocale = false)
     {
-        $cacheKey = "settings:$slug:".app()->getLocale();
+        $langThis = $useLocale ? app()->getLocale() : defaultLanguage();
+        $cacheKey = "settings:$slug:".$langThis;
 
         if (Cache::tags('settings')->has($cacheKey)) {
             return Cache::tags('settings')->get($cacheKey);
         }
 
         $setting = self::where('slug', 'like', $slug)->first();
-        $postfix = getLocalePostfix();
 
-        if (! $setting && $default) {
-            $defaultColumns = [
-                'type'       => 0,
-                'title'      => $slug,
-                'slug'       => $slug,
-                'value'      => $default,
-                'group_type' => 'general',
-            ];
+        if ($setting) {
 
-            if ($useLocale) {
-                $defaultColumns["value$postfix"] = $default;
-            }
-
-            $setting = self::create($defaultColumns);
-        }
-
-        if (isset($setting->id)) {
-            $value = $useLocale ? ($setting->{"value$postfix"} ?: $setting->value) : $setting->value;
-            $arrayTypes = [2, 3, 5];
-
-            if (in_array($setting->type, $arrayTypes)) {
-                $value = $setting->selectValues();
-            }
+            $valueJson = json_decode($setting->value);
+            $value = $valueJson->{$langThis} ?? '';
 
             Cache::tags('settings')->forever($cacheKey, $value);
 
             return $value;
         }
+
+        return $default;
     }
 
     public static function getWithLang($slug, $default = '')

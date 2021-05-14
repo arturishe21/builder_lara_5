@@ -20,7 +20,9 @@
                                    name="{{ $field->getNameField()}}[{{$tab['caption']}}]"
                                    placeholder="{{{$tab['placeholder']}}}"
                                    class="dblclick-edit-input form-control input-sm unselectable"
-                                   data-name-input="{{$field->getNameFieldLangTab($definition, $tab)}}"
+                                   @if ($loop->first)
+                                   data-name-input="{{$definition->getNameDefinition().$field->getNameField()}}"
+                                   @endif
                             >
                         </label>
                     </div>

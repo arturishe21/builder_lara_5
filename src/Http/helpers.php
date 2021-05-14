@@ -3,6 +3,18 @@
 use Vis\Builder\Models\TranslationsCms;
 use Vis\Builder\Models\TranslationsPhrasesCms;
 
+if (! function_exists('defaultLanguage')) {
+
+    function defaultLanguage()
+    {
+        $languages = config('builder.translations.config.languages');
+
+        $firstLanguage = array_shift($languages);
+
+        return $firstLanguage['caption'];
+    }
+}
+
 if (! function_exists('setting')) {
     /**
      * @param string $value
@@ -28,9 +40,9 @@ if (! function_exists('settingForMail')) {
     function settingForMail($value, $default = '', $useLocale = false)
     {
         $setting = Vis\Builder\Setting::get($value, $default, $useLocale);
-        $settingCollecttion =  array_map('trim', explode(',', $setting));
+        $settingCollection =  array_map('trim', explode(',', $setting));
 
-        return $settingCollecttion;
+        return $settingCollection;
     }
 }
 

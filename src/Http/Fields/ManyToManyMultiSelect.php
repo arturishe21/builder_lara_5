@@ -29,7 +29,7 @@ class ManyToManyMultiSelect extends ManyToMany
             $result = [];
 
             foreach ($selected as $item) {
-                $result[$item->id] = $item->name;
+                $result[$item->id] = $item->t('name');
             }
 
             return $result;

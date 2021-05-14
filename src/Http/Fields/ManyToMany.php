@@ -27,7 +27,7 @@ class ManyToMany extends Field
         $data = [];
 
         foreach ($collection as $item) {
-            $data[$item->id] = $item->name;
+            $data[$item->id] = $item->t('name');
         }
 
         return $data;
