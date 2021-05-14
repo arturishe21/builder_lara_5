@@ -62,7 +62,12 @@ class ForeignAjax extends Foreign
 
         $result = $modelRelated
             ->take(10)->get(['id', $keyField . ' as name'])
-            ->map(fn($item) => ['id' => $item->id, 'name' => parseIfJson($item->name)])
+            ->map(function ($item) {
+                return [
+                    'id'   => $item->id,
+                    'name' => parseIfJson($item->name)
+                ];
+            })
             ->toArray();
 
         return [
