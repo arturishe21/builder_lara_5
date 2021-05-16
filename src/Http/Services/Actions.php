@@ -11,6 +11,7 @@ class Actions
     protected $definition;
     protected $actionsList = [];
     protected $revision;
+    protected $isHideActions = false;
 
     public function __construct($definition = null)
     {
@@ -43,6 +44,18 @@ class Actions
     public function getActionsAccess()
     {
         return $this->actionsList;
+    }
+
+    public function hideActions()
+    {
+        $this->isHideActions = true;
+
+        return $this;
+    }
+
+    public function isHideAction()
+    {
+        return $this->isHideActions;
     }
 
     public function insert()

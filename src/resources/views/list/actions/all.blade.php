@@ -1,4 +1,5 @@
 <td style="width: 80px">
+    @if ($collectionActions)
     <div style="display: inline-block">
         <div class="btn-group  pull-right">
             <a class="btn dropdown-toggle btn-default"  data-toggle="dropdown">
@@ -11,4 +12,6 @@
             </ul>
         </div>
     </div>
+    @endif
 </td>
+
