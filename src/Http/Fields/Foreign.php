@@ -28,7 +28,7 @@ class Foreign extends Field
         }
 
         foreach ($collection as $item) {
-            $data[$item->id] = $item->name;
+            $data[$item->id] = $item->t('name');
         }
 
         return $data;

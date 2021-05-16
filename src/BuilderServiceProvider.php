@@ -25,11 +25,14 @@ class BuilderServiceProvider extends ServiceProvider
      */
     public function boot(\Illuminate\Routing\Router $router)
     {
-        $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
-        $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
-
         require __DIR__.'/../vendor/autoload.php';
         require __DIR__.'/Http/helpers.php';
+
+        $this->app->setLocale(defaultLanguage());
+
+
+        $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
+        $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
 
         $this->setupRoutes($this->app->router);
 

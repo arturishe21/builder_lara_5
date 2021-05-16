@@ -341,14 +341,14 @@ class Resource
                 foreach ($items as $item) {
 
                     if ($item['field']->getLanguage()) {
-                        foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
+                        foreach ($item['field']->getLanguage() as $language) {
 
                             $fieldLanguage = $item['field']->getNameField();
 
-                            $translateArray[$language['caption']] = $request[$fieldLanguage][$language['caption']] ? :
+                            $translateArray[$language->language] = $request[$fieldLanguage][$language->language] ? :
                                 $this->getTranslate(
                                     $item['field'],
-                                    $slugLanguage,
+                                    $language->language,
                                     $request[$item['field']->getNameField()][config('app.locale')]
                                 );
                         }

@@ -7,11 +7,9 @@ if (! function_exists('defaultLanguage')) {
 
     function defaultLanguage()
     {
-        $languages = config('builder.translations.config.languages');
+        $defaultLanguage = \Vis\Builder\Models\Language::getDefaultLanguage();
 
-        $firstLanguage = array_shift($languages);
-
-        return $firstLanguage['caption'];
+        return $defaultLanguage->language;
     }
 }
 

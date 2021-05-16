@@ -152,11 +152,13 @@ class TreeController
 
         $node->parent_id = request('node', 1);
 
-        foreach (config('builder.translations.config.languages') as $slug => $language) {
-            $translations[$language['caption']] =
+        $languages = (new Language())->getLanguages();
+
+        foreach ($languages as $language) {
+            $translations[$language->language] =
                 (new GoogleTranslateForFree())->translate(
-                    array_key_first(config('builder.translations.config.languages')),
-                    $slug,
+                    defaultLanguage(),
+                    $language->language,
                     request('title'),
                     1);
         }
