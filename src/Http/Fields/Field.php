@@ -3,6 +3,7 @@
 namespace Vis\Builder\Fields;
 
 use Illuminate\Support\Str;
+use Vis\Builder\Models\Language;
 
 class Field
 {
@@ -134,7 +135,7 @@ class Field
 
     public function getNameFieldLangTab($definition, $tab)
     {
-        return $definition->getNameDefinition() . $this->getNameField() . $tab['caption'];
+        return $definition->getNameDefinition() . $this->getNameField() . $tab->language;
     }
 
 
@@ -264,19 +265,19 @@ class Field
 
     public function language()
     {
-        $this->language = config('builder.translations.config.languages');
+        $this->language = (new Language())->getLanguages();
 
         return $this;
     }
 
-    public function getLanguage() : ?array
+    public function getLanguage()
     {
         return $this->language;
     }
 
     public function getLanguageDefault()
     {
-        return array_key_first($this->getLanguage());
+        return Language::getDefaultLanguage();
     }
 
     public function rules($rules)

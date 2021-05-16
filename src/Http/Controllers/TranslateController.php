@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Vis\Builder\Models\Language;
 use Vis\Builder\Models\Translations;
 use Vis\Builder\Models\TranslationsPhrases;
 
@@ -14,9 +15,9 @@ class TranslateController extends Controller
 {
     private $languages;
 
-    public function __construct()
+    public function __construct(Language $language)
     {
-        $this->languages = config('builder.translations.config.languages');
+        $this->languages = $language->getLanguages();
     }
 
     public function fetchIndex()

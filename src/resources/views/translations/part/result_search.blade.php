@@ -27,9 +27,9 @@
                      ?>
                       @foreach($languages as $language)
                              <p>
-                                 <img class="flag flag-{{$language['caption']}}" style="margin-right: 5px">
-                                 <a data-type="textarea" class="lang_change" data-pk="{{$el->id}}" data-name="{{$language['caption']}}" data-original-title="{{__cms('Язык')}}: {{$language['caption']}}">
-                                     {{$translate[$language['caption']] ?? ''}}
+                                 <img class="flag flag-{{$language->language}}" style="margin-right: 5px">
+                                 <a data-type="textarea" class="lang_change" data-pk="{{$el->id}}" data-name="{{$language->language}}" data-original-title="{{__cms('Язык')}}: {{$language->language}}">
+                                     {{$translate[$language->language] ?? ''}}
                                  </a>
                              </p>
                       @endforeach

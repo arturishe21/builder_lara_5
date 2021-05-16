@@ -5,7 +5,7 @@
             <label class="label pull-left" style="line-height: 32px;">{{$field->getName()}}</label>
             @foreach ($field->getLanguage() as $tab)
                 <li class="{{$loop->first ? 'active' : ''}}">
-                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab['caption']}}</a>
+                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab->language}}</a>
                 </li>
             @endforeach
         </ul>
@@ -17,8 +17,8 @@
                         <label class="textarea">
                             <textarea rows="{{$rows ?? '3'}}"
                               class="custom-scroll"
-                              id="{{ $field->getNameField() . $tab['caption']}}"
-                              name="{{ $field->getNameField()}}[{{$tab['caption']}}]">{{$field->getValueLanguage($tab['caption'])}}</textarea>
+                              id="{{ $field->getNameField() . $tab->language}}"
+                              name="{{ $field->getNameField()}}[{{$tab->language}}]">{{$field->getValueLanguage($tab->language)}}</textarea>
                         </label>
                     </div>
                 </div>

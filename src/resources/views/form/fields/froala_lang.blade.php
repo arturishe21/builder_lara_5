@@ -5,7 +5,7 @@
             <label class="label pull-left" style="line-height: 32px;">{{$field->getName()}}</label>
             @foreach ($field->getLanguage() as $tab)
                 <li class="{{$loop->first ? 'active' : ''}}">
-                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab['caption']}}</a>
+                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab->language}}</a>
                 </li>
             @endforeach
         </ul>
@@ -15,10 +15,10 @@
                 <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="{{$field->getNameFieldLangTab($definition, $tab)}}">
                     <div style="position: relative;">
                         <div class="no_active_froala">
-                             <textarea class="text_block" name="{{ $field->getNameField()}}[{{$tab['caption']}}]"
+                             <textarea class="text_block" name="{{ $field->getNameField()}}[{{$tab->language}}]"
                                    toolbar = "{{$field->getToolbar()}}"
                                    inlineStyles = ''
-                                   options = '{{ $field->getOptions()}}'>{{$field->getValueLanguage($tab['caption'])}}</textarea>
+                                   options = '{{ $field->getOptions()}}'>{{$field->getValueLanguage($tab->language)}}</textarea>
                         </div>
                     </div>
                 </div>

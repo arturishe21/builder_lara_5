@@ -375,12 +375,12 @@ class Resource
     {
         $nameField = $field->getNameField();
 
-        foreach ($field->getLanguage() as $slugLang => $langPrefix) {
+        foreach ($field->getLanguage() as $langPrefix) {
 
-            $translate = $request[$nameField][$langPrefix['caption']] ?:
-                $this->getTranslate($field, $slugLang, $request[$nameField][config('app.locale')]);
+            $translate = $request[$nameField][$langPrefix->language] ?:
+                $this->getTranslate($field, $langPrefix->language, $request[$nameField][config('app.locale')]);
 
-            $translateArray[$langPrefix['caption']] = $translate;
+            $translateArray[$langPrefix->language] = $translate;
         }
 
         $record->$nameField = json_encode($translateArray);
@@ -388,22 +388,18 @@ class Resource
 
     private function getTranslate($field, $slugLang, $phrase)
     {
-        try {
-            $langDef = $field->getLanguageDefault();
+        $langDef = $field->getLanguageDefault();
 
-            if ($langDef == $slugLang || !$phrase) {
-                return '';
-            }
-
-            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
-            $result = str_replace('/ ','/', $result);
-            $result = str_replace(' /','/', $result);
-
-            return $result;
-
-        } catch (\Exception $e) {
-            return $phrase;
+        if ($langDef == $slugLang || !$phrase) {
+            return '';
         }
+
+        $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
+
+        $result = str_replace('/ ','/', $result);
+        $result = str_replace(' /','/', $result);
+
+        return $result ?: $phrase;
     }
 
     protected function updateManyToMany($field, $collectionsIds)

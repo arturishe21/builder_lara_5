@@ -39,16 +39,16 @@
 
                      @foreach($languages as $languageSlug => $language)
                          <section class="col" style="float: none">
-                           <label class="label" for="title">{{$language['caption']}}</label>
+                           <label class="label" for="title">{{$language->getName()}}</label>
                            <div style="position: relative;">
                              <label class="input">
                              <input type="text"
                                value=""
-                               name="translation[{{$language['caption']}}]"
-                               data-lang="{{$language['caption']}}"
+                               name="translation[{{$language->language}}]"
+                               data-lang="{{$language->language}}"
                                placeholder=""
                                class="dblclick-edit-input form-control input-sm unselectable langs_input"
-                               id="langs_input_{{$language['caption']}}"
+                               id="langs_input_{{$language->language}}"
                              >
                              </label>
                            </div>

@@ -5,7 +5,7 @@
             <label class="label pull-left" style="line-height: 32px;">{{$field->getName()}}</label>
             @foreach ($field->getLanguage() as $tab)
                 <li class="{{$loop->first ? 'active' : ''}}">
-                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab['caption']}}</a>
+                    <a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab->language}}</a>
                 </li>
             @endforeach
         </ul>
@@ -16,9 +16,9 @@
                     <div style="position: relative;">
                         <label class="input">
                             <input type="text"
-                                   value="{{$field->getValueLanguage($tab['caption'])}}"
-                                   name="{{ $field->getNameField()}}[{{$tab['caption']}}]"
-                                   placeholder="{{{$tab['placeholder']}}}"
+                                   value="{{$field->getValueLanguage($tab->language)}}"
+                                   name="{{ $field->getNameField()}}[{{$tab->language}}]"
+                                   placeholder=""
                                    class="dblclick-edit-input form-control input-sm unselectable"
                                    @if ($loop->first)
                                    data-name-input="{{$definition->getNameDefinition().$field->getNameField()}}"
