@@ -277,7 +277,7 @@ class Field
 
     public function getLanguageDefault()
     {
-        return Language::getDefaultLanguage();
+        return defaultLanguage();
     }
 
     public function rules($rules)
