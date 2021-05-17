@@ -35,7 +35,7 @@ class TranslationsPhrases extends Model
     }
 
     /**
-     * auto generate translation for function __() if empty.
+     * auto generate translation for function __t() if empty.
      *
      * @param string $phrase
      * @param strign $thisLang
@@ -48,16 +48,13 @@ class TranslationsPhrases extends Model
             $checkPresentPhrase = self::where('phrase', 'like', $phrase)->first();
             if (! $checkPresentPhrase) {
                 $newPhrase = self::create(['phrase' => $phrase]);
-
-                $langsDef = config('app.locale');
-                $languages = array_keys(config('builder.translations.config.languages'));
+                $languages = languagesOfSite();
 
                 foreach ($languages as $language) {
-                    $language = str_replace('ua', 'uk', $language);
-                    $langsDef = str_replace('ua', 'uk', $langsDef);
 
                     try {
-                        $translate = (new GoogleTranslateForFree())->translate($langsDef, $language, $phrase, 1);
+                        $translate = (new GoogleTranslateForFree())
+                            ->translate(defaultLanguage(), $language, $phrase, 1);
                     } catch (\Exception $e) {
                         $translate = $phrase;
                     }
@@ -65,7 +62,7 @@ class TranslationsPhrases extends Model
                     Translations::create(
                         [
                             'id_translations_phrase' => $newPhrase->id,
-                            'lang'                   => str_replace('uk', 'ua', $language),
+                            'lang'                   => $language,
                             'translate'              => $translate,
                         ]
                     );

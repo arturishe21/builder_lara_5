@@ -32,6 +32,9 @@ class GoogleTranslateForFree
      */
     public static function translate($source, $target, $text, $attempts = 5)
     {
+        $target = $target == 'ua' ? 'uk' : $target;
+        $source = $source == 'ua' ? 'uk' : $source;
+
         // Request translation
         if (is_array($text)) {
             // Array
