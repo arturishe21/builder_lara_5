@@ -2,58 +2,40 @@
 
 use Vis\Builder\Models\TranslationsCms;
 use Vis\Builder\Models\TranslationsPhrasesCms;
+use Vis\Builder\Models\Language;
+use Illuminate\Support\Facades\Cache;
 
 if (! function_exists('defaultLanguage')) {
 
     function defaultLanguage()
     {
-        $defaultLanguage = \Vis\Builder\Models\Language::getDefaultLanguage();
+        return Language::getDefaultLanguage()->language;
+    }
+}
 
-        return $defaultLanguage->language;
+if (! function_exists('languagesOfSite')) {
+
+    function languagesOfSite()
+    {
+        return (new Language())->getLanguages()->pluck('language');
     }
 }
 
 if (! function_exists('setting')) {
-    /**
-     * @param string $value
-     * @param string $default
-     * @param bool   $useLocale
-     *
-     * @return mixed|string
-     */
-    function setting($value, $default = '', $useLocale = false)
+
+    function setting(string $slug)
     {
-        return Vis\Builder\Setting::get($value, $default, $useLocale);
+        return Cache::tags('settings')->rememberForever($slug, function() use ($slug) {
+            return (new \App\Cms\Definitions\Settings())->model()->getValue($slug);
+        });
     }
 }
 
 if (! function_exists('settingForMail')) {
-    /**
-     * @param string $value
-     * @param string $default
-     * @param bool   $useLocale
-     *
-     * @return mixed|string
-     */
-    function settingForMail($value, $default = '', $useLocale = false)
-    {
-        $setting = Vis\Builder\Setting::get($value, $default, $useLocale);
-        $settingCollection =  array_map('trim', explode(',', $setting));
 
-        return $settingCollection;
-    }
-}
-
-if (! function_exists('settingWithLang')) {
-    /**
-     * @param string $value
-     * @param string $default
-     *
-     * @return mixed|string
-     */
-    function settingWithLang($value, $default = '')
+    function settingForMail(string $value)
     {
-        return setting($value, $default, true);
+       return array_map('trim', explode(',', setting($value)));
     }
 }
 
