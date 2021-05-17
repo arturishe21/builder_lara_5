@@ -9,7 +9,13 @@ if (! function_exists('defaultLanguage')) {
 
     function defaultLanguage()
     {
-        return Language::getDefaultLanguage()->language;
+        $defaultLanguage = Language::getDefaultLanguage();
+
+        if ($defaultLanguage) {
+            return Language::getDefaultLanguage()->language;
+        }
+
+        return config('app.locale');
     }
 }
 
