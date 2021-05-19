@@ -17,11 +17,16 @@ class CreateSettingsTable extends Migration
             $table->charset = 'utf8';
 
             $table->increments('id');
-            $table->integer('type');
+            $table->string('type');
             $table->string('title');
             $table->string('slug');
             $table->text('value');
-            $table->string('group_type');
+            $table->string('group');
+            $table->json('value_languages');
+            $table->string('file');
+            $table->tinyInteger('check');
+            $table->json('textarea_with_languages');
+            $table->json('froala_with_languages');
         });
     }
 

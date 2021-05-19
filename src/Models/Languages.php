@@ -2,10 +2,12 @@
 
 namespace Vis\Builder\Models;
 
-use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
-class Language extends BaseModel
+class Language extends Model
 {
+    use \Vis\Builder\Helpers\Traits\Rememberable;
+
     protected $table = 'languages';
     protected $fillable = [];
     public $timestamps = false;
@@ -15,6 +17,17 @@ class Language extends BaseModel
     {
         $this->supportedLocales = config('laravellocalization.supportedLocales');
     }
+
+    public static function scopeActive($query)
+    {
+        return $query->where('is_active', '1');
+    }
+
+    public static function scopeOrderPriority($query)
+    {
+        return $query->orderBy('priority', 'asc');
+    }
+
 
     public function getName()
     {

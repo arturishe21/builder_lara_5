@@ -45,7 +45,7 @@ trait ImagesTrait
         }
 
         if (! $picture) {
-            $picture = Setting::get('no-foto');
+            $picture = setting('no-foto');
         }
 
         $size = [];

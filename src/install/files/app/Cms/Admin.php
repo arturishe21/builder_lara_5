@@ -29,7 +29,11 @@ class Admin extends AdminBase
                 'submenu' => [
                     [
                         'title' => 'Управление',
-                        'link'  => '/settings/settings_all',
+                        'link'  => '/settings',
+                    ],
+                    [
+                        'title' => 'Языки сайта',
+                        'link' => '/languages'
                     ],
                     [
                         'title' => 'Переводы CMS',
