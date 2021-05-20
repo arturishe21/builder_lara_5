@@ -307,22 +307,29 @@ class Resource
                 unset($data);
 
                 foreach ($items as $item) {
+                    $keyField = $item['field']->getNameFieldInBd();
 
-                    if (is_array($item['field']->getLanguage())) {
+                    if ($item['field']->getLanguage()) {
 
-                        foreach ($item['field']->getLanguage() as $slugLanguage => $language) {
+                        $fieldLanguage = $item['field']->getNameField();
 
-                            $fieldLanguage = $item['field']->getNameField().$language['postfix'];
-                            $keyField = $item['field']->getNameFieldInBd().$language['postfix'];
-
-                            $data[$relationHasOne][$keyField] = $request[$fieldLanguage] ? :
-                                $this->getTranslate($item['field'], $slugLanguage, $request[$item['field']->getNameField()]);
+                        foreach ($item['field']->getLanguage() as $language) {
+                            $translateArray[$fieldLanguage][$language->language] =
+                                $request[$fieldLanguage][$language->language] ? :
+                                    $this->getTranslate(
+                                        $item['field'],
+                                        $language->language,
+                                        $request[$fieldLanguage][config('app.locale')]
+                                    );
                         }
 
+                        $data[$relationHasOne][$keyField] = json_encode($translateArray[$fieldLanguage]);;
+
                     } else {
-                        $data[$relationHasOne][$item['field']->getNameFieldInBd()] = $item['value'];
+                        $data[$relationHasOne][$keyField] = $item['value'];
                     }
                 }
+
 
                 $record->$relationHasOne ?
                     $record->$relationHasOne()->update($data[$relationHasOne]) :
