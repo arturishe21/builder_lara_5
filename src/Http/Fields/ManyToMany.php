@@ -36,7 +36,7 @@ class ManyToMany extends Field
     public function getDataWithWhereAndOrder(Resource $definition)
     {
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
-        $collection = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
+        $collection = $modelRelated::select(['id', $this->options->getKeyField() . '->'.defaultLanguage().' as name']);
         $where = $this->options->getWhereCollection();
         $order = $this->options->getOrderCollection();
 
@@ -53,7 +53,7 @@ class ManyToMany extends Field
         }
 
         if (request()->q) {
-            $collection = $collection->where($this->options->getKeyField(), 'like', request()->q . '%');
+            $collection = $collection->where($this->options->getKeyField(). '->'. defaultLanguage(), 'like', request()->q . '%');
         }
 
         return $collection->get();

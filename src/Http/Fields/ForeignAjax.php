@@ -46,13 +46,14 @@ class ForeignAjax extends Foreign
         return $selectOption->{$this->options->getKeyField()};
     }
 
+
     public function search($definition)
     {
         $keyField = $this->options->getKeyField();
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $where = $this->options->getWhereCollection();
 
-        $modelRelated = $modelRelated->where($keyField, 'like', request()->q . "%");
+        $modelRelated = $modelRelated->where($keyField . '->' . defaultLanguage(), 'like', request()->q . "%");
 
         if (count($where)) {
             foreach ($where as $param) {
@@ -60,11 +61,10 @@ class ForeignAjax extends Foreign
             }
         }
 
-        $result = $modelRelated->take(10)->get(['id', $keyField . ' as name'])->toArray();
+        $result = $modelRelated->take(10)->get(['id', $keyField . '->' . defaultLanguage() . ' as name'])->toArray();
 
         return [
             'results' => $result
         ];
-
     }
 }
