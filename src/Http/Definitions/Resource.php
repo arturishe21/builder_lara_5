@@ -395,18 +395,23 @@ class Resource
 
     private function getTranslate($field, $slugLang, $phrase)
     {
-        $langDef = $field->getLanguageDefault();
+        try {
+            $langDef = $field->getLanguageDefault();
 
-        if ($langDef == $slugLang || !$phrase) {
-            return '';
+            if ($langDef == $slugLang || !$phrase) {
+                return '';
+            }
+
+            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
+
+            $result = str_replace('/ ','/', $result);
+            $result = str_replace(' /','/', $result);
+
+            return $result ?: $phrase;
+
+        } catch (\Exception $e) {
+            return $phrase;
         }
-
-        $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
-
-        $result = str_replace('/ ','/', $result);
-        $result = str_replace(' /','/', $result);
-
-        return $result ?: $phrase;
     }
 
     protected function updateManyToMany($field, $collectionsIds)
