@@ -7,11 +7,14 @@
                 <button class="btn btn-default close_button" style="float: right; margin: 0 5px"  type="button"
                         onclick="TableBuilder.doClosePopup('{{$definition->model()->getTable()}}')"
                 > {{__cms('Отмена')}} </button>
+                @if (app('user')->hasAccessActionsForCms('save') || request()->is('*/groups'))
                 <button class="btn btn-success btn-sm" style="float: right" type="button"
                         onclick="$('#edit_form_{{$definition->getNameDefinition()}}').submit();">
                     <span class="glyphicon glyphicon-floppy-disk"></span>
                     {{__cms('Сохранить')}}
                 </button>
+                @endif
+
                 <h4 class="modal-title" id="modal_form_label">{{__cms('Редактирование')}}</h4>
             </div>
             @include('admin::form.create_center', ['type' => 'edit'])

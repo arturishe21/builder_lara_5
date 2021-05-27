@@ -2,7 +2,7 @@
     @foreach($permissions as $permissionAlias => $permission)
 
         @if (is_array($permission))
-            <section>
+            <section style="border: 1px solid #ccc; padding: 10px">
                 <p>{{__cms($permissionAlias)}}</p>
                 @foreach($permission as $permissionSlug => $permissionTitle )
                     @if (is_array($permissionTitle))
@@ -12,8 +12,9 @@
 
                                 @if (is_array($permissionTitle2))
                                     <section style="padding-left: 10px;">
-                                    @foreach($permissionTitle2 as $permissionLevel2Slug=>$permissionLevel2)
                                         <p>{{__cms($permissionSlug2)}}</p>
+                                    @foreach($permissionTitle2 as $permissionLevel2Slug=>$permissionLevel2)
+
                                         <p>
                                             <label class="checkbox">
                                                 <input type="checkbox" value="true" name="permissions[{{$permissionLevel2Slug}}]"

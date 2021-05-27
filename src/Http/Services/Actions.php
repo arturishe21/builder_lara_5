@@ -60,14 +60,18 @@ class Actions
 
     public function insert()
     {
-        $this->actionsList['insert'] = 'insert';
+        if (app('user')->hasAccessActionsForCms('insert')) {
+            $this->actionsList['insert'] = 'insert';
+        }
 
         return $this;
     }
 
     public function update()
     {
-        $this->actionsList['update'] = 'update';
+        if (app('user')->hasAccessActionsForCms('update')) {
+            $this->actionsList['update'] = 'update';
+        }
 
         return $this;
     }
@@ -81,21 +85,27 @@ class Actions
 
     public function delete()
     {
-        $this->actionsList['delete'] = 'delete';
+        if (app('user')->hasAccessActionsForCms('delete')) {
+            $this->actionsList['delete'] = 'delete';
+        }
 
         return $this;
     }
 
     public function clone()
     {
-        $this->actionsList['clone'] = 'clone';
+        if (app('user')->hasAccessActionsForCms('clone')) {
+            $this->actionsList['clone'] = 'clone';
+        }
 
         return $this;
     }
 
     public function revisions()
     {
-        $this->actionsList['revisions'] = 'revisions';
+        if (app('user')->hasAccessActionsForCms('revisions')) {
+            $this->actionsList['revisions'] = 'revisions';
+        }
 
         return $this;
     }

@@ -43,9 +43,11 @@
 </div>
 
 <div class="modal-footer">
+    @if (app('user')->hasAccessActionsForCms('save') || request()->is('*/groups'))
     <button onclick="$('#{{$type}}_form_{{$definition->getNameDefinition()}}').submit();" type="button" class="btn btn-success btn-sm">
         <span class="glyphicon glyphicon-floppy-disk"></span> {{__cms('Сохранить')}}
     </button>
+    @endif
     <button type="button" class="btn btn-default close_button" onclick="TableBuilder.doClosePopup('{{$definition->model()->getTable()}}')">
         {{__cms('Отмена')}}
     </button>

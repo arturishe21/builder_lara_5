@@ -7,9 +7,7 @@ $result = $current::defaultOrder()->ancestorsOf($current);
 @endforeach
 
 {{$current->t('title')}}
-
-<a href="javascript:void(0);" onclick="Tree.showEditForm('{{$current->id}}');" style="min-width: 70px; float: right">{{__cms('Редактировать')}}</a>
-
-<div class="buttons-panel">
-
-</div>
+@if (app('user')->hasAccessActionsForCms('update'))
+    <a href="javascript:void(0);" onclick="Tree.showEditForm('{{$current->id}}');" style="min-width: 70px; float: right">{{__cms('Редактировать')}}</a>
+@endif
+<div class="buttons-panel"></div>

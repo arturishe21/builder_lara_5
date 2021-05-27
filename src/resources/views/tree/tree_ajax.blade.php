@@ -31,7 +31,7 @@
          $("#tree_top").toggle();
 
          if($(".show_hide_tree").text() == "{{__cms('Показать дерево')}}") {
-            $(".show_hide_tree").text("{{__cms('Спрятать дерево')}}");
+             $(".show_hide_tree").text("{{__cms('Спрятать дерево')}}");
 
              if (showTree == 0) {
                 $(".tree_top_content").html("<p style='padding:10px'>Загрузка..</p>");
@@ -48,8 +48,8 @@
          }
     });
 
- $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{__cms('Структура сайта')}}</li>");
- $("title").text("{{__cms('Структура сайта')}} - {{{ __cms(config('builder.admin.caption')) }}}");
+  $(".breadcrumb").html("<li><a href='/admin'>{{__cms('Главная')}}</a></li> <li>{{__cms('Структура сайта')}}</li>");
+  $("title").text("{{__cms('Структура сайта')}} - {{{ __cms(config('builder.admin.caption')) }}}");
 
   try {
         Tree.sortTable();

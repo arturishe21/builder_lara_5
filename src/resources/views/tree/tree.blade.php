@@ -7,7 +7,8 @@
                  data-widget-colorbutton="false"
                  data-widget-deletebutton="false"
                  data-widget-togglebutton="false"
-                 data-widget-sortable="false">
+                 data-widget-sortable="false"
+            >
 
                 <header>
                     <div style="margin-right: 34px;">

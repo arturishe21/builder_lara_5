@@ -10,7 +10,9 @@
                 <th style="width: 60px">{{__cms('Активный')}}</th>
 
                 <th style="width: 80px">
+                    @if (app('user')->hasAccessActionsForCms('insert'))
                     <a href="javascript:void(0);" onclick="Tree.showCreateForm('{{$current->id}}');" style="min-width: 70px;" class="btn btn-success btn-sm">{{__cms('Добавить')}}</a>
+                    @endif
                 </th>
             </tr>
             </thead>
