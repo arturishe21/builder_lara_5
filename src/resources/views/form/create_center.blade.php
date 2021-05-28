@@ -43,7 +43,7 @@
 </div>
 
 <div class="modal-footer">
-    @if (app('user')->hasAccessActionsForCms('save') || request()->is('*/groups'))
+    @if (app('user')->hasAccessActionsForCms('save'))
     <button onclick="$('#{{$type}}_form_{{$definition->getNameDefinition()}}').submit();" type="button" class="btn btn-success btn-sm">
         <span class="glyphicon glyphicon-floppy-disk"></span> {{__cms('Сохранить')}}
     </button>

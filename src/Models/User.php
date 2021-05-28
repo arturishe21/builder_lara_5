@@ -68,6 +68,10 @@ class User extends EloquentUser
 
         $url = last($urlArray);
 
+        if (request()->is('*/groups') || request()->has('foreign_field')) {
+            return true;
+        }
+
         return $this->hasAccessForCms($url, $action);
     }
 }
