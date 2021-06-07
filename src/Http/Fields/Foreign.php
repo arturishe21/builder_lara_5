@@ -28,7 +28,7 @@ class Foreign extends Field
         }
 
         foreach ($collection as $item) {
-            $data[$item->id] = $item->t('name');
+            $data[$item->id] = $item->name;
         }
 
         return $data;
@@ -76,7 +76,7 @@ class Foreign extends Field
                              ->cacheTags($this->getCacheArray($definition, $modelRelated))
                              ->find($value);
 
-        return optional($recordThis)->t('name');
+        return optional($recordThis)->name;
     }
 
     private function getCacheArray($definition, $modelRelated)

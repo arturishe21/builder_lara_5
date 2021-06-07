@@ -60,14 +60,6 @@ class AdminSeeder extends Seeder
             'role_id' => '1',
         ]);
 
-        DB::table('settings')->insert([
-            'type'       => '0',
-            'title'      => 'Email администратора',
-            'slug'       => 'email-administratora',
-            'value'      => 'arturishe@ukr.net',
-            'group_type' => 'general',
-        ]);
-
         DB::table('tb_tree')->insert([
 
             'lft'                    => '1',

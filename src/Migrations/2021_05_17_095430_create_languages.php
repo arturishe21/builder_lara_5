@@ -17,7 +17,7 @@ class CreateLanguages extends Migration
             $table->id();
             $table->string('language', 10);
             $table->tinyInteger('is_active');
-            $table->integer('priority');
+            $table->integer('priority')->default(0);
         });
     }
 
