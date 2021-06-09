@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
 use Vis\Builder\Definitions\Traits\{CacheResource, CloneResource};
+use Illuminate\Support\Str;
 
 class Resource
 {
@@ -87,7 +88,7 @@ class Resource
 
     public function getNameDefinition() : string
     {
-        return mb_strtolower(class_basename($this));
+        return Str::snake(class_basename($this));
     }
 
     public function getFullPathDefinition() : string
