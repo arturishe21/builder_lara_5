@@ -57,7 +57,7 @@ class User extends EloquentUser
 
     public function hasAccessForCms($link, $action = 'view')
     {
-        $link = str_replace(['/', '_'], [''], $link).'.'. $action;
+        $link = str_replace(['/'], [''], $link).'.'. $action;
 
         return $this->hasAccess([$link]);
     }

@@ -82,6 +82,6 @@ class Permissions extends Field
 
     private function prepareSlug($link)
     {
-        return str_replace(['/', '_'], [''], $link);
+        return str_replace(['/'], [''], $link);
     }
 }
