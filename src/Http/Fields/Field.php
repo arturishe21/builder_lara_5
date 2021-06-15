@@ -27,6 +27,7 @@ class Field
     protected $classNameField;
     protected $allData;
     protected $locale;
+    protected $isReadonlyForEdit = false;
 
     public function __construct(string $name, $attribute = null)
     {
@@ -181,9 +182,9 @@ class Field
         return false;
     }
 
-    public function isReadonlyForEdit()
+    public function getReadonlyForEdit()
     {
-        return false;
+        return $this->isReadonlyForEdit;
     }
 
     public function customUpdate()
@@ -316,7 +317,9 @@ class Field
 
     public function readonlyForEdit()
     {
-        return false;
+        $this->isReadonlyForEdit = true;
+
+        return $this;
     }
 
     public function comment(string $comment)

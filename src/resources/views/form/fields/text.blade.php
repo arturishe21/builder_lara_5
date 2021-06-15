@@ -6,7 +6,11 @@
                 <label class="input">
                     <input
                         @if ($field->isDisabled())
-                        disabled="disabled"
+                            disabled="disabled"
+                        @endif
+
+                        @if ($field->getValue() && $field->getReadonlyForEdit())
+                            readonly
                         @endif
 
                         type="text"
