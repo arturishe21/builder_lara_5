@@ -6,7 +6,7 @@
 
                 <label class="select">
                     <select
-                        {{request("id") && $field->isReadonlyForEdit() ? 'disabled' : ''}}
+                        {{request("id") && $field->getReadonlyForEdit() ? 'disabled' : ''}}
 
                         name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable {{ $field->getNameField() }}_foreign">
                         @if ($field->isNullAble())
