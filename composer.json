@@ -11,7 +11,7 @@
     "require": {
         "cartalyst/sentinel": "^5.0",
         "mcamara/laravel-localization": "1.6.*",
-        "kalnoy/nestedset": "^5.0",
+        "kalnoy/nestedset": "^6.0",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
