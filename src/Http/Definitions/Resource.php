@@ -209,19 +209,21 @@ class Resource
         $record = $this->model();
         $recordNew = $this->saveActive($record, $request);
 
-        return [
-            'id' => $recordNew->id,
-            'html' => $this->getSingleRow($recordNew)
-        ];
+        return $this->resultJsonSave($recordNew);
     }
 
     public function saveEditForm($request) : array
     {
         $recordNew = $this->updateForm($request);
 
+        return $this->resultJsonSave($recordNew);
+    }
+
+    private function resultJsonSave($recordNew) {
         return [
             'id' => $recordNew->id,
-            'html' => $this->getSingleRow($recordNew)
+            'html' => $this->getSingleRow($recordNew),
+            'isTree' => is_subclass_of($recordNew, 'Vis\Builder\Tree')
         ];
     }
 

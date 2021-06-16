@@ -839,6 +839,11 @@ var TableBuilder = {
                     if (TableBuilder.onDoCreate) {
                         TableBuilder.onDoCreate(TableBuilder.getActionUrl());
                     }
+
+                    if (response.isTree) {
+                        doAjaxLoadContent(location.pathname);
+                    }
+
                 } else {
                     var errors = '';
                     jQuery(response.errors).each(function (key, val) {
