@@ -29,7 +29,7 @@ class LoginController extends Controller
     {
         try {
             if (Sentinel::check()) {
-                return Redirect::to('/admin');
+                return redirect('/admin');
             }
         } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
             Session::flash($this->sessionError, __cms('Пользователь не активирован'));
