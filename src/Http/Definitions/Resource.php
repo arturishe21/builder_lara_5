@@ -398,6 +398,10 @@ class Resource
 
     private function getTranslate($field, $slugLang, $phrase)
     {
+        if (!$field->checkAutoTranslate()) {
+            return '';
+        }
+
         try {
             $langDef = $field->getLanguageDefault();
 

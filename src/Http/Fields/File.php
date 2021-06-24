@@ -9,6 +9,7 @@ class File extends Field
 {
     protected $accept;
     protected $path = '/storage/files/';
+    protected $isAutoTranslate = false;
 
     public function getAccept()
     {
@@ -17,9 +18,18 @@ class File extends Field
 
     public function getValueForList($definition)
     {
-        if ($this->getValue()) {
-            return "<a href='{$this->getValue()}' target='_blank'>" . __cms('Скачать') . "</a>";
+        $value = $this->getValue();
+
+        if ($this->getLanguage()) {
+            $language = $this->getLanguage()->first();
+            $value = $this->getValueLanguage($language->language);
         }
+
+        if ($value) {
+            return "<a href='{$value}' target='_blank'>" . __cms('Скачать') . "</a>";
+        }
+
+        return;
     }
 
     public function accept($value)

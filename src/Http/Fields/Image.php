@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 class Image extends Field
 {
     protected $path = '/storage/editor/fotos/';
+    protected $isAutoTranslate = false;
 
     public function isTransparent()
     {
@@ -18,8 +19,15 @@ class Image extends Field
 
     public function getValueForList($definition)
     {
-        $img = glide($this->getValue(), ['w' => 50, 'h' => 50]);
-        $imgHover = glide($this->getValue(), ['w' => 350, 'h' => 350]);
+        $value = $this->getValue();
+
+        if ($this->getLanguage()) {
+            $language = $this->getLanguage()->first();
+            $value = $this->getValueLanguage($language->language);
+        }
+
+        $img = glide($value, ['w' => 50, 'h' => 50]);
+        $imgHover = glide($value, ['w' => 350, 'h' => 350]);
 
         return "<a class='screenshot' rel='{$imgHover}'><img src='{$img}'></a>";
     }

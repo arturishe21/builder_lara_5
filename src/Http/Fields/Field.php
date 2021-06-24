@@ -28,6 +28,7 @@ class Field
     protected $allData;
     protected $locale;
     protected $isReadonlyForEdit = false;
+    protected $isAutoTranslate = true;
 
     public function __construct(string $name, $attribute = null)
     {
@@ -103,6 +104,11 @@ class Field
     public function getValue()
     {
         return $this->value ? $this->value : $this->defaultValue;
+    }
+
+    public function checkAutoTranslate()
+    {
+        return $this->isAutoTranslate;
     }
 
     public function isOnlyForm()
