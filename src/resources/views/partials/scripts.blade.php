@@ -21,10 +21,14 @@
                 Cards.init();
 
             }).fail(function(xhr, ajaxOptions, thrownError) {
-            var errorResult = jQuery.parseJSON(xhr.responseText);
-            TableBuilder.showErrorNotification(errorResult.message);
-            TableBuilder.hidePreloader();
-        });
+				var errorResult = jQuery.parseJSON(xhr.responseText);
+				TableBuilder.showErrorNotification(errorResult.message);
+				TableBuilder.hidePreloader();
+
+				if (errorResult.code == 401) {
+				    location.href = '/login';
+				}
+			});
     }
 
     window.addEventListener('popstate', function (e) {

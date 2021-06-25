@@ -40,7 +40,7 @@ class Authenticate
                     $data = [
                         'status'  => 'error',
                         'code'    => '401',
-                        'message' => 'Unauthorized',
+                        'message' => __cms('Нет прав на вход в cms'),
                     ];
 
                     return Response::json($data, '401');
@@ -51,7 +51,7 @@ class Authenticate
             //check access
             $user = Sentinel::getUser();
             if (! $user->hasAccess(['admin.access'])) {
-                Session::flash('login_not_found', 'Нет прав на вход в админку');
+                Session::flash('login_not_found', __cms('Нет прав на вход в cms'));
                 Sentinel::logout();
 
                 return Redirect::route('login_show');
@@ -62,7 +62,7 @@ class Authenticate
             });
 
         } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-            Session::flash('login_not_found', 'Пользователь не активирован');
+            Session::flash('login_not_found', __cms('Пользователь не активирован'));
             Sentinel::logout();
 
             return Redirect::route('login_show');
