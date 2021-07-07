@@ -290,3 +290,23 @@ if (! function_exists('cmp')) {
         return (strlen($a) < strlen($b)) ? -1 : 1;
     }
 }
+
+if (!function_exists('parseIfJson')) {
+    function parseIfJson(?string $data): ?string
+    {
+        if (!preg_match('~^{.*?}~', $data)) {
+            return $data;
+        }
+
+        try {
+
+            $data = json_decode($data, true);
+
+            return $data['ua'] ?? null;
+
+        } catch (Throwable $exception) {
+            return null;
+        }
+    }
+}
+
