@@ -96,10 +96,9 @@ class TranslateCmsController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(TranslationsPhrasesCms $trans)
+    public function destroy($id)
     {
-        $trans->delete();
-
+        TranslationsPhrasesCms::find($id)->delete();
         TranslationsPhrasesCms::reCacheTrans();
 
         return Response::json(['status' => 'ok']);

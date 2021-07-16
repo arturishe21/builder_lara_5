@@ -108,8 +108,8 @@ var Trans = {
 
     doDelete: function (id) {
         $.post(
-            "/admin/translations_cms/del_record",
-            {id: id},
+            "/admin/translations_cms/remove/" + id,
+            {},
             function (data) {
                 Trans.show_list(1);
             }

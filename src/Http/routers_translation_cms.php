@@ -11,7 +11,7 @@ Route::group(['middleware' => ['web']], function () {
                 Route::post('translations_cms/translate', 'Vis\Builder\Http\Controllers\TranslateCmsController@doTranslate');
                 Route::post('translations_cms/add_record', 'Vis\Builder\Http\Controllers\TranslateCmsController@addTraslate');
                 Route::post('translations_cms/change-text-lang', 'Vis\Builder\Http\Controllers\TranslateCmsController@changeTranslate');
-                Route::delete('translations_cms/{trans}', 'Vis\Builder\Http\Controllers\TranslateCmsController@destroy');
+                Route::post('translations_cms/remove/{id}', 'Vis\Builder\Http\Controllers\TranslateCmsController@destroy');
             }
         }
     );
