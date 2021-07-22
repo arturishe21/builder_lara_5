@@ -188,13 +188,11 @@ class TranslateController extends Controller
             mkdir(public_path('/js'), 0755, true);
         }
 
-        foreach (config('translations.config.languages') as $lang) {
+        foreach (languagesOfSite() as $lang) {
 
-            $content = $this->getJs($lang['caption'], true);
+            $content = $this->getJs($lang, true);
 
-            echo route( 'auto_translate').'<br>';
-
-            file_put_contents(public_path('/js/translation_'.$lang['caption'].'.js'), $content);
+            file_put_contents(public_path('/js/translation_' . $lang . '.js'), $content);
         }
     }
 }
