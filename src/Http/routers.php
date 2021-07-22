@@ -4,8 +4,8 @@
     Route::pattern('any', '[a-z0-9-_/\]+');
 
     Route::group(['middleware' => ['web']], function () {
-        Route::get('login', 'Vis\Builder\LoginController@showLogin')->name('login_show');
-        Route::post('login', 'Vis\Builder\LoginController@postLogin')->name('login');
+        Route::get('login', 'Vis\Builder\LoginController@index')->name('cms.login.index');
+        Route::post('login', 'Vis\Builder\LoginController@store')->name('cms.login.store');
     });
 
     Route::group(['middleware' => ['web']], function () {
@@ -20,7 +20,7 @@
                     'Vis\Builder\ControllersNew\EditContentOnSiteController@index'
                 );
 
-                Route::get('logout', 'Vis\Builder\LoginController@doLogout')->name('logout');
+                Route::get('logout', 'Vis\Builder\LoginController@logout')->name('cms.logout');
 
                 Route::get('/logs', 'Vis\Builder\LogViewerController@index');
 

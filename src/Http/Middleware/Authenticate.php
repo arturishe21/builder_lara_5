@@ -16,18 +16,9 @@ class Authenticate
 
     public function __construct(Admin $admin)
     {
-        $this->adminClass = new Admin();
+        $this->adminClass = $admin;
     }
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     * @param string|null              $guard
-     *
-     * @return mixed
-     */
     public function handle($request, Closure $next)
     {
         if (! $this->checkIp($request)) {
@@ -54,7 +45,7 @@ class Authenticate
                 Session::flash('login_not_found', __cms('Нет прав на вход в cms'));
                 Sentinel::logout();
 
-                return Redirect::route('login_show');
+                return Redirect::route('cms.login.index');
             }
 
             \App::singleton('user', function () use ($user) {
@@ -65,7 +56,7 @@ class Authenticate
             Session::flash('login_not_found', __cms('Пользователь не активирован'));
             Sentinel::logout();
 
-            return Redirect::route('login_show');
+            return Redirect::route('cms.login.index');
         }
 
         return $next($request);

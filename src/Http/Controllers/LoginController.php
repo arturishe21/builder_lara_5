@@ -5,16 +5,15 @@ namespace Vis\Builder;
 use App\Cms\Admin;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
+use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
+use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
+use Vis\Builder\Http\Requests\Login;
 
-/**
- * Class LoginController.
- */
 class LoginController extends Controller
 {
     private $sessionError = 'login_not_found';
-    private $routeLogin = 'login_show';
+    private $routeLogin = 'cms.login.index';
+    private $urlCms = '/admin';
     private $admin;
     private $login;
 
@@ -25,17 +24,18 @@ class LoginController extends Controller
         $this->login = new $classLogin();
     }
 
-    public function showLogin()
+    public function index()
     {
         try {
             if (Sentinel::check()) {
-                return redirect('/admin');
+                return redirect($this->urlCms);
             }
-        } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-            Session::flash($this->sessionError, __cms('Пользователь не активирован'));
+        } catch (NotActivatedException $e) {
+
             Sentinel::logout();
 
-            return redirect()->route($this->routeLogin);
+            return redirect()->route($this->routeLogin)
+                             ->with($this->sessionError, __cms('Пользователь не активирован'));
         }
 
         return view('admin::login', [
@@ -44,75 +44,41 @@ class LoginController extends Controller
         ]);
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postLogin()
+    public function store(Login $request)
     {
-        if ($this->validation()) {
-            try {
-                $user = Sentinel::authenticate(
-                    [
-                        'email'    => request('email'),
-                        'password' => request('password'),
-                    ]
-                );
+        try {
+            $user = Sentinel::authenticate($request->all());
 
-                if (! $user) {
-                    Session::flash($this->sessionError, __cms('Пользователь не найден'));
-
-                    return redirect()->route($this->routeLogin);
-                }
-
-                if ($this->login->onLogin()) {
-                    return $this->login->onLogin();
-                }
-
-                return Redirect::intended('/admin');
-            } catch (\Cartalyst\Sentinel\Checkpoints\ThrottlingException $e) {
-                Session::flash($this->sessionError, __cms('Превышено количество возможных попыток входа'));
-
-                return Redirect::route('login_show');
-            } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-                Session::flash($this->sessionError, __cms('Пользователь не активирован'));
-
-                return redirect()->route($this->routeLogin);
+            if (! $user) {
+                return redirect()->route($this->routeLogin)
+                                 ->with($this->sessionError,  __cms('Пользователь не найден'));
             }
-        } else {
-            Session::flash($this->sessionError, __cms('Некорректные данные запроса'));
 
-            return redirect()->route($this->routeLogin);
+            if ($this->login->onLogin()) {
+                return $this->login->onLogin();
+            }
+
+            return redirect($this->urlCms);
+
+        } catch (ThrottlingException $e) {
+            return redirect()->route($this->routeLogin)
+                             ->with($this->sessionError, __cms('Превышено количество возможных попыток входа'));
+        } catch (NotActivatedException $e) {
+            return redirect()->route($this->routeLogin)
+                             ->with($this->sessionError, __cms('Пользователь не активирован'));
         }
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function doLogout()
+    public function logout()
     {
-        Sentinel::logout();
         $this->clearSessionsAdmin();
 
         return redirect()->route($this->routeLogin);
     }
 
-    /**
-     * @return bool
-     */
-    private function validation()
-    {
-        $rules = [
-            'email'    => 'required|email|max:50',
-            'password' => 'required|min:6|max:20',
-        ];
-
-        $validator = Validator::make(request()->all(), $rules);
-
-        return ! $validator->fails();
-    }
-
     private function clearSessionsAdmin()
     {
-        Session::forget('table_builder');
+        Sentinel::logout();
+        session()->forget('table_builder');
     }
 }

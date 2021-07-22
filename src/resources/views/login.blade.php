@@ -12,7 +12,7 @@
                             </div>
                         @endif
 
-                        <form method="post"action="{{route('login')}}" name="repawning" class="smart-form client-form">
+                        <form method="post"action="{{route('cms.login.store')}}" name="repawning" class="smart-form client-form">
                             {{ csrf_field() }}
 
                             <header>

@@ -30,7 +30,6 @@ class BuilderServiceProvider extends ServiceProvider
 
         $this->app->setLocale(defaultLanguage());
 
-
         $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
         $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
 

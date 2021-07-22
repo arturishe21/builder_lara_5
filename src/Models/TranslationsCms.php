@@ -30,12 +30,10 @@ class TranslationsCms extends Model
                 $translate = $phrase;
             }
 
-            $collection = [
+            $newPhrase->translationsPhrases()->create([
                 'lang' => $lang,
                 'translate' => $translate
-            ];
-
-            $newPhrase->translationsPhrases()->create($collection);
+            ]);
         }
 
         Cache::tags('translations')->flush();
