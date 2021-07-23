@@ -78,7 +78,7 @@ if (! function_exists('print_arr')) {
 
 if (! function_exists('glide')) {
 
-    function glide(string $source, array $options = []) : string
+    function glide($source, array $options = [])
     {
         if (
             env('IMG_PLACEHOLDER', true)
