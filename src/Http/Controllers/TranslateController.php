@@ -6,7 +6,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Vis\Builder\Models\Language;
 use Vis\Builder\Models\Translations;
 use Vis\Builder\Models\TranslationsPhrases;
@@ -14,36 +13,33 @@ use Vis\Builder\Models\TranslationsPhrases;
 class TranslateController extends Controller
 {
     private $languages;
+    private $countRecordsOnPage = 20;
 
     public function __construct(Language $language)
     {
         $this->languages = $language->getLanguages();
     }
 
-    public function fetchIndex()
+    public function index()
     {
         if (request('search_q') && mb_strlen(request('search_q')) > 1) {
-            return $this->doSearch();
+            return $this->search();
         }
 
-        $countShow = request('count_show') ?: 20;
-        $allpage = TranslationsPhrases::orderBy('id', 'desc')->paginate($countShow);
+        $allPage = TranslationsPhrases::orderBy('id', 'desc')->paginate($this->countRecordsOnPage);
 
         $view = Request::ajax() ? 'admin::translations.part.table_center' : 'admin::translations.trans';
         $languages = $this->languages;
 
-        return view($view)
-            ->with('allPage', $allpage)
-            ->with('languages', $languages)
-            ->with('count_show', $countShow);
+        return view($view, compact('allPage', 'languages'));
     }
 
     /**
-     * do search in list phrase.
+     * search in list phrase.
      *
      * @return Illuminate\Support\Facades\View
      */
-    public function doSearch()
+    public function search()
     {
         $querySearch = trim(request('search_q'));
         $languages = $this->languages;
@@ -54,19 +50,18 @@ class TranslateController extends Controller
                 $query->where('phrase', 'like', '%'.$querySearch.'%')
                     ->orWhere('translations.translate', 'like', '%'.$querySearch.'%');
             })
-
             ->groupBy('translations_phrases.id')
-            ->orderBy('translations_phrases.id', 'desc')->paginate(20);
+            ->orderBy('translations_phrases.id', 'desc')->paginate($this->countRecordsOnPage);
 
         return view('admin::translations.part.result_search', compact('allPage', 'languages'));
     }
 
     /**
-     * get popup create new phrase.
+     * get popup for create new phrase.
      *
      * @return Illuminate\Support\Facades\View
      */
-    public function fetchCreate()
+    public function shopPopupForCreate()
     {
         $languages = $this->languages;
 
@@ -74,13 +69,12 @@ class TranslateController extends Controller
     }
 
     /**
-     * do create new translation.
+     * create new translation.
      *
      * @return json Response
      */
-    public function doSaveTranslate()
+    public function saveTranslate()
     {
-
         $validator = Validator::make(request()->all(), TranslationsPhrases::$rules);
         if ($validator->fails()) {
             return Response::json(
@@ -118,7 +112,7 @@ class TranslateController extends Controller
      *
      * @return json Response
      */
-    public function doDelelePhrase()
+    public function remove()
     {
         TranslationsPhrases::find(request('id'))->delete();
 
@@ -132,15 +126,17 @@ class TranslateController extends Controller
      *
      * @return void
      */
-    public function doSavePhrase()
+    public function savePhrase()
     {
         $lang = request('name');
         $phrase = request('value');
         $id = request('pk');
 
         if ($id && $phrase && $lang) {
+
             $phraseChange = Translations::where('id_translations_phrase', $id)->where('lang', $lang)->first();
-            if (isset($phraseChange->id)) {
+
+            if ($phraseChange) {
                 $phraseChange->translate = $phrase;
                 $phraseChange->save();
             } else {

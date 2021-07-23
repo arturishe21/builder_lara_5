@@ -7,29 +7,26 @@ Route::group(['middleware' => ['web']], function () {
         function () {
             Route::any('translations/phrases', [
                     'as'   => 'phrases_all',
-                    'uses' => 'Vis\Builder\Http\Controllers\TranslateController@fetchIndex', ]
+                    'uses' => 'Vis\Builder\Http\Controllers\TranslateController@index', ]
             );
 
             if (Request::ajax()) {
                 Route::post('translations/create_pop', [
                         'as'   => 'create_pop',
-                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@fetchCreate', ]
+                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@shopPopupForCreate', ]
                 );
-                Route::post('translations/translate', [
-                        'as'   => 'translate',
-                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@doTranslate', ]
-                );
+
                 Route::post('translations/add_record', [
                         'as'   => 'add_record',
-                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@doSaveTranslate', ]
+                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@saveTranslate', ]
                 );
                 Route::post('translations/change_text_lang', [
                         'as'   => 'change_text_lang',
-                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@doSavePhrase', ]
+                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@savePhrase', ]
                 );
                 Route::post('translations/del_record', [
                         'as'   => 'del_record',
-                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@doDelelePhrase', ]
+                        'uses' => 'Vis\Builder\Http\Controllers\TranslateController@remove', ]
                 );
                 Route::post('translations/create_js_file', [
                         'as'   => 'create_js_file',

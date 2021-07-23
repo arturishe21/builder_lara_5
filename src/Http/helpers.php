@@ -54,9 +54,6 @@ if (! function_exists('settingForMail')) {
 }
 
 if (! function_exists('dr')) {
-    /**
-     * @param $array
-     */
     function dr($array)
     {
         echo '<pre>';
@@ -65,9 +62,6 @@ if (! function_exists('dr')) {
 }
 
 if (! function_exists('print_arr')) {
-    /**
-     * @param $array
-     */
     function print_arr($array)
     {
         echo '<pre>';

@@ -44,7 +44,7 @@ class CreateImgWebp extends Command
                 $this->convert($file);
             }
         }
-        $this->info('Все');
+        $this->info('that all');
     }
 
     private function getFolders($folders)

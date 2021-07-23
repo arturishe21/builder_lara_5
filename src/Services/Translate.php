@@ -34,7 +34,7 @@ class Translate
         return is_array($this->collectionTranslate) && array_key_exists($phrase, $this->collectionTranslate) && isset($this->collectionTranslate[$phrase][$this->language]);
     }
 
-    private function replaceArrayPhrase(string $phrase, array $replacePhrase)
+    private function replaceArrayPhrase($phrase, array $replacePhrase)
     {
         if (count($replacePhrase)) {
             $phrase = str_replace(array_keys($replacePhrase), array_values($replacePhrase), $phrase);
