@@ -39,9 +39,20 @@ class File extends Field
         return $this;
     }
 
+    public function uploadPath(string $path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
     public function upload()
     {
         $file = request()->file('file');
+
+        if (!file_exists(public_path($this->path))) {
+            mkdir(public_path($this->path), 0755, true);
+        }
 
         $extension = $file->getClientOriginalExtension();
         $nameFileArray = explode('.', $file->getClientOriginalName());
@@ -53,7 +64,7 @@ class File extends Field
             $fileName = $nameFile . '_' . time() . '.' . $extension;
         }
 
-        $file->move(ltrim($this->path, '/'), $fileName);
+        $file->move(public_path($this->path), $fileName);
 
         return [
             'status'     => true,
