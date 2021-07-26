@@ -3,121 +3,77 @@
 namespace Vis\Builder;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Vis\Builder\Http\Requests\EditorFile;
+use Vis\Builder\Http\Requests\EditorImage;
+use Illuminate\Support\Facades\File;
 
-/**
- * Class EditorController.
- */
 class EditorController extends Controller
 {
-    /**
-     * Loading photos from froala Editor.
-     */
-    public function uploadFoto()
+    private $pathPhotos = '/storage/editor/photos';
+    private $pathFiles = '/storage/editor/files';
+
+    public function uploadImage(EditorImage $request)
     {
-        $photo = request()->file('file');
-
-        $rules = [
-            'file'  => 'required|image',
-        ];
-
-        $validator = Validator::make(request()->all(), $rules);
-
-        if ($validator->fails()) {
-            return Response::json([
-                'status'          => 'error',
-                'errors_messages' => $validator->messages(),
-            ]);
-        }
-
-        $destinationPath = 'storage/editor/fotos';
-
-        $ext = $photo->getClientOriginalExtension();  // Get real extension according to mime type
-        $fullname = $photo->getClientOriginalName(); // Client file name, including the extension of the client
-        $hashname = md5(date('H.i.s').'_'.$fullname).'.'.$ext;
-
-        $fullPathImg = '/'.$destinationPath.'/'.$hashname;
-
-        request()->file('file')->move($destinationPath, $hashname);
-
-        return Response::json(['link' => $fullPathImg]);
+        return $this->uploadFileAndReturnResult($request, $this->pathPhotos);
     }
 
-    /**
-     * Loading files from froala Editor.
-     */
-    public function uploadFile()
+    public function uploadFile(EditorFile $request)
     {
-        $file = request()->file('file');
+        return $this->uploadFileAndReturnResult($request, $this->pathFiles);
+    }
 
-        $rules = [
-            'file'  => 'required',
-        ];
+    private function uploadFileAndReturnResult($request, $path)
+    {
+        $nameFile = $this->getNameFile($request->file('file'), $path);
 
-        $validator = Validator::make(request()->all(), $rules);
+        $request->file('file')->move(public_path($path), $nameFile);
 
-        if ($validator->fails()) {
-            return Response::json(['status' => 'error', 'errors_messages' => $validator->messages()]);
+        return response()->json([
+            'link' => $path. '/' . $nameFile
+        ]);
+    }
+
+    private function getNameFile($file, $path)
+    {
+        if (!file_exists(public_path($path))) {
+            mkdir(public_path($path), 0755, true);
         }
 
-        $destinationPath = 'storage/editor/files';
-
-        $ext = $file->getClientOriginalExtension();  // Get real extension according to mime type
+        $ext = $file->getClientOriginalExtension();
         $fullname = $file->getClientOriginalName();
         $fullname = str_replace('.'.$ext, '', $fullname);
 
-        $hashname = Str::slug($fullname).'.'.$ext;
-        $fullPathImg = '/'.$destinationPath.'/'.$hashname;
+        $resultName = Str::slug($fullname) . '.' . $ext;
+        $fullPathImg = $path . '/' . $resultName;
 
-        if (file_exists(public_path().$fullPathImg)) {
-            $hashname = Str::slug($fullname).'_'.time().'.'.$ext;
-            $fullPathImg = '/'.$destinationPath.'/'.$hashname;
+        if (file_exists(public_path($fullPathImg))) {
+            $resultName = Str::slug($fullname).'_'.time().'.'.$ext;
         }
 
-        request()->file('file')->move($destinationPath, $hashname);
-
-        return Response::json(['link' => $fullPathImg]);
+        return $resultName;
     }
 
-    //end uploadFile
-
-    /**
-     * load img manager.
-     */
-    public function loadImages()
+    public function getUploadedImages()
     {
-        $imgs = scandir(public_path().'/storage/editor/fotos');
+        $files = File::files(public_path($this->pathPhotos));
 
-        unset($imgs[0]);
-        unset($imgs[1]);
+        $result = array_map(function ($file) {
+            return [
+                'url' => $this->pathPhotos. '/'. $file->getFilename(),
+                'thumb' => $this->pathPhotos. '/'. $file->getFilename()
+            ];
 
-        $imgRes = [];
-        $k = 0;
-        $pathToImg = '/storage/editor/fotos/';
-        foreach ($imgs as $img) {
-            if (is_file(public_path().$pathToImg.$img)) {
-                $imgRes[$k]['url'] = $pathToImg.$img;
-                $imgRes[$k]['thumb'] = $pathToImg.$img;
-                $k++;
-            }
-        }
+        }, $files);
 
-        return Response::json($imgRes);
+        return response()->json($result);
     }
 
-    /**
-     * delete img.
-     */
-    public function deleteImages()
+    public function deleteImage()
     {
-        unlink(public_path().request('src'));
+        unlink(public_path(request('src')));
     }
 
-    /**
-     * Quick edit in list.
-     */
     public function doQuickEdit()
     {
         $model = request('model');

@@ -5,20 +5,13 @@ namespace Vis\Builder\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
-use Vis\Builder\Models\Language;
+use Vis\Builder\Http\Requests\Translate;
 use Vis\Builder\Models\Translations;
 use Vis\Builder\Models\TranslationsPhrases;
 
 class TranslateController extends Controller
 {
-    private $languages;
     private $countRecordsOnPage = 20;
-
-    public function __construct(Language $language)
-    {
-        $this->languages = $language->getLanguages();
-    }
 
     public function index()
     {
@@ -26,12 +19,11 @@ class TranslateController extends Controller
             return $this->search();
         }
 
-        $allPage = TranslationsPhrases::orderBy('id', 'desc')->paginate($this->countRecordsOnPage);
+        $allPhrases = TranslationsPhrases::orderBy('id', 'desc')->paginate($this->countRecordsOnPage);
 
         $view = Request::ajax() ? 'admin::translations.part.table_center' : 'admin::translations.trans';
-        $languages = $this->languages;
 
-        return view($view, compact('allPage', 'languages'));
+        return view($view, compact('allPhrases'));
     }
 
     /**
@@ -42,9 +34,8 @@ class TranslateController extends Controller
     public function search()
     {
         $querySearch = trim(request('search_q'));
-        $languages = $this->languages;
 
-        $allPage = TranslationsPhrases::leftJoin('translations', 'translations.id_translations_phrase', '=', 'translations_phrases.id')
+        $allPhrases = TranslationsPhrases::leftJoin('translations', 'translations.id_translations_phrase', '=', 'translations_phrases.id')
             ->select('translations_phrases.*')
             ->where(function ($query) use ($querySearch) {
                 $query->where('phrase', 'like', '%'.$querySearch.'%')
@@ -53,7 +44,7 @@ class TranslateController extends Controller
             ->groupBy('translations_phrases.id')
             ->orderBy('translations_phrases.id', 'desc')->paginate($this->countRecordsOnPage);
 
-        return view('admin::translations.part.result_search', compact('allPage', 'languages'));
+        return view('admin::translations.part.result_search', compact('allPhrases'));
     }
 
     /**
@@ -63,9 +54,7 @@ class TranslateController extends Controller
      */
     public function shopPopupForCreate()
     {
-        $languages = $this->languages;
-
-        return view('admin::translations.part.form_trans', compact('languages'));
+        return view('admin::translations.part.form_trans');
     }
 
     /**
@@ -73,21 +62,11 @@ class TranslateController extends Controller
      *
      * @return json Response
      */
-    public function saveTranslate()
+    public function saveTranslate(Translate $request)
     {
-        $validator = Validator::make(request()->all(), TranslationsPhrases::$rules);
-        if ($validator->fails()) {
-            return Response::json(
-                [
-                    'status' => 'error',
-                    'message' => $validator->messages(),
-                ]
-            );
-        }
-
-        $model = new TranslationsPhrases();
-        $model->phrase = strip_tags(str_replace('"', '', trim(request()->get('phrase'))));
-        $model->save();
+        $model = TranslationsPhrases::create([
+            'phrase' => strip_tags(str_replace('"', '', trim($request->get('phrase'))))
+        ]);
 
         foreach (request()->get('translation') as $slugTranslate => $translate) {
                 Translations::create([

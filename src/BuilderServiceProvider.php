@@ -5,8 +5,14 @@ namespace Vis\Builder;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use Vis\Builder\Models\Translations;
+use Vis\Builder\Http\ViewComposers\ActivitiesTree;
+use Vis\Builder\Http\ViewComposers\ChangeLang;
+use Vis\Builder\Http\ViewComposers\Languages;
+use Vis\Builder\Http\ViewComposers\LayoutDefault;
+use Vis\Builder\Http\ViewComposers\Navigation;
+use Vis\Builder\Http\ViewComposers\NavigationBadge;
 use Vis\Builder\Models\TranslationsPhrases;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 /**
  * Class BuilderServiceProvider.
@@ -61,10 +67,10 @@ class BuilderServiceProvider extends ServiceProvider
             'admin::partials.change_lang',
             'admin::partials.scripts'
         ],
-            'Vis\Builder\Http\ViewComposers\ChangeLang');
+            ChangeLang::class);
 
-        View::composer('admin::partials.navigation_badge', 'Vis\Builder\Http\ViewComposers\NavigationBadge');
-        View::composer('admin::partials.navigation', 'Vis\Builder\Http\ViewComposers\Navigation');
+        View::composer('admin::partials.navigation_badge', NavigationBadge::class);
+        View::composer('admin::partials.navigation', Navigation::class);
 
         View::composer(['admin::tree.partials.update',
             'admin::tree.partials.preview',
@@ -72,10 +78,19 @@ class BuilderServiceProvider extends ServiceProvider
             'admin::tree.partials.revisions',
             'admin::tree.partials.delete',
             'admin::tree.partials.constructor',
-        ], 'Vis\Builder\Http\ViewComposers\ActivitiesTree');
+        ], ActivitiesTree::class);
+
+        View::composer([
+            'admin::translations.part.form_trans',
+            'admin::translations.part.result_search',
+            'admin::translations.part.table_center',
+            'admin::translations.trans'
+        ], Languages::class);
 
 
-        View::composer('admin::layouts.default', 'Vis\Builder\Http\ViewComposers\LayoutDefault');
+
+
+        View::composer('admin::layouts.default',  LayoutDefault::class);
     }
 
     /**

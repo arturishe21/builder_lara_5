@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Vis\Builder\Http\Requests\TranslateCms;
 use Vis\Builder\Models\{TranslationsPhrasesCms, TranslationsCms};
 use Vis\Builder\Libs\GoogleTranslateForFree;
 
@@ -14,34 +15,32 @@ use Vis\Builder\Libs\GoogleTranslateForFree;
  */
 class TranslateCmsController extends Controller
 {
-    /**
-     * @return mixed
-     */
+    private $countShow;
+    private $lanuages;
+
+    public function __construct()
+    {
+        $this->countShow = request('count_show') ? : '20';
+        $this->lanuages = config('builder.translations.cms.languages');
+    }
+
     public function index()
     {
         $search = request('search_q');
-        $countShow = request('count_show') ? request('count_show') : '20';
-
-        $allpage = TranslationsPhrasesCms::orderBy('id', 'desc');
+        $phrases = TranslationsPhrasesCms::orderBy('id', 'desc');
 
         if ($search) {
-            $allpage = $allpage->where('phrase', 'LIKE', '%'.$search.'%');
+            $phrases = $phrases->where('phrase', 'LIKE', '%'.$search.'%');
         }
 
-        $allpage = $allpage->paginate($countShow);
-
-        $breadcrumb[__cms('Переводы CMS')] = '';
-
+        $phrases = $phrases->paginate($this->countShow);
         $view = Request::ajax() ? 'admin::translation_cms.part.center' : 'admin::translation_cms.trans';
 
-        $langs = config('builder.translations.cms.languages');
-
         return view($view)
-            ->with('breadcrumb', $breadcrumb)
-            ->with('data', $allpage)
-            ->with('langs', $langs)
+            ->with('phrases', $phrases)
+            ->with('langs', $this->lanuages)
             ->with('search_q', $search)
-            ->with('count_show', $countShow);
+            ->with('count_show', $this->countShow);
     }
 
     /**
@@ -49,7 +48,7 @@ class TranslateCmsController extends Controller
      */
     public function create()
     {
-        $langs = config('builder.translations.cms.languages');
+        $langs = $this->lanuages;
 
         return view('admin::translation_cms.part.form', compact('langs'));
     }
@@ -57,31 +56,21 @@ class TranslateCmsController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function addTraslate()
+    public function saveTranslate(TranslateCms $request)
     {
-        $validator = Validator::make(request()->all(), TranslationsPhrasesCms::$rules);
-        if ($validator->fails()) {
-            return Response::json(
-                [
-                    'status' => 'error',
-                    'message' => $validator->messages(),
-                ]
-            );
-        }
-
-        $model = new TranslationsPhrasesCms();
-        $model->phrase = trim(request()->get('phrase'));
-        $model->save();
-
-        $langs = array_keys(config('builder.translations.cms.languages'));
+        $translations = [];
+        $model = TranslationsPhrasesCms::create([
+            'phrase' => $request->get('phrase')
+        ]);
 
         foreach (request()->get('translation') as $slugTranslate => $translate) {
-                $model_trans = new TranslationsCms();
-                $model_trans->translate = trim($translate);
-                $model_trans->lang = $slugTranslate;
-                $model_trans->translations_phrases_cms_id = $model->id;
-                $model_trans->save();
+            $translations[] = new TranslationsCms([
+                'translate' => trim($translate),
+                'lang' => $slugTranslate,
+            ]);
         }
+
+        $model->translations()->saveMany($translations);
 
         TranslationsPhrasesCms::reCacheTrans();
 
@@ -124,8 +113,9 @@ class TranslateCmsController extends Controller
 
         $phrase = TranslationsCms::where('translations_phrases_cms_id', $id)->where('lang', $lang)->first();
 
-        $phrase->translate = $value;
-        $phrase->save();
+        $phrase->update([
+            'translate' => $value
+        ]);
 
         TranslationsPhrasesCms::reCacheTrans();
     }

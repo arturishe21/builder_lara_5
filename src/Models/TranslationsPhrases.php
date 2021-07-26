@@ -13,10 +13,6 @@ class TranslationsPhrases extends Model
     protected $fillable = ['phrase'];
     public $timestamps = false;
 
-    public static $rules = [
-        'phrase' => 'required|unique:translations_phrases',
-    ];
-
     public function translations()
     {
         return $this->hasMany(Translations::class, 'id_translations_phrase');
@@ -24,14 +20,7 @@ class TranslationsPhrases extends Model
 
     public function translationsLanguage()
     {
-        $result = $this->translations()->get(['lang', 'translate']);
-
-        $dataLanguage = [];
-        foreach ($result as $item) {
-            $dataLanguage[$item->lang] = $item->translate;
-        }
-
-        return $dataLanguage;
+        return $this->translations()->pluck('translate', 'lang')->toArray();
     }
 
     /**

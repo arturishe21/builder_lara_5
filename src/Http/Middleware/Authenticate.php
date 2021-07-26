@@ -2,7 +2,7 @@
 
 namespace Vis\Builder;
 
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\{Sentinel, Activation};
 use Closure;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -25,41 +25,41 @@ class Authenticate
             return redirect()->to('/');
         }
 
-        try {
-            if (! Sentinel::check()) {
-                if (Request::ajax()) {
-                    $data = [
-                        'status'  => 'error',
-                        'code'    => '401',
-                        'message' => __cms('Нет прав на вход в cms'),
-                    ];
+        $user = Sentinel::getUser();
 
-                    return Response::json($data, '401');
-                } else {
-                    return redirect()->guest('login');
-                }
-            }
-            //check access
-            $user = Sentinel::getUser();
-            if (! $user->hasAccess(['admin.access'])) {
-                Session::flash('login_not_found', __cms('Нет прав на вход в cms'));
-                Sentinel::logout();
-
-                return Redirect::route('cms.login.index');
+        if (! $user) {
+            if (Request::ajax()) {
+                return Response::json([
+                    'status'  => 'error',
+                    'code'    => '401',
+                    'message' => __cms('Нет прав на вход в cms'),
+                ], '401');
             }
 
-            \App::singleton('user', function () use ($user) {
-                return $user;
-            });
-
-        } catch (\Cartalyst\Sentinel\Checkpoints\NotActivatedException $e) {
-            Session::flash('login_not_found', __cms('Пользователь не активирован'));
-            Sentinel::logout();
-
-            return Redirect::route('cms.login.index');
+            return redirect()->guest('login');
         }
 
+        if (!Activation::completed($user)) {
+            return $this->returnIfNotHasAccess(__cms('Пользователь не активирован'));
+        }
+
+        if (! $user->hasAccess(['admin.access'])) {
+            return $this->returnIfNotHasAccess(__cms('Нет прав на вход в cms'));
+        }
+
+        \App::singleton('user', function () use ($user) {
+            return $user;
+        });
+
         return $next($request);
+    }
+
+    private function returnIfNotHasAccess(string $message)
+    {
+        Session::flash('login_not_found', $message);
+        Sentinel::logout();
+
+        return Redirect::route('cms.login.index');
     }
 
     private function checkIp($request)

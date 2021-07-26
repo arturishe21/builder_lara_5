@@ -11,47 +11,23 @@ use Illuminate\Support\Facades\DB;
  */
 class TranslationsPhrasesCms extends Model
 {
-    /**
-     * @var string
-     */
     protected $table = 'translations_phrases_cms';
 
-    /**
-     * @var array
-     */
-    public static $rules = [
-        'phrase' => 'required|unique:translations_phrases_cms',
-    ];
-
-    /**
-     * @var array
-     */
     protected $fillable = ['phrase'];
 
-    /**
-     * @var bool
-     */
     public $timestamps = false;
 
-    public function translationsPhrases()
+    public function translations()
     {
         return $this->hasMany(TranslationsCms::class, 'translations_phrases_cms_id');
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getTrans()
     {
-        $res = $this->hasMany(TranslationsCms::class, 'translations_phrases_cms_id')->get()->toArray();
-
-        if ($res) {
-            foreach ($res as $el) {
-                $trans[$el['lang']] = $el['translate'];
-            }
-
-            return $trans;
-        }
+        return $this->translations()->pluck('translate', 'lang')->toArray();
     }
 
     /**

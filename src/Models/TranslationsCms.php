@@ -12,7 +12,7 @@ class TranslationsCms extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['lang', 'translate'];
+    protected $fillable = ['lang', 'translate', 'translations_phrases_cms_id'];
 
     public function createNewTranslate($phrase)
     {
