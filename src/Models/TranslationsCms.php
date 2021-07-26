@@ -30,7 +30,7 @@ class TranslationsCms extends Model
                 $translate = $phrase;
             }
 
-            $newPhrase->translationsPhrases()->create([
+            $newPhrase->translations()->create([
                 'lang' => $lang,
                 'translate' => $translate
             ]);
