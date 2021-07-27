@@ -2,14 +2,13 @@
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
-    <title> @yield('title') - {{ __cms(config('builder.admin.caption')) }}</title>
+    <title></title>
     <meta name="description" content="">
     <meta name="author" content="VIS-A-VIS">
     <meta name="HandheldFriendly" content="True">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="shortcut icon" href="{{ config('builder.admin.favicon_url') }}" type="image/x-icon">
     <link rel="stylesheet" href="/packages/vis/builder/fontawesome-pro-5.12.0-web/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/packages/vis/builder/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
@@ -41,8 +40,8 @@
             padding:6px 12px;
         }
     </style>
-    <link rel="shortcut icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/packages/vis/builder/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{$admin->getFaviconUrl()}}" type="image/x-icon">
+    <link rel="icon" href="{{$admin->getFaviconUrl()}}" type="image/x-icon">
 
 </head>
 <body class="{{ Cookie::get('tb-misc-body_class', '') }} {{ $skin ?? '' }}">
