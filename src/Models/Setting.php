@@ -18,20 +18,19 @@ class Setting extends Model
         $setting = $this->whereSlug($slug)->first();
 
         if ($setting) {
-            switch ($setting->type) {
-                case 'text':
-                    return $setting->value;
-                case 'text_with_languages':
-                    return $setting->t('value_languages');
-                case 'textarea_with_languages':
-                    return $setting->t('textarea_with_languages');
-                case 'froala_with_languages':
-                    return $setting->t('froala_with_languages');
-                case 'file':
-                    return $setting->file;
-                case 'check':
-                    return $setting->check;
-            }
+            return $this->getResultType($setting)[$setting->type] ?? '';
         }
+    }
+
+    private function getResultType($setting)
+    {
+        return [
+            'text' => $setting->value,
+            'text_with_languages' => $setting->t('value_languages'),
+            'textarea_with_languages' => $setting->t('textarea_with_languages'),
+            'froala_with_languages' => $setting->t('froala_with_languages'),
+            'file' => $setting->file,
+            'check' => $setting->check
+        ];
     }
 }

@@ -3,10 +3,11 @@
 namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Vis\Builder\Helpers\Traits\Rememberable;
 
 class Language extends Model
 {
-    use \Vis\Builder\Helpers\Traits\Rememberable;
+    use Rememberable;
 
     protected $table = 'languages';
     protected $fillable = [];
@@ -27,7 +28,6 @@ class Language extends Model
     {
         return $query->orderBy('priority', 'asc');
     }
-
 
     public function getName()
     {

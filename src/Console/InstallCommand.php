@@ -44,45 +44,12 @@ class InstallCommand extends Command
     public function handle()
     {
         if ($this->confirm('Start install? [y|n]')) {
-           // $this->createEnvFile();
-
             $this->createDb();
             $this->loadFiles();
             $this->publishConfigs();
             $this->loadFilesAfterPublishConfigs();
             $this->deleteFiles();
             $this->finishInstall();
-        }
-    }
-
-    private function createEnvFile()
-    {
-        $updatedValues = [
-            'DB_DATABASE'  => $this->ask('Database name'),
-            'DB_USERNAME'  => $this->ask('Database user'),
-            'DB_PASSWORD'  => $this->ask('Database password'),
-            'CACHE_DRIVER' => 'redis',
-            'MAIL_DRIVER'  => 'sendmail',
-            'DB_HOST' => 'mysql',
-            'REDIS_HOST' => 'redis'
-        ];
-
-        $envFile = $this->laravel->environmentFilePath();
-        foreach ($updatedValues as $key => $value) {
-            file_put_contents($envFile, preg_replace(
-                "/{$key}=(.*)/",
-                "{$key}={$value}",
-                file_get_contents($envFile)
-            ));
-        }
-
-        foreach ($updatedValues as $key => $value) {
-            $configKey = strtolower(str_replace('DB_', '', $key));
-            if ($configKey === 'password' && $value == 'null') {
-                config(["database.connections.mysql.{$configKey}" => '']);
-                continue;
-            }
-            config(["database.connections.mysql.{$configKey}" => $value]);
         }
     }
 

@@ -66,17 +66,17 @@
 
                 Route::get('/', 'Vis\Builder\TBController@showDashboard');
 
-                //routes for froala editor
                 Route::post('upload_image', 'Vis\Builder\EditorController@uploadImage');
                 Route::post('upload_file', 'Vis\Builder\EditorController@uploadFile');
                 Route::get('load_image', 'Vis\Builder\EditorController@getUploadedImages');
                 Route::post('delete_image', 'Vis\Builder\EditorController@deleteImages');
-                Route::post('quick_edit', 'Vis\Builder\EditorController@doQuickEdit');
 
-                Route::post('change_skin', 'Vis\Builder\TBController@doChangeSkin');
-                Route::get('change_lang', 'Vis\Builder\TBController@doChangeLangAdmin')->name('change_lang');
+                Route::post('quick_edit', 'Vis\Builder\QuickEditController');
 
-                Route::post('save_croped_img', 'Vis\Builder\TBController@doSaveCropImg');
+                Route::post('change_skin', 'Vis\Builder\TBController@changeSkin');
+                Route::get('change_lang', 'Vis\Builder\TBController@changeLanguage')->name('change_lang');
+
+                Route::post('save_croped_img', 'Vis\Builder\TBController@saveCropImg');
 
                 //router for pages builder
                 Route::get(

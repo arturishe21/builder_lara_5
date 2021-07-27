@@ -13,8 +13,6 @@ class MultiImage extends Image
 
     public function getValueArray()
     {
-        $value = $this->getValue();
-
-        return json_decode($value);
+        return json_decode($this->getValue());
     }
 }

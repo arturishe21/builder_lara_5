@@ -68,10 +68,10 @@ class Select extends Field
     public function getValueForList($definition)
     {
         $value = $this->getValue();
-        $options = $this->getOptions();
+        $optionsArray = $this->getOptions();
 
-        if (isset($options[$value]) && Arr::get($options, $value)) {
-            return $options[$value];
+        if (isset($optionsArray[$value]) && Arr::get($optionsArray, $value)) {
+            return $optionsArray[$value];
         }
     }
 

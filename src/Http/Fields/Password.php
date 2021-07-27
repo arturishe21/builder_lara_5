@@ -18,7 +18,6 @@ class Password extends Field
         if ($value) {
             $this->value = $this->defaultPassword;
         }
-
     }
 
     public function prepareSave($request)

@@ -8,35 +8,21 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use App\Cms\Admin;
 
-/**
- * Class TBController.
- */
 class TBController extends Controller
 {
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function showDashboard(Admin $admin)
     {
         return resolve($admin->login())->onLogin();
     }
 
-    /**
-     * change skin.
-     */
-    public function doChangeSkin()
+    public function changeSkin()
     {
         $skin = request('skin');
 
         Cookie::queue('skin', $skin, '100000');
     }
 
-    /**
-     * change lang.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function doChangeLangAdmin()
+    public function changeLanguage()
     {
         $lang = request('lang');
         Cookie::queue('lang_admin', $lang, '100000000');
@@ -44,51 +30,7 @@ class TBController extends Controller
         return Redirect::back();
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function doSaveMenuPreference()
-    {
-        $option = request('option');
-        $cookie = Cookie::forever('tb-misc-body_class', $option);
-
-        $response = Response::json([
-            'status' => true,
-        ]);
-        $response->headers->setCookie($cookie);
-
-        return $response;
-    }
-
-    // end doSaveMenuPreference
-
-    /**
-     * @param $exception
-     * @param $code
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public static function returnError($exception, $code)
-    {
-        $message = $exception->getMessage();
-
-        if (! $message) {
-            $message = '404 error';
-        }
-
-        $data = [
-            'status'  => 'error',
-            'code'    => $code,
-            'message' => $message,
-        ];
-
-        return Response::json($data, $code);
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function doSaveCropImg()
+    public function saveCropImg()
     {
         $data = request()->all();
         $infoImg = pathinfo($data['originalImg']);

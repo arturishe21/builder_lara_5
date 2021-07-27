@@ -28,8 +28,6 @@ class File extends Field
         if ($value) {
             return "<a href='{$value}' target='_blank'>" . __cms('Скачать') . "</a>";
         }
-
-        return;
     }
 
     public function accept($value)

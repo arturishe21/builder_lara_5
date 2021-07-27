@@ -110,34 +110,9 @@ class Tree extends Model
         $this->fillable = $params;
     }
 
-    public static function boot()
-    {
-        parent::boot();
-    }
-
-    /**
-     * @var string
-     */
     protected $table = 'tb_tree';
 
-    /**
-     * @var
-     */
     protected $_nodeUrl;
-    /**
-     * @var
-     */
-    private $treeMy;
-    /**
-     * @var
-     */
-    private $treeOptions;
-    /**
-     * @var
-     */
-    private $recursiveOnlyLastLevel;
-
-    // end setSlugAttribute
 
     public function checkUnicUrl()
     {

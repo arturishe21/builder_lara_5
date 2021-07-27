@@ -32,7 +32,7 @@ class SelectWithPicture extends Select
             $image = $optionsRes[$value]['data-img'];
 
             if (!$image) {
-                return;
+                return false;
             }
 
             $imageSmall = glide($image, ['w' => 100, 'h' => 100]);

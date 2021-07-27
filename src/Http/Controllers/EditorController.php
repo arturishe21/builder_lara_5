@@ -73,16 +73,4 @@ class EditorController extends Controller
     {
         unlink(public_path(request('src')));
     }
-
-    public function doQuickEdit()
-    {
-        $model = request('model');
-        $id = request('id');
-        $field = request('field');
-        $text = request('text');
-
-        $page = $model::find($id);
-        $page->$field = $text;
-        $page->save();
-    }
 }

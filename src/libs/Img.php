@@ -67,7 +67,7 @@ class Img
 
     private function checkFileCorrect($sourceArray)
     {
-       return !isset($sourceArray['extension']) || !isset($sourceArray['extension']) || !isset($sourceArray['dirname']) ?
+       return !isset($sourceArray['extension'])  || !isset($sourceArray['dirname']) ?
                false : true;
     }
 
@@ -97,16 +97,18 @@ class Img
                     $constraint->upsize();
                 }
             );
-        } else {
-            $img->resize(
-                $this->width,
-                $this->height,
-                function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                }
-            );
+
+            return;
         }
+
+        $img->resize(
+            $this->width,
+            $this->height,
+            function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            }
+        );
     }
 
     protected function checkExistPicture()
