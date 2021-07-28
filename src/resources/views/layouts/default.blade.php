@@ -39,6 +39,11 @@
         .smart-style-4 .tb-pagination nav>ul>li>a {
             padding:6px 12px;
         }
+
+        .smart-style-4 #header>:first-child {
+            background: #313645;
+        }
+
     </style>
     <link rel="shortcut icon" href="{{$admin->getFaviconUrl()}}" type="image/x-icon">
     <link rel="icon" href="{{$admin->getFaviconUrl()}}" type="image/x-icon">
