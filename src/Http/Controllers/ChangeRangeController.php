@@ -6,21 +6,10 @@ use Illuminate\Routing\Controller;
 
 class ChangeRangeController extends Controller
 {
-    public function doChangeValue()
+    public function changeValue()
     {
         $model = request('model');
 
-        $modelCard = new $model();
-
-        return $modelCard->calculate();
-    }
-
-    public function doChangeTrend()
-    {
-        $model = request('model');
-
-        $modelCard = new $model();
-
-        return $modelCard->calculate();
+        return (new $model())->calculate();
     }
 }

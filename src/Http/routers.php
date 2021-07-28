@@ -12,8 +12,8 @@
         Route::group(
             ['prefix' => 'admin', 'middleware' => 'auth.admin'],
             function () {
-                Route::post('change-range-card', 'Vis\Builder\ChangeRangeController@doChangeValue');
-                Route::post('change-range-trend', 'Vis\Builder\ChangeRangeController@doChangeTrend');
+                Route::post('change-range-card', 'Vis\Builder\ChangeRangeController@changeValue');
+                Route::post('change-range-trend', 'Vis\Builder\ChangeRangeController@changeValue');
 
                 Route::post(
                     '/save_edit_on_site',
