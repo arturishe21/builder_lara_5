@@ -10,7 +10,7 @@ use Vis\Builder\Services\Translate;
 
 if (! function_exists('defaultLanguage')) {
 
-    function defaultLanguage() : string
+    function defaultLanguage() : ?string
     {
         try {
             $defaultLanguage = Language::getDefaultLanguage();
@@ -100,7 +100,7 @@ if (! function_exists('geturl')) {
 }
 
 if (! function_exists('__cms')) {
-    function __cms($phrase)
+    function __cms($phrase) : ?string
     {
         $thisLang = Cookie::get('lang_admin', config('builder.translations.cms.language_default'));
 
@@ -117,7 +117,7 @@ if (! function_exists('__cms')) {
 }
 
 if (! function_exists('__t')) {
-    function __t(string $phrase, array $replacePhrase = []) : string
+    function __t(string $phrase, array $replacePhrase = []) : ?string
     {
         return (new Translate())->returnPhrase($phrase, $replacePhrase);
     }
