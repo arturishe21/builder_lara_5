@@ -16,7 +16,7 @@ class Translate
         $this->collectionTranslate = app('arrayTranslate');
     }
 
-    public function returnPhrase(string $phrase, array $replacePhrase = []) : string
+    public function returnPhrase(string $phrase, array $replacePhrase = []) : ?string
     {
         if (env('APP_ENV') == 'testing') {
             return $phrase;
