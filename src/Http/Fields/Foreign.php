@@ -38,7 +38,7 @@ class Foreign extends Field
     {
         $nameField = $this->getNameField();
 
-        return $request[$nameField] ?: null;
+        return $request[$nameField] ?? null;
     }
 
     public function getDataWithWhereAndOrder(Resource $definition)
@@ -79,7 +79,7 @@ class Foreign extends Field
         return optional($recordThis)->name;
     }
 
-    private function getCacheArray($definition, $modelRelated)
+    protected function getCacheArray($definition, $modelRelated)
     {
         $cacheArray[] = $definition->getCacheKey();
         $cacheArray[] = $modelRelated->getTable();
@@ -87,7 +87,7 @@ class Foreign extends Field
         return $cacheArray;
     }
 
-    private function getDefinition($definition)
+    protected function getDefinition($definition)
     {
         if (request('paramsJson')) {
             $listParams = json_decode(request('paramsJson'));
