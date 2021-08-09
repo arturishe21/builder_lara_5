@@ -18,6 +18,8 @@ class TreeAdminController extends Controller
 
     public function index()
     {
+        $this->checkPermissions();
+
         return $this->tree->list();
     }
 
@@ -34,4 +36,10 @@ class TreeAdminController extends Controller
         return view('admin::tree.tree', compact('tree', 'parentIDs'));
     }
 
+    protected function checkPermissions()
+    {
+        if (!app('user')->hasAccess(['tree.view'])) {
+            abort(403);
+        }
+    }
 }
