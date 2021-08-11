@@ -60,6 +60,7 @@ return array(
     'Vis\\Builder\\Fields\\ManyToManyMultiSelect' => $baseDir . '/src/Http/Fields/ManyToManyMultiSelect.php',
     'Vis\\Builder\\Fields\\MultiFile' => $baseDir . '/src/Http/Fields/MultiFile.php',
     'Vis\\Builder\\Fields\\MultiImage' => $baseDir . '/src/Http/Fields/MultiImage.php',
+    'Vis\\Builder\\Fields\\MultiSelect' => $baseDir . '/src/Http/Fields/MultiSelect.php',
     'Vis\\Builder\\Fields\\Number' => $baseDir . '/src/Http/Fields/Number.php',
     'Vis\\Builder\\Fields\\Password' => $baseDir . '/src/Http/Fields/Password.php',
     'Vis\\Builder\\Fields\\Permissions' => $baseDir . '/src/Http/Fields/Permissions.php',

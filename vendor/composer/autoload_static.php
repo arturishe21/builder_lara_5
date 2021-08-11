@@ -75,6 +75,7 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
         'Vis\\Builder\\Fields\\ManyToManyMultiSelect' => __DIR__ . '/../..' . '/src/Http/Fields/ManyToManyMultiSelect.php',
         'Vis\\Builder\\Fields\\MultiFile' => __DIR__ . '/../..' . '/src/Http/Fields/MultiFile.php',
         'Vis\\Builder\\Fields\\MultiImage' => __DIR__ . '/../..' . '/src/Http/Fields/MultiImage.php',
+        'Vis\\Builder\\Fields\\MultiSelect' => __DIR__ . '/../..' . '/src/Http/Fields/MultiSelect.php',
         'Vis\\Builder\\Fields\\Number' => __DIR__ . '/../..' . '/src/Http/Fields/Number.php',
         'Vis\\Builder\\Fields\\Password' => __DIR__ . '/../..' . '/src/Http/Fields/Password.php',
         'Vis\\Builder\\Fields\\Permissions' => __DIR__ . '/../..' . '/src/Http/Fields/Permissions.php',

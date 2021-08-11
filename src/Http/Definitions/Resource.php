@@ -279,7 +279,7 @@ class Resource
                     continue;
                 }
 
-                if ($request[$nameField] == '******' && $field instanceof Password) {
+                if (isset($request[$nameField]) && $request[$nameField] == '******' && $field instanceof Password) {
                     continue;
                 }
 
