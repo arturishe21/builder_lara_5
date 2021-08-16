@@ -30,6 +30,10 @@ class Froala extends Field
 
     public function getOptions()
     {
+        if (config('builder.froala.options')) {
+            $this->options = config('builder.froala.options');
+        }
+
         return json_encode($this->options);
     }
 
