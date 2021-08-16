@@ -2,12 +2,7 @@
 
 Install the cms with composer
 ```json
- composer require "vis/builder_lara_5":"2.*"
-```
-
-For laravel version 8
-```json
- composer require "vis/builder_lara_5":"2.*"
+ composer require "vis/builder_lara_5":"3.*"
 ```
 
 Install cms
