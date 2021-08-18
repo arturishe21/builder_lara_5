@@ -25,6 +25,6 @@ class MultiSelect extends Select
     {
         $nameField = $this->getNameField();
 
-        return $request[$nameField] ?? [];
+        return json_encode($request[$nameField] ?? []);
     }
 }
