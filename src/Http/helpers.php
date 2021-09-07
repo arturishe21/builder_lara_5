@@ -45,6 +45,29 @@ if (! function_exists('setting')) {
     }
 }
 
+
+if (! function_exists('filesize_format')) {
+
+    function filesize_format($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            $bytes = number_format($bytes / 1073741824, 1, '.', '').' Gb';
+        } elseif ($bytes >= 1048576) {
+            $bytes = number_format($bytes / 1048576, 1, '.', '').' Mb';
+        } elseif ($bytes >= 1024) {
+            $bytes = number_format($bytes / 1024, 1, '.', '').' Kb';
+        } elseif ($bytes > 1) {
+            $bytes = $bytes.' bytes';
+        } elseif ($bytes == 1) {
+            $bytes = $bytes.' byte';
+        } else {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }
+}
+
 if (! function_exists('settingForMail')) {
 
     function settingForMail(string $value)
