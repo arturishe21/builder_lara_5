@@ -16,9 +16,12 @@
                              >
                              {{__cms('Загрузить')}}
                          </span>
+
+                        @if ($field->checkSelectionFiles())
                          <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'one_file', $(this))">
                             {{__cms('Выбрать из загруженных')}}
                          </span>
+                        @endif
 
                         <input type="text"
                                id="{{ $field->getNameField() }}"

@@ -21,7 +21,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background: #fff">
                 <span class="btn btn-success btn-sm" onclick="TableBuilder.selectFilesUploaded('{{$field->getNameField()}}', '{{$isMultiple ? 'multi' : 'once'}}')" >{{__cms('Выбрать')}}</span>
                 <span class="btn btn-default"  onclick="$('.files_uploaded_table').hide()"> {{__cms('Отмена')}} </span>
             </div>

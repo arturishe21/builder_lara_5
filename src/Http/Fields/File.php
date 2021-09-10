@@ -10,6 +10,7 @@ class File extends Field
     protected $accept;
     protected $path = '/storage/files/';
     protected $isAutoTranslate = false;
+    protected $selectWithUploaded = true;
 
     public function getAccept()
     {
@@ -35,6 +36,18 @@ class File extends Field
         $this->accept = 'accept="'. $value .'"';
 
         return $this;
+    }
+
+    public function noFileSelection()
+    {
+        $this->selectWithUploaded = false;
+
+        return $this;
+    }
+
+    public function checkSelectionFiles()
+    {
+        return $this->selectWithUploaded;
     }
 
     public function uploadPath(string $path)
