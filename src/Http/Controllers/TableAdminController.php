@@ -23,9 +23,7 @@ class TableAdminController extends Controller
     {
         $modelDefinition = $this->getModelDefinition($page);
 
-        if (!class_exists($modelDefinition)) {
-            throw new \Exception('Not found class '. $modelDefinition);
-        }
+        $this->checkExistsClass($modelDefinition);
 
         $model = new $modelDefinition();
         $data = $model->getList();
@@ -42,11 +40,9 @@ class TableAdminController extends Controller
     {
         $modelDefinition = $this->getModelDefinition($page);
 
-        if (class_exists($modelDefinition)) {
-            return (new $modelDefinition())->getList();
-        }
+        $this->checkExistsClass($modelDefinition);
 
-        throw new \Exception('Not found class '. $modelDefinition);
+        return (new $modelDefinition())->getList();
     }
 
     /**
@@ -85,6 +81,13 @@ class TableAdminController extends Controller
         }
 
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
+    }
+
+    private function checkExistsClass($modelDefinition)
+    {
+        if (!class_exists($modelDefinition)) {
+            throw new \Exception('Not found class '. $modelDefinition);
+        }
     }
 
 }

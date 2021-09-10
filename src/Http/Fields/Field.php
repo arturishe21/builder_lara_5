@@ -357,6 +357,11 @@ class Field
         return mb_strtolower(class_basename($this));
     }
 
+    protected function convertQuery($query) : ?string
+    {
+        return mb_convert_case($query, MB_CASE_TITLE, "UTF-8");
+    }
+
     public function isManyToMany()
     {
         return $this->isManyToMany;

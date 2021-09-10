@@ -57,7 +57,7 @@ class ForeignAjax extends Foreign
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $where = $this->options->getWhereCollection();
 
-        $modelRelated = $modelRelated->where($keyField, 'like', request()->q . "%");
+        $modelRelated = $modelRelated->where($keyField, 'like', $this->convertQuery(request()->q) . "%");
 
         if (count($where)) {
             foreach ($where as $param) {

@@ -17,15 +17,12 @@ class TBController extends Controller
 
     public function changeSkin()
     {
-        $skin = request('skin');
-
-        Cookie::queue('skin', $skin, '100000');
+        Cookie::queue('skin', request('skin'), '100000');
     }
 
     public function changeLanguage()
     {
-        $lang = request('lang');
-        Cookie::queue('lang_admin', $lang, '100000000');
+        Cookie::queue('lang_admin', request('lang'), '100000000');
 
         return Redirect::back();
     }
