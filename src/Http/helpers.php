@@ -39,7 +39,7 @@ if (! function_exists('setting')) {
 
     function setting(string $slug)
     {
-        return Cache::tags('settings')->rememberForever($slug, function() use ($slug) {
+        return Cache::tags('settings')->rememberForever($slug . App::getLocale(), function() use ($slug) {
             return (new Settings())->model()->getValue($slug);
         });
     }
