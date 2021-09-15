@@ -5,11 +5,13 @@
             <div class="input_content">
                 <label class="select">
                     <select
-                        name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable {{$field->getAction() ? "action" : ""}}">
+                            name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable
+                        {{$field->getNameFieldWithDefinition($definition)}}
+                            ">
                         @foreach ($field->getOptions() as $value => $caption)
-                                <option value="{{ $value }}"
+                            <option value="{{ $value }}"
                                     {{$value == $field->getValue() ? 'selected' : ''}}
-                                >{{ $caption }}</option>
+                            >{{ $caption }}</option>
                         @endforeach
                     </select>
                     <i></i>
@@ -49,4 +51,26 @@
         }
 
     </script>
+@endif
+
+@if ($field->getAction())
+
+    <script>
+
+        var selectClass = '{{$field->getNameFieldWithDefinition($definition)}}';
+        var formClass = 'modal_form_{{$definition->model()->getTable()}}';
+
+        $('.' + formClass + ' select.' + selectClass).change(function () {
+            $("." + formClass + " section.section_field").hide();
+            $("." + formClass + " section.section_field." + $(this).val()).show();
+        });
+
+        $("." + formClass + " section.section_field").hide();
+
+        if ($('.' + formClass + ' select.' + selectClass).val()) {
+            $("." + formClass + " section.section_field." + $('select.' + selectClass).val()).show();
+        }
+
+    </script>
+
 @endif

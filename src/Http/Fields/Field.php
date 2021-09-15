@@ -145,6 +145,10 @@ class Field
         return $definition->getNameDefinition() . $this->getNameField() . $tab->language;
     }
 
+    public function getNameFieldWithDefinition($definition)
+    {
+        return $definition->getNameDefinition() . '_'.  $this->getNameField();
+    }
 
     public function getNameFieldInBd()
     {
