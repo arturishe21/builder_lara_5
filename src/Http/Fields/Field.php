@@ -29,6 +29,7 @@ class Field
     protected $locale;
     protected $isReadonlyForEdit = false;
     protected $isAutoTranslate = true;
+    protected $isHide = false;
 
     public function __construct(string $name, $attribute = null)
     {
@@ -410,6 +411,19 @@ class Field
 
         $definition->clearCache();
     }
+
+    public function hide($flag = true)
+    {
+        $this->isHide = $flag;
+
+        return $this;
+    }
+
+    public function isHide()
+    {
+        return $this->isHide;
+    }
+
 
 }
 

@@ -1,3 +1,5 @@
 @foreach($fields as $field)
-    {!! $field->getFieldForm($definition) !!}
+	@if (!$field->isHide())
+		{!! $field->getFieldForm($definition) !!}
+	@endif
 @endforeach

@@ -30,7 +30,7 @@ class Setting extends Model
             'textarea_with_languages' => $setting->t('textarea_with_languages'),
             'froala_with_languages' => $setting->t('froala_with_languages'),
             'file' => $setting->file,
-            'check' => $setting->check
+            'checkbox' => $setting->check
         ];
     }
 }
