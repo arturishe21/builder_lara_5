@@ -691,3 +691,6 @@ a[href="https://www.froala.com/wysiwyg-editor?k=u"] {
 .paginator_pictures nav ul {
     width: auto;
 }
+.smart-form .section_field.checkbox {
+    padding: 0;
+}
