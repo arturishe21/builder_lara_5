@@ -38,7 +38,11 @@ class Foreign extends Field
     {
         $nameField = $this->getNameField();
 
-        return $request[$nameField] ?? null;
+        if (isset($request[$nameField]) && $request[$nameField]) {
+            return $request[$nameField];
+        }
+
+        return null;
     }
 
     public function getDataWithWhereAndOrder(Resource $definition)
