@@ -1,6 +1,6 @@
 var Cards =
 {
-    myLineChart : '',
+    myLineChart : {},
 
     init: function()
     {
@@ -23,14 +23,11 @@ var Cards =
         $('.trends').each(function( index ) {
             var contentTrend = $(this).parents('article');
 
-            Cards.updateData(contentTrend);
-        });
+            var ctx = contentTrend.find('canvas');
 
-        if ($( ".trends" ).size()) {
+            var idChart = contentTrend.attr('id');
 
-            var ctx = document.querySelector('canvas').getContext('2d');
-
-            Cards.myLineChart = new Chart(ctx, {
+            Cards.myLineChart[idChart] = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: [],
@@ -51,9 +48,15 @@ var Cards =
                     }
                 }
             });
-        }
+
+            Cards.updateData(contentTrend);
+        });
+
     },
     updateData : function (contentTrend) {
+
+        var idChart = contentTrend.attr('id');
+
         $.ajax({
             url: '/admin/change-range-trend',
             method: 'POST',
@@ -66,10 +69,10 @@ var Cards =
             success: function (d) {
 
                 // assign programmatically the datasets again, otherwise data changes won't show
-                Cards.myLineChart.data.labels = d.labels;
-                Cards.myLineChart.data.datasets[0].data = d.values;
+                Cards.myLineChart[idChart].data.labels = d.labels;
+                Cards.myLineChart[idChart].data.datasets[0].data = d.values;
 
-                Cards.myLineChart.update();
+                Cards.myLineChart[idChart].update();
             }
         });
     }
