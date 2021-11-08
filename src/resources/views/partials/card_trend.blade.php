@@ -22,7 +22,7 @@
                            value="{{$modelCard->currentRange()[1]}}"
                     >
 
-                        <i class="fa fa-calendar" style="position: absolute; top: 10px; right: 10px"></i>
+                    <i class="fa fa-calendar" style="position: absolute; top: 10px; right: 10px"></i>
 
                 </label>
 
@@ -33,7 +33,9 @@
         <div>
             <!-- widget content -->
             <div class="widget-body padding">
-                <figure class="trends" id="chart_trend{{$k}}" style="width: auto; height: 200px"></figure>
+                <div style="height: 300px" class="trends">
+                    <canvas id="chart_trend{{$k}}"></canvas>
+                </div>
             </div>
         </div>
     </div>

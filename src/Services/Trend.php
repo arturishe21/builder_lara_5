@@ -12,8 +12,19 @@ class Trend
     public function countByDays(string $model, string $field = 'id')
     {
         $result = $this->aggregate($model, $field, 'count');
+        
+        $labels = [];
+        $values = [];
 
-        return $this->returnResult($result);
+        foreach ($result as $param) {
+            $labels[] = $param->x;
+            $values[] =  $param->y;
+        }
+
+        return [
+            'labels' => $labels,
+            'values' => $values
+        ];
     }
 
     public function avgByDays($model, $field = 'id')
