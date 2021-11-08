@@ -13,7 +13,18 @@ class Trend
     {
         $result = $this->aggregate($model, $field, 'count');
 
-        return $this->returnResult($result);
+        $labels = [];
+        $values = [];
+
+        foreach ($result as $param) {
+            $labels[] = $param->x;
+            $values[] =  $param->y;
+        }
+
+        return [
+            'labels' => $labels,
+            'values' => $values
+        ];
     }
 
     public function avgByDays($model, $field = 'id')
@@ -44,7 +55,7 @@ class Trend
         return $this->returnResult($result);
     }
 
-    protected function aggregate(string $model, string $field, string $type) : array
+    protected function aggregate(string $model, string $field, string $type)
     {
         $dateRange = $this->currentRange();
         $dateRange[1] .= ' 23:59:59';
@@ -54,8 +65,7 @@ class Trend
             ->whereBetween('created_at', $dateRange)
             ->orderBy('x')
             ->groupBy('x')
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     protected function returnResult($result)

@@ -35,6 +35,7 @@
     <script type="text/javascript" src="/packages/vis/builder/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/packages/vis/builder/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .smart-style-4 .tb-pagination nav>ul>li>a {
             padding:6px 12px;
