@@ -2,6 +2,7 @@
 
 namespace Vis\Builder\Services;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class Trend
@@ -13,17 +14,9 @@ class Trend
     {
         $result = $this->aggregate($model, $field, 'count');
 
-        $labels = [];
-        $values = [];
-
-        foreach ($result as $param) {
-            $labels[] = $param->x;
-            $values[] =  $param->y;
-        }
-
         return [
-            'labels' => $labels,
-            'values' => $values
+            'labels' => Arr::pluck($result, 'x'),
+            'values' => Arr::pluck($result, 'y')
         ];
     }
 
@@ -55,7 +48,7 @@ class Trend
         return $this->returnResult($result);
     }
 
-    protected function aggregate(string $model, string $field, string $type)
+    protected function aggregate(string $model, string $field, string $type) : array
     {
         $dateRange = $this->currentRange();
         $dateRange[1] .= ' 23:59:59';
@@ -65,7 +58,8 @@ class Trend
             ->whereBetween('created_at', $dateRange)
             ->orderBy('x')
             ->groupBy('x')
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     protected function returnResult($result)

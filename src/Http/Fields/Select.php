@@ -75,4 +75,9 @@ class Select extends Field
         }
     }
 
+    public function getValueForExel($definition)
+    {
+        return $this->getValueForList($definition);
+    }
+
 }

@@ -452,6 +452,7 @@ class Resource
         $definition = $this;
 
         $recordNew->fields = clone $head;
+
         $head->map(function ($item2, $key) use ($recordNew, $definition) {
             $item2->setValue($recordNew);
             $recordNew->fields[$key]->value = $item2->getValueForList($definition);
@@ -486,6 +487,28 @@ class Resource
         return $list;
     }
 
+    public function getListingForExel()
+    {
+        $this->checkPermissions();
+
+        $head = $this->head();
+        $list = $this->getCollection($getAllRecords = true);
+
+        $definition = $this;
+
+        $list->map(function ($item, $key) use ($head, $definition) {
+            $item->fields = clone $head;
+            $item->fields->map(function ($item2, $key) use ($item, $definition) {
+                $item->fields[$key] = clone $item2;
+                $item2->setValue($item);
+
+                $item->fields[$key]->value = $item2->getValueForExel($definition);
+            });
+        });
+
+        return $list;
+    }
+
     protected function checkPermissions()
     {
         if (!app('user')->hasAccess([$this->getNameDefinition(). '.view'])) {
@@ -493,7 +516,7 @@ class Resource
         }
     }
 
-    public function getCollection()
+    public function getCollection($getAllRecords = false)
     {
         $collection = $this->model()->with($this->relations);
         $filter = $this->getFilter();
@@ -511,8 +534,15 @@ class Resource
                 }
 
                 if (is_array($value)) {
-                    if ($value['from'] && $value['to']) {
-                        $collection = $collection->whereBetween($field, [$value['from'], $value['to'].' 23:59:59']);
+                    if ($value['from'] || $value['to']) {
+
+                        if ($value['from']) {
+                            $collection = $collection->where($field, '>=', $value['from']);
+                        }
+
+                        if ($value['to']) {
+                            $collection = $collection->where($field, '<=', $value['to'] . ' 23:59:59');
+                        }
                     }
 
                     continue;
@@ -529,6 +559,10 @@ class Resource
                     }
                 });
             }
+        }
+
+        if ($getAllRecords) {
+           return $collection->orderByRaw($orderBy)->get();
         }
 
         return $collection->orderByRaw($orderBy)->paginate($perPage);
@@ -548,7 +582,7 @@ class Resource
         $this->filterScope = $scope;
     }
 
-    private function isTextField($allFields, $field)
+    public function isTextField($allFields, $field)
     {
         return Arr::exists($allFields, $field) &&
             (get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text' ||

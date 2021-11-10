@@ -14,16 +14,6 @@
                 <fieldset style="padding: 12px 12px 0;">
                     <section>
                         <div class="row">
-                            <div class="col col-6">
-                                <input placeholder="{{__cms('От')}}" type="text" id="export-date-from" name="d[from]" class="form-control input-small datepicker">
-                            </div>
-                            <div class="col col-6">
-                                <input placeholder="{{__cms('До')}}" type="text" id="export-date-to" name="d[to]" class="form-control input-small datepicker">
-                            </div>
-                        </div>
-                    </section>
-                    <section>
-                        <div class="row">
                             <div class="col col-12">
                                 @foreach ($list as $field)
                                     <label class="checkbox">

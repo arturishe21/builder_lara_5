@@ -83,6 +83,11 @@ class Foreign extends Field
         return optional($recordThis)->name;
     }
 
+    public function getValueForExel($definition)
+    {
+        return $this->getValueForList($definition);
+    }
+
     protected function getCacheArray($definition, $modelRelated)
     {
         $cacheArray[] = $definition->getCacheKey();

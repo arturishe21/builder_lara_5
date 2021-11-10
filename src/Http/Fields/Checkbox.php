@@ -22,6 +22,11 @@ class Checkbox extends Field
         return '<span class="glyphicon glyphicon-minus"></span>';
     }
 
+    public function getValueForExel($definition)
+    {
+        return $this->value;
+    }
+
     public function getOptions() : array
     {
         return [

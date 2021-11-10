@@ -22,6 +22,11 @@ class ForeignAjax extends Foreign
         return $this->getValue();
     }
 
+    public function getValueForExel($definition)
+    {
+        return $this->getValueForList($definition);
+    }
+
     public function getValueForInput($definition)
     {
         $value = request()->id;

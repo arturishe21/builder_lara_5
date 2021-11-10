@@ -173,6 +173,13 @@ class Field
         return $value;
     }
 
+    public function getValueForExel($definition)
+    {
+        $arrayValue = json_decode($this->getValue());
+
+        return $arrayValue->{$this->locale} ?? $this->getValue();
+    }
+
     public function isOrder($list)
     {
         $order = session($list->getDefinition()->getSessionKeyOrder());
