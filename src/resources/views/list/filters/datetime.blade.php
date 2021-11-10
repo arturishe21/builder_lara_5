@@ -4,13 +4,13 @@
            id="f-from-{{$field->getNameField() }}"
            value="{{$filterValue['from'] ?? ''}}"
            name="filter[{{ $field->getNameField()  }}][from]"
-           class="form-control input-small datepicker datepicker_range" style="width: 100px; float: none; display: inline-block">
+           class="form-control input-small datepicker datepicker_range" style="padding-right: 0; width: 90px; float: none; display: inline-block">
 
     <input type="text"
                    id="f-to-{{$field->getNameField() }}"
                    value="{{$filterValue['to'] ?? ''}}"
                    name="filter[{{ $field->getNameField()  }}][to]"
-                   class="form-control input-small datepicker datepicker_range" style="width: 100px; float: none; display: inline-block">
+                   class="form-control input-small datepicker datepicker_range" style="padding-right: 0; width: 90px; float: none; display: inline-block">
     </nobr>
 </div>
 

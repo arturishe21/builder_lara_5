@@ -7,7 +7,9 @@
                            id="f-from-{{$field->getNameField() }}"
                            value="{{$filterValue['from'] ?? ''}}"
                            name="filter[{{ $field->getNameField()  }}][from]"
-                           class="form-control input-small datepicker datepicker_range" >
+                           class="form-control input-small datepicker datepicker_range"
+                           style="padding-right: 0; width: 90px; float: none; display: inline-block"
+                    >
 
                     <span class="input-group-addon form-input-icon form-input-filter-icon">
                         <i class="fa fa-calendar"></i>
@@ -23,7 +25,9 @@
                            id="f-to-{{$field->getNameField() }}"
                            value="{{$filterValue['to'] ?? ''}}"
                            name="filter[{{ $field->getNameField()  }}][to]"
-                           class="form-control input-small datepicker datepicker_range" >
+                           class="form-control input-small datepicker datepicker_range"
+                           style="padding-right: 0; width: 90px; float: none; display: inline-block"
+                    >
 
                     <span class="input-group-addon form-input-icon form-input-filter-icon">
                         <i class="fa fa-calendar"></i>

@@ -255,6 +255,17 @@ var ForeignDefinition  = {
         $(".modal-dialog").draggable({ handle: ".modal-header" });
         TableBuilder.initFroalaEditor(table);
         TableBuilder.handleActionSelect();
+
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            numberOfMonths: 1,
+            prevText: '<i class="fa fa-chevron-left"></i>',
+            nextText: '<i class="fa fa-chevron-right"></i>',
+            dateFormat: "yy-mm-dd",
+            //showButtonPanel: true,
+            regional: ["ru"],
+            onClose: function (selectedDate) {}
+        });
     },
 
     changePosition : function (context, attributesJson) {
