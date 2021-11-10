@@ -81,6 +81,11 @@ class Field
         $this->value = $value[$this->attribute];
     }
 
+    public function getAllData()
+    {
+        return $this->allData;
+    }
+
     public function className($class)
     {
         if (is_null($this->classNameField)) {
