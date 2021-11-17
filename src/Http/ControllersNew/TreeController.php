@@ -21,6 +21,8 @@ class TreeController
 
     public function list()
     {
+        $this->checkPermissions();
+
         $treeName = 'tree';
 
         if (request('query_type')) {
@@ -217,5 +219,12 @@ class TreeController
         $tree->save();
 
         $tree->clearCache();
+    }
+
+    protected function checkPermissions()
+    {
+        if (!app('user')->hasAccess(['tree.view'])) {
+            abort(403);
+        }
     }
 }

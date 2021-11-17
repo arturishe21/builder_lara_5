@@ -125,6 +125,11 @@ class Resource
 
         $fieldsResults = [];
         foreach ($fields as $field) {
+
+            if ($field->isHide()) {
+                continue;
+            }
+
             $fieldsResults[$field->getNameField()] = $field;
 
             if ($field->getHasOne()) {
