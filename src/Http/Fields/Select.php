@@ -71,13 +71,27 @@ class Select extends Field
         $optionsArray = $this->getOptions();
 
         if (isset($optionsArray[$value]) && Arr::get($optionsArray, $value)) {
+
+            if ($this->fastEdit) {
+
+                $idRecord = $this->getId();
+                $field = $this->getNameFieldInBd();
+
+                return view('admin::list.fast_edit.select', compact('idRecord', 'value', 'field', 'optionsArray'));
+            }
+
             return $optionsArray[$value];
         }
     }
 
     public function getValueForExel($definition)
     {
-        return $this->getValueForList($definition);
+        $value = $this->getValue();
+        $optionsArray = $this->getOptions();
+
+        if (isset($optionsArray[$value]) && Arr::get($optionsArray, $value)) {
+            return $optionsArray[$value];
+        }
     }
 
 }

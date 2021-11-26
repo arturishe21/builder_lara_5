@@ -221,6 +221,14 @@ class Actions
         return $this->getThisField()->fastSave($this->definition, $request);
     }
 
+    public function fastSave()
+    {
+        $record = $this->definition->model()->find(request()->get('id'));
+        $record->{request()->get('name')} = request()->get('value');
+        $record->save();
+        
+    }
+
     private function search($request)
     {
         session()->put($this->definition->getSessionKeyFilter(), $request);
