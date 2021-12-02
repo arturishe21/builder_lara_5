@@ -31,7 +31,7 @@ class TBController extends Controller
     {
         $data = request()->all();
         $infoImg = pathinfo($data['originalImg']);
-        $fileCrop = '/'.$infoImg['dirname'].'/'.md5($infoImg['filename']).time().'_crop.'.$infoImg['extension'];
+        $fileCrop = $infoImg['dirname'].'/'.md5($infoImg['filename']).time().'_crop.'.$infoImg['extension'];
         $ifp = fopen(public_path().$fileCrop, 'wb');
         $dataFile = explode(',', $data['data']);
 
@@ -45,7 +45,7 @@ class TBController extends Controller
         return Response::json(
             [
                 'status'       => 'success',
-                'picture'      => ltrim($fileCrop, '/'),
+                'picture'      => $fileCrop,
                 'pictureSmall' => $smallImg,
             ]
         );

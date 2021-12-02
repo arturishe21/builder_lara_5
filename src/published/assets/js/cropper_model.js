@@ -16,7 +16,7 @@ var Cropper = {
 
             var srcImg = Cropper.imgThis.attr("src_original");
             $("#modal_crop_img #image").attr("src", "");
-            $("#modal_crop_img #image").attr("src", "/" + srcImg);
+            $("#modal_crop_img #image").attr("src", srcImg);
             $("#modal_crop_img").css("top", $(window).scrollTop() + 20);
 
             var result = Cropper.image.cropper({
@@ -57,7 +57,7 @@ var Cropper = {
                     $("[name=" + Cropper.imgThis.attr('data-tbident') + "]").val(data.picture);
                     Cropper.imgThis.attr('data_src_original', data.picture);
                     if (TableBuilder.tableEditorImg != null) {
-                        TableBuilder.tableEditorImg.attr('src', "/" + data.picture);
+                        TableBuilder.tableEditorImg.attr('src', data.picture);
                     }
                     var contextFile = Cropper.imgThis.parents(".multi_pictures").find("[type=file]");
                     TableBuilder.setInputImages(contextFile);

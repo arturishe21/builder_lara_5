@@ -28,7 +28,7 @@
                                 {{__cms('Загрузить')}}
                             </span>
                             <input type="text" id="{{$field->getNameField()}}" placeholder="{{__cms('Выберите изображение для загрузки')}}" readonly="readonly">
-                            <input type="hidden" value="{{$field->getValue()}}" name="{{ $field->getNameField() }}">
+                            <input type="hidden" data-id-picture="{{$field->getNameField()}}" value="{{$field->getValue()}}" name="{{ $field->getNameField() }}">
                         </div>
                         <div class="tb-uploaded-image-container image-container_{{ $field->getNameField() }}">
                             @include('admin::form.fields.partials.image_single', ['field' => $field])

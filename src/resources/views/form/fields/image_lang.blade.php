@@ -32,7 +32,7 @@
                                         {{__cms('Загрузить')}}
                             </span>
                                     <input type="text" id="{{$field->getNameField() . $tab->language}}" placeholder="{{__cms('Выберите изображение для загрузки')}}" readonly="readonly">
-                                    <input type="hidden" value="{{$field->getValueLanguage($tab->language)}}" name="{{ $field->getNameField()}}[{{$tab->language}}]">
+                                    <input type="hidden" data-id-picture="{{$field->getNameField() . $tab->language}}" value="{{$field->getValueLanguage($tab->language)}}" name="{{ $field->getNameField()}}[{{$tab->language}}]">
                                 </div>
                                 <div class="tb-uploaded-image-container image-container_{{ $field->getNameField() . $tab->language }}">
 
