@@ -556,7 +556,7 @@ class Resource
                 $collection = $collection->where(function ($query) use ($field, $value, $allFields) {
                     if ($this->isTextField($allFields, $field)) {
 
-                        $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+                      //  $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
 
                         $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
                     } else {
