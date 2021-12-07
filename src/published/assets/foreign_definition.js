@@ -256,8 +256,6 @@ var ForeignDefinition  = {
         TableBuilder.initFroalaEditor(table);
         TableBuilder.handleActionSelect();
 
-        alert('dd');
-
         $(".datepicker").datepicker({
             changeMonth: true,
             numberOfMonths: 1,
