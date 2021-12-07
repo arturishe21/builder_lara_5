@@ -4,6 +4,7 @@
         <div class="div_input">
             <div class="input_content">
                 <label class="select-multiple" style="width: 100%">
+                    <input type="hidden" name="{{ $field->getNameField() }}[]" value="">
                     <select multiple
                             size="5"
                             name="{{ $field->getNameField() }}[]"

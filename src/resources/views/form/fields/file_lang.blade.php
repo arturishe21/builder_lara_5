@@ -5,14 +5,14 @@
 			<label class="label pull-left" style="line-height: 32px;">{{$field->getName()}}</label>
 			@foreach ($field->getLanguage() as $tab)
 				<li class="{{$loop->first ? 'active' : ''}}">
-					<a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" data-toggle="tab">{{$tab->language}}</a>
+					<a href="#{{$field->getNameFieldLangTab($definition, $tab)}}" class="tab_{{$tab->language}}" data-toggle="tab">{{$tab->language}}</a>
 				</li>
 			@endforeach
 		</ul>
 
 		<div class="tab-content padding-5">
 			@foreach ($field->getLanguage() as $tab)
-				<div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="{{$field->getNameFieldLangTab($definition, $tab)}}">
+				<div class="tab-pane section_tab_{{$tab->language}} {{ $loop->first ? 'active' : '' }}" id="{{$field->getNameFieldLangTab($definition, $tab)}}">
 					<div style="position: relative;">
 						<div class="files_type_fields">
 							<div class="progress progress-micro" style="margin-bottom: 0;">
