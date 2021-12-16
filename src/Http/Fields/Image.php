@@ -59,7 +59,7 @@ class Image extends Field
 
         if ($model && request('page_id')) {
             $infoPage = $model::find(request('page_id'));
-            $slugPage = isset($infoPage->title) ? Str::slug($infoPage->title) : request('page_id');
+            $slugPage = isset($infoPage->title) ? Str::slug($infoPage->t('title')) : request('page_id');
             $fileName = $slugPage.'.'.$extension;
             $fullFileName = $this->path . $fileName;
 
