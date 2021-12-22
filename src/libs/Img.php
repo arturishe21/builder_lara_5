@@ -48,18 +48,27 @@ class Img
         }
 
         try {
-            $img = Image::make(public_path().$source);
+            $img = Image::make(public_path($source));
+
+            if (config('builder.watermark.active') && file_exists(config('builder.watermark.path'))) {
+                $img->insert(
+                    config('builder.watermark.path'),
+                    config('builder.watermark.position'),
+                    config('builder.watermark.x'),
+                    config('builder.watermark.y')
+                );
+            }
 
             $this->createRatioImg($img, $options);
 
-            @mkdir(public_path().$this->pathFolder);
+            @mkdir(public_path($this->pathFolder));
 
-            $pathSmallImg = public_path().'/'.$this->picturePath;
+            $pathSmallImg = public_path('/' . $this->picturePath);
             $img->save($pathSmallImg, $this->quality);
 
             OptmizationImg::run($this->picturePath);
 
-            return  $this->picturePath;
+            return $this->picturePath;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -67,8 +76,7 @@ class Img
 
     private function checkFileCorrect($sourceArray)
     {
-       return !isset($sourceArray['extension'])  || !isset($sourceArray['dirname']) ?
-               false : true;
+       return !isset($sourceArray['extension']) || !isset($sourceArray['dirname']) ? false : true;
     }
 
     protected function setOptions($options)
@@ -113,6 +121,6 @@ class Img
 
     protected function checkExistPicture()
     {
-        return file_exists(public_path().$this->picturePath);
+        return file_exists(public_path($this->picturePath));
     }
 }
