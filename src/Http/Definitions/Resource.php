@@ -24,6 +24,7 @@ class Resource
     protected $updateMorphOneList = [];
     protected $relations = [];
     protected $filterScope;
+    protected $autoTranslate = true;
 
     public function actions()
     {
@@ -403,7 +404,7 @@ class Resource
 
     private function getTranslate($field, $slugLang, $phrase)
     {
-        if (!$field->checkAutoTranslate()) {
+        if (!$field->checkAutoTranslate() || !$this->autoTranslate) {
             return '';
         }
 
