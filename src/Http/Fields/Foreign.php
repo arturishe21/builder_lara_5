@@ -72,6 +72,16 @@ class Foreign extends Field
     public function getValueForList($definition)
     {
         $value = $this->getValue();
+        $optionsArray = $this->getOptions($definition);
+
+        if ($this->fastEdit) {
+
+            $idRecord = $this->getId();
+            $field = $this->getNameFieldInBd();
+
+            return view('admin::list.fast_edit.select', compact('idRecord', 'value', 'field', 'optionsArray'));
+        }
+        
         $definition = $this->getDefinition($definition);
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $record = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);

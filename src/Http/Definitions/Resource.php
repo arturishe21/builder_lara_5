@@ -271,7 +271,7 @@ class Resource
                 }
 
                 if ($field->getMorphOne()) {
-                    $this->updateMorphOne($field, $request[$nameField]);
+                    $this->updateMorphOne($field, $request);
                     continue;
                 }
 
@@ -442,11 +442,11 @@ class Resource
         ];
     }
 
-    protected function updateMorphOne($field, $value)
+    protected function updateMorphOne($field, $request)
     {
         $this->updateMorphOneList[$field->getMorphOne()][] = [
             'field' => $field,
-            'value' => $value
+            'value' => $field->prepareSave($request)
         ];
     }
 
