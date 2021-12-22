@@ -1,13 +1,13 @@
 <section class="{{$field->getClassName()}}">
-    <label class="label" for="{{ $field->getNameField()}}">{{$field->getName()}}</label>
+    <label class="label" for="{{ $field->getNameField().$definition->getNameDefinition()}}">{{$field->getName()}}</label>
     <div style="position: relative;">
         <div class="div_input">
             <div class="input_content">
                 <label class="input">
                     <input type="text"
-                           id="{{ $field->getNameField() }}"
+                           id="{{ $field->getNameField().$definition->getNameDefinition() }}"
                            value="{{$field->getValue()}}"
-                           name="{{$field->getNameField()}}"
+                           name="{{$field->getNameField().$definition->getNameDefinition()}}"
 
                            @if ($field->isDisabled())
                            disabled="disabled"
@@ -29,7 +29,7 @@
                 @endif
                 <script>
                     jQuery(document).ready(function() {
-                        jQuery("#{{ $field->getNameField()}}").datetimepicker({
+                        jQuery("#{{ $field->getNameField().$definition->getNameDefinition()}}").datetimepicker({
                             changeMonth: true,
                             changeYear: true,
                             numberOfMonths: {{ $months ?? '1' }},
