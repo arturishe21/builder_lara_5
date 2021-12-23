@@ -7,7 +7,7 @@
                     <input type="text"
                            id="{{ $field->getNameField().$definition->getNameDefinition() }}"
                            value="{{$field->getValue()}}"
-                           name="{{$field->getNameField().$definition->getNameDefinition()}}"
+                           name="{{$field->getNameField()}}"
 
                            @if ($field->isDisabled())
                            disabled="disabled"
