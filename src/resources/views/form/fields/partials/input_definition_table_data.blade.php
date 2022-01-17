@@ -33,3 +33,53 @@
     @endforelse
     </tbody>
 </table>
+
+<div style="text-align: center; padding-top: 10px" class="paginator_definition paginator_pictures">
+    {{ $list->render() }}
+</div>
+
+<?php
+  $paramsJson = json_decode(request('paramsJson'));
+?>
+
+<script>
+    $('.paginator_definition a').click(function (e) {
+        var url = $(this).attr('href');
+
+        jQuery.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                'id' : '{{request('id')}}',
+                'paramsJson' : '{!! addslashes(request('paramsJson')) !!}',
+                'query_type' : 'get_html_foreign_definition'
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.html) {
+
+                    $('.definition_{{$paramsJson->name}}').html(response.html);
+
+                    @if (isset($paramsJson->sortable)) {
+                        $('.definition_{{$paramsJson->name}} tbody').sortable({
+                            handle: ".handle",
+                            update: function ( event, ui ) {
+                                ForeignDefinition.changePosition($(this), foreignAttributes);
+                            }
+                        });
+                    @else
+                         $('.definition_{{$paramsJson->name}} .col_sort').hide();
+                    @endif
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var errorResult = jQuery.parseJSON(xhr.responseText);
+
+                TableBuilder.showErrorNotification(errorResult.message);
+            }
+        });
+
+
+        e.preventDefault();
+    });
+</script>

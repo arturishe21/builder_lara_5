@@ -81,8 +81,9 @@ class Definition extends Field
 
         $model = $definition->model();
 
-        $list = request('id') ? $model::find(request('id'))->{$this->relation}
-                                   : (new $model())->{$this->relation};
+        $listModel = request('id') ? $model::find(request('id')) : (new $model());
+
+        $list = $listModel->{$this->relation}()->paginate(20);
         
         $fieldsDefinition = $this->head($definition);
 
