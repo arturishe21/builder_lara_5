@@ -539,31 +539,49 @@ class Resource
                     continue;
                 }
 
-                if (is_array($value)) {
-                    if ($value['from'] || $value['to']) {
+                if ($hasOneRelation = $this->getRelationsHasOne($allFields, $field)) {
 
-                        if ($value['from']) {
-                            $collection = $collection->where($field, '>=', $value['from']);
+                    $collection = $collection->whereHas($hasOneRelation, function($query) use ($field, $value, $allFields) {
+
+                        $fieldName = $this->getFieldName($allFields, $field);
+
+                        if ($this->isTextField($allFields, $field)) {
+
+                            $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+
+                            $query->where($fieldName, '=', $value)->orWhere($fieldName, 'like', "%{$value}%");
+                        } else {
+                            $query->where($fieldName, '=', $value);
+                        }
+                    });
+
+                } else {
+                    if (is_array($value)) {
+                        if ($value['from'] || $value['to']) {
+
+                            if ($value['from']) {
+                                $collection = $collection->where($field, '>=', $value['from']);
+                            }
+
+                            if ($value['to']) {
+                                $collection = $collection->where($field, '<=', $value['to'] . ' 23:59:59');
+                            }
                         }
 
-                        if ($value['to']) {
-                            $collection = $collection->where($field, '<=', $value['to'] . ' 23:59:59');
-                        }
+                        continue;
                     }
 
-                    continue;
+                    $collection = $collection->where(function ($query) use ($field, $value, $allFields) {
+                        if ($this->isTextField($allFields, $field)) {
+
+                            $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+
+                            $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                        } else {
+                            $query->where($field, '=', $value);
+                        }
+                    });
                 }
-
-                $collection = $collection->where(function ($query) use ($field, $value, $allFields) {
-                    if ($this->isTextField($allFields, $field)) {
-
-                        $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
-
-                        $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
-                    } else {
-                        $query->where($field, '=', $value);
-                    }
-                });
             }
         }
 
@@ -572,6 +590,24 @@ class Resource
         }
 
         return $collection->orderByRaw($orderBy)->paginate($perPage);
+    }
+
+    private function getRelationsHasOne($allFields, $field)
+    {
+        if (Arr::exists($allFields, $field)) {
+            return $allFields[$field]->getHasOne();
+        }
+
+        return false;
+    }
+
+    private function getFieldName($allFields, $field)
+    {
+        if (Arr::exists($allFields, $field)) {
+            return $allFields[$field]->getNameFieldInBd();
+        }
+
+        return false;
     }
 
     public function getFilterScope($collection)
