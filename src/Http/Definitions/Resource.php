@@ -592,7 +592,7 @@ class Resource
         return $collection->orderByRaw($orderBy)->paginate($perPage);
     }
 
-    private function getRelationsHasOne($allFields, $field)
+    protected function getRelationsHasOne($allFields, $field)
     {
         if (Arr::exists($allFields, $field)) {
             return $allFields[$field]->getHasOne();
@@ -601,7 +601,7 @@ class Resource
         return false;
     }
 
-    private function getFieldName($allFields, $field)
+    protected function getFieldName($allFields, $field)
     {
         if (Arr::exists($allFields, $field)) {
             return $allFields[$field]->getNameFieldInBd();
