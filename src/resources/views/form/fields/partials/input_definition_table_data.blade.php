@@ -60,7 +60,7 @@
 
                     $('.definition_{{$paramsJson->name}}').html(response.html);
 
-                    @if (isset($paramsJson->sortable)) {
+                    @if (isset($paramsJson->sortable))
                         $('.definition_{{$paramsJson->name}} tbody').sortable({
                             handle: ".handle",
                             update: function ( event, ui ) {
