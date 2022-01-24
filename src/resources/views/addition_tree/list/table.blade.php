@@ -25,7 +25,7 @@
                     <tr>
                         <th class="text-left">
                             <?php
-                            $ancestors = $current::ancestorsAndSelf($current->id); ?>
+                            $ancestors = $current->getAncestorsAndSelf(); ?>
 
                             @foreach ($ancestors as $ancestor)
                                 <a href="?node={{ $ancestor->id }}" style="color: #fff" class="node_link">{{ $ancestor->t('title')}}</a> /

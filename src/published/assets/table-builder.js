@@ -145,6 +145,7 @@ var TableBuilder = {
     },
 
     getActionUrl: function (content) {
+
         if (content != undefined) {
             return content.parents('form').attr('action');
         }
@@ -839,9 +840,9 @@ var TableBuilder = {
                     if (TableBuilder.onDoCreate) {
                         TableBuilder.onDoCreate(TableBuilder.getActionUrl());
                     }
-
+                    
                     if (response.isTree) {
-                        doAjaxLoadContent(location.pathname);
+                        doAjaxLoadContent(location.href);
                     }
 
                 } else {
