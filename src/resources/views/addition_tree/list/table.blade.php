@@ -15,7 +15,11 @@
                  data-widget-deletebutton="false"
                  data-widget-sortable="false">
                 {!!  $filterView ?? '' !!}
-
+                <form
+                        action="{{$list->getUrlAction()}}"
+                        method="post"
+                        class="form-horizontal tb-table"
+                        target="submiter" >
                 <table id="tb-tree-table" class="table table-bordered">
                     <thead>
                     <tr>
@@ -34,11 +38,7 @@
                     <tbody>
                         <tr>
                             <td class="tree-td tree-dark" style="padding: 0px; vertical-align: top;text-align: left;">
-                                <form
-                                        action="{{$list->getUrlAction()}}"
-                                        method="post"
-                                        class="form-horizontal tb-table"
-                                        target="submiter" >
+
                                     <table  class="table  table-hover table-bordered">
                                         <thead>
                                         @include('admin::addition_tree.list.head')
@@ -49,11 +49,12 @@
 
                                     </table>
                                     @include('admin::addition_tree.list.pagination')
-                                </form>
+
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                </form>
 
             </div>
         </article>
