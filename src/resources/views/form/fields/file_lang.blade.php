@@ -25,7 +25,9 @@
 									 >
 									 {{__cms('Загрузить')}}
 								 </span>
-										<span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'one_file', $(this))">
+										<span class="button select_with_uploaded"
+											  data-name-model = "{{$definition->getFullPathDefinition()}}"
+											  onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'one_file', $(this))">
 									{{__cms('Выбрать из загруженных')}}
 								 </span>
 								 <input type="text"

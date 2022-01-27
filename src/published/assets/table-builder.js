@@ -840,7 +840,7 @@ var TableBuilder = {
                     if (TableBuilder.onDoCreate) {
                         TableBuilder.onDoCreate(TableBuilder.getActionUrl());
                     }
-                    
+
                     if (response.isTree) {
                         doAjaxLoadContent(location.href);
                     }
@@ -1209,7 +1209,8 @@ var TableBuilder = {
 
         var data = {
             query_type: "select_with_uploaded",
-            ident : name
+            ident : name,
+            model_definitions : content.attr('data-name-model'),
         };
         section.find('#files_uploaded_table_' + name + ' tbody').html('<tr><td colspan="5" style="text-align: center">Загрузка...</td></tr>');
         $.post(

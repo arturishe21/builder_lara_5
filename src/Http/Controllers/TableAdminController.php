@@ -80,6 +80,10 @@ class TableAdminController extends Controller
             return $arrayAttributes['model_parent'];
         }
 
+        if (request('model_definitions')) {
+            return request('model_definitions');
+        }
+
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
 
