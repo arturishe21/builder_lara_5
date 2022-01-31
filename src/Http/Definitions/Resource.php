@@ -547,9 +547,10 @@ class Resource
 
                         if ($this->isTextField($allFields, $field)) {
 
-                            $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+                         //   $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
 
-                            $query->where($fieldName, '=', $value)->orWhere($fieldName, 'like', "%{$value}%");
+                            $query->where($fieldName, '=', $value)
+                                ->orWhereRaw('LOWER(`'.$fieldName.'`) LIKE ? ',[trim(mb_strtolower($value)).'%']);
                         } else {
                             $query->where($fieldName, '=', $value);
                         }
@@ -574,9 +575,10 @@ class Resource
                     $collection = $collection->where(function ($query) use ($field, $value, $allFields) {
                         if ($this->isTextField($allFields, $field)) {
 
-                            $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+                          //  $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
 
-                            $query->where($field, '=', $value)->orWhere($field, 'like', "%{$value}%");
+                            $query->where($field, '=', $value)
+                                ->orWhereRaw('LOWER(`'.$field.'`) LIKE ? ',[trim(mb_strtolower($value)).'%']);
                         } else {
                             $query->where($field, '=', $value);
                         }
