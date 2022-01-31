@@ -30,6 +30,7 @@ class Field
     protected $isReadonlyForEdit = false;
     protected $isAutoTranslate = true;
     protected $isHide = false;
+    protected $isSaveOnChange = false;
 
     public function __construct(string $name, $attribute = null)
     {
@@ -278,6 +279,18 @@ class Field
         $this->onlyForm = $flag;
 
         return $this;
+    }
+
+    public function saveOnChange(bool $flag = true)
+    {
+        $this->isSaveOnChange = $flag;
+
+        return $this;
+    }
+
+    public function isSaveOnChange()
+    {
+        return $this->isSaveOnChange;
     }
 
     public function fastEdit(bool $flag = true)

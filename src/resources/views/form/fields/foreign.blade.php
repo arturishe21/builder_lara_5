@@ -7,6 +7,9 @@
                 <label class="select">
                     <select
                         {{request("id") && $field->getReadonlyForEdit() ? 'disabled' : ''}}
+                        @if ($field->isSaveOnChange())
+                            onchange="TableBuilder.doSaveOnChange($(this), '{{request('id')}}')"
+                        @endif
 
                         name="{{ $field->getNameField() }}" class="dblclick-edit-input form-control input-small unselectable {{ $field->getNameField() }}_foreign">
                         @if ($field->isNullAble())

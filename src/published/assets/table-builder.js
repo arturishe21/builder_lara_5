@@ -332,6 +332,24 @@ var TableBuilder = {
 
     }, // end getCreateForm
 
+    doSaveOnChange : function(content, id)
+    {
+        jQuery.ajax({
+            type: "POST",
+            url: TableBuilder.getActionUrl(),
+            data: {
+                "query_type" : "fast_save",
+                "name" : content.attr('name'),
+                "id" : id,
+                "value": content.val()
+            },
+            dataType: 'json',
+            success: function (data) {
+
+            },
+        });
+    },
+
     refreshMask : function () {
         jQuery("#modal_form_edit form, #modal_form form").find('input[data-mask]').each(function () {
             var $input = jQuery(this);
