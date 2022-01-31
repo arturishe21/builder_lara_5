@@ -550,7 +550,7 @@ class Resource
                          //   $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
 
                             $query->where($fieldName, '=', $value)
-                                ->orWhereRaw('LOWER(`'.$fieldName.'`) LIKE ? ',[trim(mb_strtolower($value)).'%']);
+                                ->orWhereRaw('LOWER(`'.$fieldName.'`) LIKE ? ',['%'.trim(mb_strtolower($value)).'%']);
                         } else {
                             $query->where($fieldName, '=', $value);
                         }
@@ -578,7 +578,7 @@ class Resource
                           //  $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
 
                             $query->where($field, '=', $value)
-                                ->orWhereRaw('LOWER(`'.$field.'`) LIKE ? ',[trim(mb_strtolower($value)).'%']);
+                                ->orWhereRaw('LOWER(`'.$field.'`) LIKE ? ',['%'.trim(mb_strtolower($value)).'%']);
                         } else {
                             $query->where($field, '=', $value);
                         }
