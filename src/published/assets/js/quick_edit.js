@@ -23,6 +23,7 @@ var QuickEdit  = {
                 model: content.attr('data-model'),
                 id:  content.attr('data-id'),
                 field: content.attr('data-field-name'),
+                language: content.attr('data-language'),
                 value: value,
                 _token: $("meta[name=csrf-token]").attr("content")
             }

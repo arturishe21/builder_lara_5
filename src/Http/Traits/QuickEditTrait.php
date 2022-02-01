@@ -3,7 +3,7 @@
 namespace Vis\Builder\Helpers\Traits;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\App;
 
 trait QuickEditTrait
 {
@@ -19,7 +19,8 @@ trait QuickEditTrait
             return '<div
                 '.$typeEdit.'
                 data-model="'.get_class($this).'"
-                data-field-name="'.$this->tField($field).'"
+                data-field-name="'.$field.'"
+                data-language="'.App::getLocale().'"
                 data-id="'.$this->id.'"
                 >'.$value.'</div>';
 
