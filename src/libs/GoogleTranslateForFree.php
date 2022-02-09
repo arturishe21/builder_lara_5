@@ -93,7 +93,7 @@ class GoogleTranslateForFree
 
         if (null === $content) {
             //echo $text,' Error',PHP_EOL;
-            return '';
+            return $text;
         } else {
             // Parse translation
             return self::getSentencesFromJSON($content);
