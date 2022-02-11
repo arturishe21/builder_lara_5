@@ -38,10 +38,10 @@ class GoogleTranslateForFree
         // Request translation
         if (is_array($text)) {
             // Array
-            $translation = self::requestTranslationArray($source, $target, $text, $attempts = 5);
+            $translation = self::requestTranslationArray($source, $target, $text, 1);
         } else {
             // Single
-            $translation = self::requestTranslation($source, $target, $text, $attempts = 5);
+            $translation = self::requestTranslation($source, $target, $text, 1);
         }
 
         return $translation;
@@ -96,7 +96,7 @@ class GoogleTranslateForFree
 
         if (null === $content) {
             //echo $text,' Error',PHP_EOL;
-            return '';
+            return $text;
         } else {
             // Parse translation
             return self::getSentencesFromJSON($content);
