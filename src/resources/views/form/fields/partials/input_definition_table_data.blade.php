@@ -74,7 +74,20 @@
         e.preventDefault();
     });
 
+    function getParameterByName(name, url = window.location.href) {
+
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
     function getPages(url) {
+
+        var page = getParameterByName('page', url);
+
         jQuery.ajax({
             type: "POST",
             url: url,
@@ -90,12 +103,14 @@
                     $('.definition_{{$paramsJson->name}}').html(response.html);
 
                     @if (isset($paramsJson->sortable))
-                    $('.definition_{{$paramsJson->name}} tbody').sortable({
-                        handle: ".handle",
-                        update: function ( event, ui ) {
-                            ForeignDefinition.changePosition($(this), foreignAttributes);
-                        }
-                    });
+                        $('.definition_{{$paramsJson->name}} tbody').sortable({
+                            handle: ".handle",
+                            update: function ( event, ui ) {
+
+
+                                ForeignDefinition.changePosition($(this), '{!! addslashes(request('paramsJson')) !!}', page);
+                            }
+                        });
                     @else
                     $('.definition_{{$paramsJson->name}} .col_sort').hide();
                     @endif

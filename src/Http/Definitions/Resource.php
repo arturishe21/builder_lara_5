@@ -90,7 +90,9 @@ class Resource
 
     public function getPerPageThis()
     {
-        return session($this->getSessionKeyPerPage()) ? session($this->getSessionKeyPerPage())['per_page'] : $this->perPage[0];
+        return session($this->getSessionKeyPerPage()) && isset(session($this->getSessionKeyPerPage())['per_page'])
+            ? session($this->getSessionKeyPerPage())['per_page']
+            : $this->perPage[0];
     }
 
     public function getNameDefinition() : string
@@ -163,7 +165,7 @@ class Resource
     {
         parse_str($requestOrder, $order);
         $pageThisCount = $params ?: 1;
-        $perPage = 20;
+        $perPage = $this->getPerPageThis();
 
         $lowest = ($pageThisCount * $perPage) - $perPage;
 

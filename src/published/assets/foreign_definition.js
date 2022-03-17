@@ -268,14 +268,14 @@ var ForeignDefinition  = {
         });
     },
 
-    changePosition : function (context, attributesJson) {
+    changePosition : function (context, attributesJson, pageThis) {
         var arrIds = new Array();
-      //  var table = context.find('table');
 
         var jsonIds = JSON.stringify(arrIds);
         var foreignAttributes = jQuery.parseJSON(attributesJson);
 
         var order = $('.definition_' + foreignAttributes.name + ' tbody').sortable("serialize");
+        var page = pageThis ? pageThis : 1;
 
         console.log(order);
         console.log('.definition_' + foreignAttributes.name + ' tbody');
@@ -286,7 +286,8 @@ var ForeignDefinition  = {
             data: {
                 'order' : order,
                 'query_type' : 'change_order',
-                'foreign_attributes' : attributesJson
+                'foreign_attributes' : attributesJson,
+                'params' : page
             },
             dataType: 'json',
             success: function (response) {

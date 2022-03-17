@@ -80,9 +80,15 @@ class Definition extends Field
         $attributes = json_encode($parseJsonData);
         $definitionRelation = $this->getDefinitionRelation($definition);
         $perPage = $definitionRelation->getPerPage();
-        $defaultCountPage = is_array($perPage) && count($perPage) ? $perPage[0] : 20;
 
-        $count = request('count') ?? $defaultCountPage;
+        if (request('count')) {
+
+            session()->put($definitionRelation->getSessionKeyPerPage(), ['per_page' => request('count')]);
+        }
+
+        $count = $definitionRelation->getPerPageThis();
+
+       // dd($definitionRelation->getSessionKeyPerPage());
 
         $model = $definition->model();
 
