@@ -78,12 +78,17 @@ class Definition extends Field
     public function getTable($definition, $parseJsonData)
     {
         $attributes = json_encode($parseJsonData);
+        $perPage = $this->getDefinitionRelation($definition)->getPerPage();
+        $defaultCountPage = is_array($perPage) && count($perPage) ? $perPage[0] : 20;
+
+        $count = request('count') ?? $defaultCountPage;
 
         $model = $definition->model();
 
         $listModel = request('id') ? $model::find(request('id')) : (new $model());
 
-        $list = $listModel->{$this->relation}()->paginate(20);
+        $list = $listModel->{$this->relation}()->paginate($count);
+        $list->appends(['count' => $count]);
         
         $fieldsDefinition = $this->head($definition);
 
@@ -99,9 +104,10 @@ class Definition extends Field
         $urlAction = 'actions/'. $definition->getNameDefinition();
         $isSortable = $this->getDefinitionRelation($definition)->getIsSortable();
 
+
         return [
             'html' => view('admin::form.fields.partials.input_definition_table_data',
-                            compact('fieldsDefinition', 'list', 'attributes', 'urlAction', 'isSortable'))->render(),
+                            compact('fieldsDefinition', 'list', 'attributes', 'urlAction', 'isSortable', 'perPage', 'count'))->render(),
             'count_records' => 0
         ];
     }

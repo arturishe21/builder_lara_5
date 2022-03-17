@@ -35,7 +35,24 @@
 </table>
 
 <div style="text-align: center; padding-top: 10px" class="paginator_definition paginator_pictures">
-    {{ $list->render() }}
+    <div>
+        {{ $list->render() }}
+    </div>
+
+    @if (is_array($perPage) && count($perPage))
+        <div class="show_amount">
+            <span>{{__cms('Показывать по')}}:</span>
+            <div class="btn-group">
+                @foreach ($perPage as $countItem)
+                    <button type="button"
+                            onclick="setPerPageAmount('{{$countItem}}');"
+                            class="btn btn-default btn-xs {{ $countItem == $count? 'active' : ''}}">
+                        {{$countItem}}
+                    </button>
+                @endforeach
+            </div>
+        </div>
+    @endif
 </div>
 
 <?php
@@ -43,16 +60,27 @@
 ?>
 
 <script>
+
+    function setPerPageAmount(count) {
+        getPages('/admin/{{$urlAction}}?count=' + count);
+    }
+
     $('.paginator_definition a').click(function (e) {
         var url = $(this).attr('href');
 
+        getPages(url);
+
+        e.preventDefault();
+    });
+
+    function getPages(url) {
         jQuery.ajax({
             type: "POST",
             url: url,
             data: {
                 'id' : '{{request('id')}}',
                 'paramsJson' : '{!! addslashes(request('paramsJson')) !!}',
-                'query_type' : 'get_html_foreign_definition'
+                'query_type' : 'get_html_foreign_definition',
             },
             dataType: 'json',
             success: function (response) {
@@ -61,14 +89,14 @@
                     $('.definition_{{$paramsJson->name}}').html(response.html);
 
                     @if (isset($paramsJson->sortable))
-                        $('.definition_{{$paramsJson->name}} tbody').sortable({
-                            handle: ".handle",
-                            update: function ( event, ui ) {
-                                ForeignDefinition.changePosition($(this), foreignAttributes);
-                            }
-                        });
+                    $('.definition_{{$paramsJson->name}} tbody').sortable({
+                        handle: ".handle",
+                        update: function ( event, ui ) {
+                            ForeignDefinition.changePosition($(this), foreignAttributes);
+                        }
+                    });
                     @else
-                         $('.definition_{{$paramsJson->name}} .col_sort').hide();
+                    $('.definition_{{$paramsJson->name}} .col_sort').hide();
                     @endif
                 }
             },
@@ -78,8 +106,6 @@
                 TableBuilder.showErrorNotification(errorResult.message);
             }
         });
+    }
 
-
-        e.preventDefault();
-    });
 </script>
