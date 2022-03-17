@@ -17,7 +17,7 @@ class Resource
 
     protected $orderBy = 'created_at desc';
     protected $isSortable = false;
-    protected $perPage = [];
+    protected $perPage = [20, 100, 1000];
     protected $cacheTag;
     protected $updateManyToManyList = [];
     protected $updateHasOneList = [];
