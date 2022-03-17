@@ -25,6 +25,7 @@ class Resource
     protected $relations = [];
     protected $filterScope;
     protected $autoTranslate = true;
+    protected $isShowPerPage = false;
 
     public function actions()
     {
@@ -64,6 +65,11 @@ class Resource
     public function getIsSortable()
     {
         return $this->isSortable;
+    }
+
+    public function getIsShowPerPage()
+    {
+        return $this->isShowPerPage;
     }
 
     public function getOrderBy()

@@ -35,12 +35,12 @@
 </table>
 
 <div style="text-align: center; padding-top: 10px" class="paginator_definition paginator_pictures">
-    <div>
+    <div @if($definitionRelation->getIsShowPerPage()) style="float: left" @endif  >
         {{ $list->render() }}
     </div>
 
-    @if (is_array($perPage) && count($perPage))
-        <div class="show_amount">
+    @if ($definitionRelation->getIsShowPerPage())
+        <div class="show_amount" style="float: right">
             <span>{{__cms('Показывать по')}}:</span>
             <div class="btn-group">
                 @foreach ($perPage as $countItem)
@@ -53,6 +53,7 @@
             </div>
         </div>
     @endif
+    <div style="clear: both"></div>
 </div>
 
 <?php

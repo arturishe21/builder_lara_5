@@ -78,7 +78,8 @@ class Definition extends Field
     public function getTable($definition, $parseJsonData)
     {
         $attributes = json_encode($parseJsonData);
-        $perPage = $this->getDefinitionRelation($definition)->getPerPage();
+        $definitionRelation = $this->getDefinitionRelation($definition);
+        $perPage = $definitionRelation->getPerPage();
         $defaultCountPage = is_array($perPage) && count($perPage) ? $perPage[0] : 20;
 
         $count = request('count') ?? $defaultCountPage;
@@ -107,7 +108,7 @@ class Definition extends Field
 
         return [
             'html' => view('admin::form.fields.partials.input_definition_table_data',
-                            compact('fieldsDefinition', 'list', 'attributes', 'urlAction', 'isSortable', 'perPage', 'count'))->render(),
+                            compact('definitionRelation', 'fieldsDefinition', 'list', 'attributes', 'urlAction', 'isSortable', 'perPage', 'count'))->render(),
             'count_records' => 0
         ];
     }
