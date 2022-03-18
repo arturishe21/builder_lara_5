@@ -106,8 +106,6 @@
                         $('.definition_{{$paramsJson->name}} tbody').sortable({
                             handle: ".handle",
                             update: function ( event, ui ) {
-
-
                                 ForeignDefinition.changePosition($(this), '{!! addslashes(request('paramsJson')) !!}', page);
                             }
                         });
