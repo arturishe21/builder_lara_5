@@ -66,7 +66,7 @@ class Foreign extends Field
             }
         }
 
-        return $collection->get();
+        return $collection->rememberForever()->cacheTags($this->getCacheArray($definition, $modelRelated))->get();
     }
 
     public function getValueForList($definition)
