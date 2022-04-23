@@ -63,13 +63,13 @@
 <script>
 
     function setPerPageAmount(count) {
-        getPages('/admin/{{$urlAction}}?count=' + count);
+        getPages{{$paramsJson->name}}('/admin/{{$urlAction}}?count=' + count);
     }
 
     $('.paginator_definition a').click(function (e) {
         var url = $(this).attr('href');
 
-        getPages(url);
+        getPages{{$paramsJson->name}}(url);
 
         e.preventDefault();
     });
@@ -84,7 +84,7 @@
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
-    function getPages(url) {
+    function getPages{{$paramsJson->name}}(url) {
 
         var page = getParameterByName('page', url);
 
@@ -106,8 +106,6 @@
                         $('.definition_{{$paramsJson->name}} tbody').sortable({
                             handle: ".handle",
                             update: function ( event, ui ) {
-
-
                                 ForeignDefinition.changePosition($(this), '{!! addslashes(request('paramsJson')) !!}', page);
                             }
                         });
