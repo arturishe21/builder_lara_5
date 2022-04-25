@@ -88,8 +88,6 @@ class Definition extends Field
 
         $count = $definitionRelation->getPerPageThis();
 
-       // dd($definitionRelation->getSessionKeyPerPage());
-
         $model = $definition->model();
 
         $listModel = request('id') ? $model::find(request('id')) : (new $model());

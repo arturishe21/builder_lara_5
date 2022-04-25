@@ -1,3 +1,7 @@
+<?php
+    $paramsJson = json_decode(request('paramsJson'));
+?>
+
 <div class="loader_definition"><i class="fa fa-gear fa-4x fa-spin"></i></div>
 <table class="table table-hover table-bordered">
     <thead>
@@ -45,7 +49,7 @@
             <div class="btn-group">
                 @foreach ($perPage as $countItem)
                     <button type="button"
-                            onclick="setPerPageAmount('{{$countItem}}');"
+                            onclick="setPerPageAmount{{$paramsJson->name}}('{{$countItem}}');"
                             class="btn btn-default btn-xs {{ $countItem == $count? 'active' : ''}}">
                         {{$countItem}}
                     </button>
@@ -56,13 +60,9 @@
     <div style="clear: both"></div>
 </div>
 
-<?php
-  $paramsJson = json_decode(request('paramsJson'));
-?>
-
 <script>
 
-    function setPerPageAmount(count) {
+    function setPerPageAmount{{$paramsJson->name}}(count) {
         getPages{{$paramsJson->name}}('/admin/{{$urlAction}}?count=' + count);
     }
 
