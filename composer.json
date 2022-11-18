@@ -9,16 +9,16 @@
         }
     ],
     "require": {
-        "cartalyst/sentinel": "^5.0",
-        "mcamara/laravel-localization": "1.6.*",
+        "cartalyst/sentinel": "^6.0",
+        "mcamara/laravel-localization": "1.7.*",
         "kalnoy/nestedset": "^6.0",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
         "predis/predis" : "v1.1.1",
         "maatwebsite/excel": "3.*",
-        "barryvdh/laravel-debugbar": "^3.2",
-        "bkwld/cloner": "^3.9"
+        "barryvdh/laravel-debugbar": "^3.5",
+        "bkwld/cloner": "^3.10"
     },
     "autoload": {
         "classmap": [

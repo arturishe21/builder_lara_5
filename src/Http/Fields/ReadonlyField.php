@@ -2,7 +2,7 @@
 
 namespace Vis\Builder\Fields;
 
-class Readonly extends Field
+class ReadonlyField extends Field
 {
 
 }

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Vis\Builder\Services\Actions;
 use Vis\Builder\Fields\{
     ManyToMany,
-    Readonly,
+    ReadonlyField,
     Relations\Options,
     Password,
     Checkbox,
@@ -33,8 +33,8 @@ class Users extends Resource
                 Text::make('Фамилия', 'last_name')->sortable()->filter(),
                 Text::make('Имя', 'first_name')->sortable()->filter(),
                 Checkbox::make('Активен', 'completed')->hasOne('activation'),
-                Readonly::make('Дата регистрации', 'created_at')->default(Carbon::now())->sortable(),
-                Readonly::make('Дата последнего входа', 'last_login')->sortable()
+                ReadonlyField::make('Дата регистрации', 'created_at')->default(Carbon::now())->sortable(),
+                ReadonlyField::make('Дата последнего входа', 'last_login')->sortable()
             ],
 
             'Группа' => [
