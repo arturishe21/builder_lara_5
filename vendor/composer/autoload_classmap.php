@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'CreateActivationsTable' => $baseDir . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
     'CreateIndexUsersRoles' => $baseDir . '/src/Migrations/2020_10_13_195654_create_index_users_roles.php',
     'CreateLanguages' => $baseDir . '/src/Migrations/2021_05_17_095430_create_languages.php',

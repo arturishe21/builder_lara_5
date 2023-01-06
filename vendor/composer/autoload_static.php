@@ -21,7 +21,6 @@ class ComposerStaticInit92ce10362f3539484f1905e296aad13e
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'CreateActivationsTable' => __DIR__ . '/../..' . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
         'CreateIndexUsersRoles' => __DIR__ . '/../..' . '/src/Migrations/2020_10_13_195654_create_index_users_roles.php',
         'CreateLanguages' => __DIR__ . '/../..' . '/src/Migrations/2021_05_17_095430_create_languages.php',
