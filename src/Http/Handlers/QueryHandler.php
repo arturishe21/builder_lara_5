@@ -449,6 +449,10 @@ class QueryHandler
             $lang = str_replace('ua', 'uk', $thisLang);
             $langsDef = str_replace('ua', 'uk', $langsDef);
 
+            if (!config('builder.translate_cms.api_yandex_key')) {
+                return '';
+            }
+
             $translator = new \Yandex\Translate\Translator(config('builder.translate_cms.api_yandex_key'));
             $translation = $translator->translate($phrase, $langsDef.'-'.$lang);
 
