@@ -16,7 +16,7 @@
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
         "predis/predis" : "v1.1.1",
-        "maatwebsite/excel": "3.*",
+        "maatwebsite/excel": "3.1.44",
         "barryvdh/laravel-debugbar": "^3.2",
         "bkwld/cloner": "^3.9"
     },

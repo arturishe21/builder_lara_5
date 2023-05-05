@@ -6,4 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Venturecraft\\Revisionable' => array($vendorDir . '/venturecraft/revisionable/src'),
+    'Mcamara\\LaravelLocalization' => array($vendorDir . '/mcamara/laravel-localization/src'),
+    'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
 );
