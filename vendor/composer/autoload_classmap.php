@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'CreateActivationsTable' => $baseDir . '/src/Migrations/2018_02_22_100056_create_activations_table.php',
     'CreateIndexUsersRoles' => $baseDir . '/src/Migrations/2020_10_13_195654_create_index_users_roles.php',
     'CreateLanguages' => $baseDir . '/src/Migrations/2021_05_17_095430_create_languages.php',
@@ -106,6 +105,7 @@ return array(
     'Vis\\Builder\\Services\\ButtonExample' => $baseDir . '/src/Http/Services/ButtonExample.php',
     'Vis\\Builder\\Services\\ButtonStrategy' => $baseDir . '/src/Http/Services/ButtonStrategy.php',
     'Vis\\Builder\\Services\\Export' => $baseDir . '/src/Http/Services/Export.php',
+    'Vis\\Builder\\Services\\ExportUsers' => $baseDir . '/src/Http/Services/ExportUsers.php',
     'Vis\\Builder\\Services\\Import' => $baseDir . '/src/Http/Services/Import.php',
     'Vis\\Builder\\Services\\Listing' => $baseDir . '/src/Http/Services/Listing.php',
     'Vis\\Builder\\Services\\Revisions' => $baseDir . '/src/Http/Services/Revisions.php',
