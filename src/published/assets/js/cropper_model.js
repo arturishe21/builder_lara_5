@@ -20,7 +20,7 @@ var Cropper = {
             $("#modal_crop_img").css("top", $(window).scrollTop() + 20);
 
             Cropper.image.cropper('destroy');
-            
+
             var result = Cropper.image.cropper({
 
                 crop: function (data) {
