@@ -2,17 +2,17 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
+use Vis\Builder\Http\Services\Actions;
 use Vis\Builder\Models\Language;
-use Vis\Builder\Fields\{Checkbox, Select};
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Fields\{Checkbox, Select};
+use Vis\Builder\Http\Definitions\Resource;
 
 class Languages extends Resource
 {
-    public $model = Language::class;
-    public $title = 'Языки сайта';
-    protected $orderBy = 'priority asc';
-    protected $isSortable = true;
+    public string $model = Language::class;
+    public string $title = 'Языки сайта';
+    protected string $orderBy = 'priority asc';
+    protected bool $isSortable = true;
 
     public function fields(): array
     {

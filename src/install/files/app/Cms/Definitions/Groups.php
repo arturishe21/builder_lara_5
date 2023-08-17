@@ -3,19 +3,19 @@
 namespace App\Cms\Definitions;
 
 use App\Models\Group;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Fields\{
+use Vis\Builder\Http\Services\Actions;
+use Vis\Builder\Http\Fields\{
     Id,
     Text,
     Permissions
 };
 
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Definitions\Resource;
 
 class Groups extends Resource
 {
-    public $model = Group::class;
-    public $title = 'Группы';
+    public string $model = Group::class;
+    public string $title = 'Группы';
 
     public function fields()
     {
@@ -31,7 +31,7 @@ class Groups extends Resource
         ];
     }
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->delete();
     }

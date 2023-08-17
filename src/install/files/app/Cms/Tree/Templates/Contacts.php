@@ -2,14 +2,14 @@
 
 namespace App\Cms\Tree\Templates;
 
-use Vis\Builder\Fields\{Checkbox, Froala, Id, Image, MultiImage, Text, Textarea};
+use Vis\Builder\Http\Fields\{Checkbox, Froala, Id, Image, MultiImage, Text, Textarea};
 
-use Vis\Builder\Definitions\ResourceTree;
+use Vis\Builder\Http\Definitions\ResourceTree;
 
 class Contacts extends ResourceTree
 {
-    protected $titleDefinition = 'Контакты';
-    protected $action = 'ContactsController@showPage';
+    protected string $titleDefinition = 'Контакты';
+    protected string $action = 'ContactsController@showPage';
 
     public function fields()
     {

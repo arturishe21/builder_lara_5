@@ -3,7 +3,6 @@
 namespace Vis\Builder\Http\Fields;
 
 use App\Cms\Admin;
-use Illuminate\Contracts\View\View;
 
 class Permissions extends Field
 {
@@ -17,22 +16,24 @@ class Permissions extends Field
         'delete' => 'Удаление'
     ];
 
-    public function getFieldForm($definition): View
+    public function getFieldForm($definition): string
     {
         $permissions = $this->generatePermissions();
         $groupPermissionsThis = $this->getValue();
 
-        return view('admin::form.fields.permissions', compact('permissions', 'groupPermissionsThis'))->render();
+        return view('admin::form.fields.permissions',
+            compact('permissions', 'groupPermissionsThis')
+        )->render();
     }
 
-    public function prepareSave($request)
+    public function prepareSave($request): array
     {
         $nameField = $this->getNameField();
 
         return array_map('boolval', $request[$nameField]);
     }
 
-    private function generatePermissions()
+    private function generatePermissions(): array
     {
         $permissionsMenu = (new Admin())->menu();
 
@@ -81,7 +82,7 @@ class Permissions extends Field
         return $permissions;
     }
 
-    private function prepareSlug($link)
+    private function prepareSlug(string $link): string
     {
         return str_replace(['/'], [''], $link);
     }

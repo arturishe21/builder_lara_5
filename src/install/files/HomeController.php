@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Vis\Builder\TreeController;
+use Vis\Builder\Http\Controllers\TreeController;
 
 class HomeController extends TreeController
 {
-    /*
-     * show index page site
-     */
     public function showPage()
     {
         $page = $this->node;

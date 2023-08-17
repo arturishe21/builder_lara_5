@@ -4,8 +4,8 @@ namespace App\Cms\Definitions;
 
 use App\Models\User;
 use Carbon\Carbon;
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Fields\{
+use Vis\Builder\Http\Services\Actions;
+use Vis\Builder\Http\Fields\{
     ManyToMany,
     ReadonlyField,
     Relations\Options,
@@ -15,13 +15,13 @@ use Vis\Builder\Fields\{
     Text
 };
 
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Definitions\Resource;
 
 class Users extends Resource
 {
-    public $model = User::class;
-    public $title = 'Пользователи';
-    protected $orderBy = 'created_at desc';
+    public string $model = User::class;
+    public string $title = 'Пользователи';
+    protected string $orderBy = 'created_at desc';
 
     public function fields()
     {
@@ -46,7 +46,7 @@ class Users extends Resource
         ];
     }
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->delete();
     }

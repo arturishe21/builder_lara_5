@@ -2,11 +2,11 @@
 
 namespace App\Cms;
 
-use Vis\Builder\Setting\AdminBase;
+use Vis\Builder\Settings\AdminBase;
 
 class Admin extends AdminBase
 {
-    public function menu()
+    public function menu(): array
     {
         return [
 

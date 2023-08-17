@@ -2,14 +2,14 @@
 
 namespace App\Cms\Tree\Templates;
 
-use Vis\Builder\Fields\{Checkbox, Froala, Id, Image, MultiImage, Text};
-use Vis\Builder\Definitions\ResourceTree;
+use Vis\Builder\Http\Fields\{Checkbox, Froala, Id, Image, MultiImage, Text};
+use Vis\Builder\Http\Definitions\ResourceTree;
 use App\Models\MorphOne\Seo;
 
 class Node extends ResourceTree
 {
-    protected $titleDefinition = 'Главный';
-    public $action = 'HomeController@index';
+    protected string $titleDefinition = 'Главный';
+    public string $action = 'HomeController@index';
 
     public function fields()
     {

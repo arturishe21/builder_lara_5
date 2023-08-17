@@ -2,17 +2,17 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
+use Vis\Builder\Http\Services\Actions;
 use App\Models\modelName;
-use Vis\Builder\Fields\{Datetime, Id, Text, Checkbox, Textarea};
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Fields\{Datetime, Id, Text, Checkbox, Textarea};
+use Vis\Builder\Http\Definitions\Resource;
 
 class modelPluralName extends Resource
 {
-    public $model = modelName::class;
-    public $title = 'modelName';
-    protected $orderBy = 'priority asc';
-    protected $isSortable = true;
+    public string $model = modelName::class;
+    public string $title = 'modelName';
+    protected string $orderBy = 'priority asc';
+    protected bool $isSortable = true;
 
     public function fields(): array
     {

@@ -2,16 +2,16 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
-use Vis\Builder\Revision;
-use Vis\Builder\Fields\{ForeignAjax, Id, Datetime, Text, Relations\Options};
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Services\Actions;
+use Vis\Builder\Models\Revision;
+use Vis\Builder\Http\Fields\{ForeignAjax, Id, Datetime, Text, Relations\Options};
+use Vis\Builder\Http\Definitions\Resource;
 
 class Revisions extends Resource
 {
-    public $model = Revision::class;
-    public $title = 'Контроль изменений';
-    protected $orderBy = 'created_at desc';
+    public string $model = Revision::class;
+    public string $title = 'Контроль изменений';
+    protected string $orderBy = 'created_at desc';
 
     public function fields()
     {
@@ -32,7 +32,7 @@ class Revisions extends Resource
     }
 
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make();
     }

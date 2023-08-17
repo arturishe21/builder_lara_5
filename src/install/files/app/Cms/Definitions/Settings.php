@@ -2,16 +2,16 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Fields\{Checkbox, File, ForeignAjax, Froala, Hidden, Id, Select, Text, Relations\Options, Textarea};
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Fields\{Checkbox, File, ForeignAjax, Froala, Hidden, Id, Select, Text, Relations\Options, Textarea};
+use Vis\Builder\Http\Definitions\Resource;
 use Illuminate\Validation\Rule;
-use Vis\Builder\Fields\Custom\TextSetting;
+use Vis\Builder\Http\Fields\Custom\TextSetting;
 
 class Settings extends Resource
 {
-    public $model = \Vis\Builder\Setting::class;
-    public $title = 'Настройки';
-    protected $orderBy = 'id desc';
+    public string $model = \Vis\Builder\Models\Setting::class;
+    public string $title = 'Настройки';
+    protected string $orderBy = 'id desc';
 
     public function fields()
     {

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Vis\Builder\User as UserBuilder;
+use Vis\Builder\Models\User as UserBuilder;
 
 class User extends UserBuilder
 {

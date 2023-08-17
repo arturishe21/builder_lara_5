@@ -2,9 +2,9 @@
 
 namespace App\Cms\Definitions;
 
-use Vis\Builder\Services\Actions;
+use Vis\Builder\Http\Services\Actions;
 use App\Models\Article;
-use Vis\Builder\Fields\{Color,
+use Vis\Builder\Http\Fields\{Color,
     Hidden,
     ManyToManyAjax,
     MultiImage,
@@ -19,14 +19,14 @@ use Vis\Builder\Fields\{Color,
     File,
     Text,
     Definition};
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Definitions\Resource;
 
 class Articles extends Resource
 {
-    public $model = Article::class;
-    public $title = 'Статьи';
-    protected $orderBy = 'priority asc';
-    protected $isSortable = true;
+    public string $model = Article::class;
+    public string $title = 'Статьи';
+    protected string $orderBy = 'priority asc';
+    protected bool $isSortable = true;
 
     public function fields()
     {
@@ -59,7 +59,7 @@ class Articles extends Resource
     }
     
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->preview()->delete()->clone();
     }

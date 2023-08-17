@@ -3,7 +3,7 @@
 namespace App\Models\MorphOne;
 
 use Illuminate\Database\Eloquent\Model;
-use Vis\Builder\Fields\{Text, Textarea, Checkbox, Froala};
+use Vis\Builder\Http\Fields\{Text, Textarea, Checkbox, Froala};
 
 class Seo extends Model
 {
