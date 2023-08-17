@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "cartalyst/sentinel": "^6.0",
+        "cartalyst/sentinel": "^7.0",
         "mcamara/laravel-localization": "1.8.*",
         "kalnoy/nestedset": "^6.0",
         "venturecraft/revisionable": "1.*",
