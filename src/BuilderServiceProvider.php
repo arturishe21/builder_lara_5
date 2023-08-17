@@ -29,7 +29,6 @@ class BuilderServiceProvider extends ServiceProvider
 
     public function boot(Router $router): void
     {
-        include __DIR__.'/../vendor/autoload.php';
         include __DIR__.'/Http/helpers.php';
 
         $this->app->setLocale(defaultLanguage());
