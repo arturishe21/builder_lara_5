@@ -1,9 +1,8 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
-use Vis\Builder\Definitions\Resource;
-use Illuminate\Database\Eloquent\Model;
+use Vis\Builder\Http\Definitions\Resource;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Collection;
 

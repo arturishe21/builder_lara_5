@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
 class ReadonlyField extends Field
 {

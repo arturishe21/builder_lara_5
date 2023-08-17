@@ -1,16 +1,16 @@
 <?php
 
-namespace Vis\Builder\Setting;
+namespace Vis\Builder\Settings;
 
 abstract class AdminBase
 {
-    protected $caption = 'Административная часть сайта';
-    protected $logoUrl = '/packages/vis/builder/img/logo-w.png';
-    protected $faviconUrl = '/packages/vis/builder/img/favicon/favicon.ico';
-    protected $css;
-    protected $js;
+    protected string $caption = 'Административная часть сайта';
+    protected string $logoUrl = '/packages/vis/builder/img/logo-w.png';
+    protected string $faviconUrl = '/packages/vis/builder/img/favicon/favicon.ico';
+    protected array $css = [];
+    protected array $js = [];
 
-    public function accessIp()
+    public function accessIp(): array
     {
         if (!setting('ip')) {
             return [];
@@ -19,36 +19,36 @@ abstract class AdminBase
         return array_map('trim', explode(',', setting('ip')));
     }
 
-    public function getCaption()
+    public function getCaption(): string
     {
         return __cms($this->caption);
     }
 
-    public function getLogo()
+    public function getLogo(): string
     {
         return $this->logoUrl;
     }
 
-    public function getFaviconUrl()
+    public function getFaviconUrl(): string
     {
         return $this->faviconUrl;
     }
 
-    public function getCss()
+    public function getCss(): array
     {
         if (is_array($this->css)) {
             return $this->css;
         }
     }
 
-    public function getJs()
+    public function getJs(): array
     {
         if (is_array($this->js)) {
             return $this->js;
         }
     }
 
-    public function login()
+    public function login(): string
     {
         return Login::class;
     }
@@ -58,5 +58,5 @@ abstract class AdminBase
 
     }
 
-    abstract public function menu();
+    abstract public function menu(): array;
 }

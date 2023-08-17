@@ -2,43 +2,40 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Vis\Builder\Tree as TreeBuilder;
+use Vis\Builder\Models\Tree as TreeBuilder;
 use App\Models\MorphOne\Seo;
 
 class Tree extends TreeBuilder
 {
-    public function seo()
+    public function seo(): MorphOne
     {
         return $this->morphOne(Seo::class, 'seo')->withDefault();
     }
 
-    public static function getFirstDepthNodes()
+    public static function getFirstDepthNodes(): Collection
     {
         return self::where('depth', '1')->get();
     }
 
-    public function scopeActive($query)
+    public function scopeActive($query): self
     {
         return $query->where('is_active', '1');
     }
 
-    public function scopePriorityAsc($query)
+    public function scopePriorityAsc($query): self
     {
         return $query->orderBy('lft', 'asc');
     }
 
-    public function scopeTemplate($query, $template)
+    public function scopeTemplate($query, $template): self
     {
         return $query->where('template', $template);
     }
 
-    public function getDate()
-    {
-        return Util::getDate($this->created_at);
-    }
-
-    public function getUrl()
+    public function getUrl(): string
     {
         return geturl(parent::getUrl(), App::getLocale());
     }

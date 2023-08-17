@@ -1,8 +1,8 @@
 <?php
 
-namespace Vis\Builder\Helpers\Traits;
+namespace Vis\Builder\Http\Traits;
 
-use Vis\Builder\Helpers\Traits\Query\Builder;
+use Vis\Builder\Http\Traits\Query\Builder;
 
 trait Rememberable
 {

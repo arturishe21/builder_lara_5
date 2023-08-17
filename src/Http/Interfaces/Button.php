@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Interfaces;
+namespace Vis\Builder\Http\Interfaces;
 
 use Illuminate\Contracts\View\View;
 

@@ -6,15 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Class Trans.
- */
 class TranslationsPhrasesCms extends Model
 {
     protected $table = 'translations_phrases_cms';
-
     protected $fillable = ['phrase'];
-
     public $timestamps = false;
 
     public function translations()
@@ -22,18 +17,12 @@ class TranslationsPhrasesCms extends Model
         return $this->hasMany(TranslationsCms::class, 'translations_phrases_cms_id');
     }
 
-    /**
-     * @return array
-     */
-    public function getTrans()
+    public function getTrans(): array
     {
         return $this->translations()->pluck('translate', 'lang')->toArray();
     }
 
-    /**
-     * @return array|mixed
-     */
-    public static function fillCacheTrans()
+    public static function fillCacheTrans(): array
     {
         if (Cache::tags('translations')->has('translations_cms')) {
             $arrayTranslate = Cache::tags('translations')->get('translations_cms');
@@ -57,7 +46,7 @@ class TranslationsPhrasesCms extends Model
         return $arrayTranslate;
     }
 
-    public static function reCacheTrans()
+    public static function reCacheTrans(): void
     {
         Cache::tags('translations')->flush();
         self::fillCacheTrans();

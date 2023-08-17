@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class Trend
 {
-    public $size = 'col-xs-12 col-sm-12 col-md-12 col-lg-12';
-    protected $defaultCountDays = 356;
+    public string  $size = 'col-xs-12 col-sm-12 col-md-12 col-lg-12';
+    protected int $defaultCountDays = 356;
 
-    public function countByDays(string $model, string $field = 'id')
+    public function countByDays(string $model, string $field = 'id'): array
     {
         $result = $this->aggregate($model, $field, 'count');
 
@@ -20,35 +20,27 @@ class Trend
         ];
     }
 
-    public function avgByDays($model, $field = 'id')
+    public function avgByDays($model, $field = 'id'): array
     {
-        $result = $this->aggregate($model, $field, 'avg');
-
-        return $this->returnResult($result);
+        return $this->aggregate($model, $field, 'avg');
     }
 
-    public function maxByDays($model, $field = 'id')
+    public function maxByDays($model, $field = 'id'): array
     {
-        $result = $this->aggregate($model, $field, 'max');
-
-        return $this->returnResult($result);
+        return $this->aggregate($model, $field, 'max');
     }
 
-    public function minByDays($model, $field = 'id')
+    public function minByDays($model, $field = 'id'): array
     {
-        $result = $this->aggregate($model, $field, 'min');
-
-        return $this->returnResult($result);
+        return $this->aggregate($model, $field, 'min');
     }
 
-    public function sumByDays($model, $field = 'id')
+    public function sumByDays($model, $field = 'id'): array
     {
-        $result = $this->aggregate($model, $field, 'sum');
-
-        return $this->returnResult($result);
+       return $this->aggregate($model, $field, 'sum');
     }
 
-    protected function aggregate(string $model, string $field, string $type) : array
+    protected function aggregate(string $model, string $field, string $type): array
     {
         $dateRange = $this->currentRange();
         $dateRange[1] .= ' 23:59:59';
@@ -60,11 +52,6 @@ class Trend
             ->groupBy('x')
             ->get()
             ->toArray();
-    }
-
-    protected function returnResult($result)
-    {
-        return $result;
     }
 
     public function currentRange() : array

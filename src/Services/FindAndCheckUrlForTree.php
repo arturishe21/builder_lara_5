@@ -9,7 +9,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class FindAndCheckUrlForTree
 {
-    private $model;
+    private string $model;
 
     public function getRoute($arrSegments)
     {
@@ -26,7 +26,7 @@ class FindAndCheckUrlForTree
         return $this->getControllerAndMethod($node);
     }
 
-    private function getSlug($arrSegments)
+    private function getSlug($arrSegments): string
     {
         $slug = end($arrSegments);
 
@@ -59,7 +59,7 @@ class FindAndCheckUrlForTree
         return false;
     }
 
-    private function getControllerAndMethod($node)
+    private function getControllerAndMethod($node): array|bool
     {
         $templates = (new Tree())->templates();
 

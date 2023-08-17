@@ -1,38 +1,37 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Models;
 
 use Illuminate\Support\Facades\Cache;
-use Request;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Model;
+use Venturecraft\Revisionable\RevisionableTrait;
+use Bkwld\Cloner\Cloneable;
+use Vis\Builder\Http\Traits\{Rememberable, TranslateTrait, SeoTrait, ImagesTrait, ViewPageTrait, QuickEditTrait};
 
-/**
- * Class Tree.
- */
 class Tree extends Model
 {
-    use \Vis\Builder\Helpers\Traits\Rememberable,
-        \Vis\Builder\Helpers\Traits\TranslateTrait,
-        \Vis\Builder\Helpers\Traits\SeoTrait,
-        \Vis\Builder\Helpers\Traits\ImagesTrait,
-        \Vis\Builder\Helpers\Traits\ViewPageTrait,
-        \Venturecraft\Revisionable\RevisionableTrait,
-        \Vis\Builder\Helpers\Traits\QuickEditTrait,
-        \Bkwld\Cloner\Cloneable,
+    use Rememberable,
+        TranslateTrait,
+        SeoTrait,
+        ImagesTrait,
+        ViewPageTrait,
+        RevisionableTrait,
+        QuickEditTrait,
+        Cloneable,
         NodeTrait;
 
-    public function getLftName()
+    public function getLftName(): string
     {
         return 'lft';
     }
 
-    public function getRgtName()
+    public function getRgtName(): string
     {
         return 'rgt';
     }
 
-    public function getParentIdName()
+    public function getParentIdName(): string
     {
         return 'parent_id';
     }
@@ -49,18 +48,15 @@ class Tree extends Model
 
     public function children()
     {
-        return $this->hasMany(get_class($this), $this->getParentIdName())
-            ->setModel($this)->defaultOrder();
+        return $this
+            ->hasMany(get_class($this), $this->getParentIdName())
+            ->setModel($this)
+            ->defaultOrder();
     }
 
-    /**
-     * @var array
-     */
-    protected $fillable = [];
-    /**
-     * @var array
-     */
-    protected $revisionFormattedFieldNames = [
+    protected  $fillable = [];
+
+    protected array $revisionFormattedFieldNames = [
         'title'             => 'Название',
         'description'       => 'Описание',
         'is_active'         => 'Активация',
@@ -68,44 +64,25 @@ class Tree extends Model
         'short_description' => 'Короткий текст',
         'created_at'        => 'Дата создания',
     ];
-    /**
-     * @var array
-     */
-    protected $revisionFormattedFields = [
+
+    protected array $revisionFormattedFields = [
         '1'          => 'string:<strong>%s</strong>',
         'public'     => 'boolean:No|Yes',
         'deleted_at' => 'isEmpty:Active|Deleted',
     ];
-    /**
-     * @var bool
-     */
-    protected $revisionEnabled = true;
-    /**
-     * @var bool
-     */
-    protected $revisionCleanup = true;
-    /**
-     * @var int
-     */
-    protected $historyLimit = 500;
 
-    /**
-     * @var string
-     */
-    protected $fileDefinition = 'tree';
+    protected bool $revisionEnabled = true;
+    protected bool $revisionCleanup = true;
+    protected int $historyLimit = 500;
 
-    /**
-     * @return array
-     */
-    public function getFillable()
+    protected string $fileDefinition = 'tree';
+
+    public function getFillable(): array
     {
         return $this->fillable;
     }
 
-    /**
-     * @param array $params
-     */
-    public function setFillable(array $params)
+    public function setFillable(array $params): void
     {
         $this->fillable = $params;
     }
@@ -139,20 +116,12 @@ class Tree extends Model
         }
     }
 
-    /**
-     * @param $url
-     */
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->_nodeUrl = $url;
     }
 
-    // end setUrl
-
-    /**
-     * @return mixed|string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
@@ -162,25 +131,19 @@ class Tree extends Model
             return $this->_nodeUrl;
         }
 
-        return '/'.$this->_nodeUrl;
+        return '/'. $this->_nodeUrl;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrlNoLocation()
+    public function getUrlNoLocation(): string
     {
         if (! $this->_nodeUrl) {
             $this->_nodeUrl = $this->getGeneratedUrl();
         }
 
-        return '/'.$this->_nodeUrl;
+        return '/'. $this->_nodeUrl;
     }
 
-    /**
-     * @return mixed|string
-     */
-    public function getGeneratedUrl()
+    public function getGeneratedUrl(): string
     {
         $tags = $this->getCacheTags();
 
@@ -193,23 +156,18 @@ class Tree extends Model
         return $this->getGeneratedUrlInCache();
     }
 
-    // end getGeneratedUrl
-
     public function getAncestorsAndSelf()
     {
         return self::defaultOrder()->ancestorsAndSelf($this->id);
     }
 
-    /**
-     * @return string
-     */
-    private function getGeneratedUrlInCache()
+    private function getGeneratedUrlInCache(): string
     {
         $all = $this->getAncestorsAndSelf();
         $slugs = [];
 
         foreach ($all as $node) {
-            if ($node->slug == '/') {
+            if ($node->slug === '/') {
                 continue;
             }
 
@@ -219,12 +177,12 @@ class Tree extends Model
         return implode('/', $slugs);
     }
 
-    public function isHasChildren()
+    public function isHasChildren(): bool
     {
         return (bool) $this->children_count;
     }
 
-    public function clearCache()
+    public function clearCache(): void
     {
         $tags = $this->getCacheTags();
 
@@ -233,10 +191,7 @@ class Tree extends Model
         }
     }
 
-    /**
-     * @return bool|mixed
-     */
-    protected function getCacheTags()
+    protected function getCacheTags(): array
     {
         return ['tree'];
     }

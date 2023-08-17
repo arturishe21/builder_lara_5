@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Helpers\Traits;
+namespace Vis\Builder\Http\Traits;
 
 trait SeoTrait
 {

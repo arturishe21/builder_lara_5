@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Helpers\Traits\Query;
+namespace Vis\Builder\Http\Traits\Query;
 
 class Builder extends \Illuminate\Database\Query\Builder
 {

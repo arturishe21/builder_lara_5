@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Lang;
 
 class Translate
 {
-    private $language;
-    private $collectionTranslate;
+    private string $language;
+    private array $collectionTranslate;
 
     public function __construct()
     {
@@ -16,9 +16,9 @@ class Translate
         $this->collectionTranslate = app('arrayTranslate');
     }
 
-    public function returnPhrase(string $phrase, array $replacePhrase = []) : ?string
+    public function returnPhrase(string $phrase, array $replacePhrase = []): ?string
     {
-        if (env('APP_ENV') == 'testing') {
+        if (env('APP_ENV') === 'testing') {
             return $phrase;
         }
 
@@ -29,12 +29,15 @@ class Translate
         return $this->replaceArrayPhrase($phrase, $replacePhrase);
     }
 
-    private function checkExistsTranslate(string $phrase) : bool
+    private function checkExistsTranslate(string $phrase): bool
     {
-        return is_array($this->collectionTranslate) && array_key_exists($phrase, $this->collectionTranslate) && isset($this->collectionTranslate[$phrase][$this->language]);
+        return is_array($this->collectionTranslate)
+            && array_key_exists($phrase, $this->collectionTranslate)
+            && isset($this->collectionTranslate[$phrase][$this->language]
+            );
     }
 
-    private function replaceArrayPhrase($phrase, array $replacePhrase)
+    private function replaceArrayPhrase(string $phrase, array $replacePhrase): string
     {
         if (count($replacePhrase)) {
             $phrase = str_replace(array_keys($replacePhrase), array_values($replacePhrase), $phrase);

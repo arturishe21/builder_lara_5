@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Definitions\Traits;
+namespace Vis\Builder\Http\Definitions\Traits;
 
 trait CloneResource
 {
@@ -13,7 +13,7 @@ trait CloneResource
         return $this->returnSuccess();
     }
 
-    private function cloneRecursively($id, $parentId = '')
+    private function cloneRecursively($id, $parentId = ''): void
     {
         $model = $this->model();
 
@@ -40,11 +40,9 @@ trait CloneResource
                 $this->cloneRecursively($pageChild->id, $page->id);
             }
         }
-
-        return;
     }
 
-    public function clone(int $id) : array
+    public function clone(int $id): array
     {
         $this->model()->find($id)->duplicate();
 

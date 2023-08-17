@@ -1,18 +1,17 @@
 <?php
 
-namespace Vis\Builder\Definitions;
+namespace Vis\Builder\Http\Definitions;
 
 use App\Models\Tree;
-use Vis\Builder\Services\Listing;
 
 class ResourceTree extends Resource
 {
-    public $model = Tree::class;
-    public $title = 'Дерево сайта';
-    protected $titleDefinition;
-    protected $action = 'HomeController@showPage';
+    public string $model = Tree::class;
+    public string $title = 'Дерево сайта';
+    protected string $titleDefinition;
+    protected string $action = 'HomeController@showPage';
 
-    public function getNameDefinition() : string
+    public function getNameDefinition(): string
     {
         return 'tree';
     }
@@ -26,7 +25,7 @@ class ResourceTree extends Resource
         return parent::getNameDefinition();
     }
 
-    public function saveEditForm($request) : array
+    public function saveEditForm($request): array
     {
         $record = $this->model()->withCount('children')->find($request['id']);
         $item = $this->saveActive($record, $request);
@@ -38,14 +37,13 @@ class ResourceTree extends Resource
         ];
     }
 
-    public function getAction()
+    public function getAction(): string
     {
         return $this->action;
     }
 
-    public function showTemplate() : ?array
+    public function showTemplate(): ?array
     {
         return null;
     }
-
 }

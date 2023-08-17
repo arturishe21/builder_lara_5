@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Services;
+namespace Vis\Builder\Http\Services;;
 
 use Vis\Builder\Interfaces\Button;
 

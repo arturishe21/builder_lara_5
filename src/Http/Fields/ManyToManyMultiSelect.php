@@ -1,8 +1,8 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Definitions\Resource;
 
 class ManyToManyMultiSelect extends ManyToMany
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Console;
 
 use Illuminate\Console\Command;
 

@@ -1,37 +1,20 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
 class CreateConfig extends Command
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
     protected $name = 'createConfig';
-
     protected $signature = 'admin:createConfig {table} {--fields=}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Command generate default config file, model and migration';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    private $table;
-    private $model;
-    private $installPath;
-    private $fields;
+    private string $table;
+    private string $model;
+    private string $installPath;
+    private string $fields;
 
     public function __construct()
     {
@@ -40,26 +23,18 @@ class CreateConfig extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): mixed
     {
         $this->table = $this->argument('table');
-
         $this->model = ucfirst(Str::camel(Str::singular($this->table)));
         $this->fields = $this->option('fields');
 
         $this->createModel();
-
         $this->createModelDefinition();
-
         $this->createMigration();
     }
 
-    private function createModel()
+    private function createModel(): void
     {
         $fileModel = app_path().'/Models/'.$this->model.'.php';
 
@@ -79,7 +54,7 @@ class CreateConfig extends Command
         $this->info('Model '.$this->model.' created');
     }
 
-    private function createModelDefinition()
+    private function createModelDefinition(): void
     {
         $model = Str::plural($this->model);
 
@@ -102,7 +77,7 @@ class CreateConfig extends Command
         $this->info('Definition '.$model.' created');
     }
 
-    private function createMigration()
+    private function createMigration(): void
     {
         $nameMigration = date('Y_m_d_His').'_create_'.$this->table.'_table.php';
         $fileMigration = base_path().'/database/migrations/'.$nameMigration;
@@ -118,7 +93,7 @@ class CreateConfig extends Command
         $this->info('Migration '.$nameMigration.' created');
     }
 
-    private function replaceParams($fileReplace)
+    private function replaceParams(string $fileReplace): void
     {
         $file = file_get_contents($fileReplace);
         $file = str_replace(
@@ -129,7 +104,7 @@ class CreateConfig extends Command
         file_put_contents($fileReplace, $file);
     }
 
-    private function replaceFieldsConfig($fileReplace)
+    private function replaceFieldsConfig(string $fileReplace): void
     {
         $fieldsDescription = '';
 
@@ -159,7 +134,7 @@ class CreateConfig extends Command
         file_put_contents($fileReplace, $file);
     }
 
-    private function adaptiveFieldForConfig($type)
+    private function adaptiveFieldForConfig(string $type): string
     {
         switch ($type) {
             case 'tinyInteger':
@@ -174,7 +149,7 @@ class CreateConfig extends Command
         }
     }
 
-    private function replaceFieldsMigration($fileReplace)
+    private function replaceFieldsMigration(string $fileReplace): void
     {
         $fieldsReplace = '';
 

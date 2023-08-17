@@ -1,18 +1,19 @@
 <?php
 
-namespace Vis\Builder\Definitions;
+namespace Vis\Builder\Http\Definitions;
 
-use Vis\Builder\ControllersNew\TreeController;
-use Vis\Builder\Services\Listing;
+use Vis\Builder\Http\ControllersNew\TreeController;
+use Vis\Builder\Http\Services\Listing;
+use Illuminate\View\View;
 
 class ResourceAdditionTree extends Resource
 {
-    public function getTableView()
+    public function getTableView(): string
     {
         return 'admin::addition_tree.table';
     }
 
-    public function getList()
+    public function getList(): View
     {
         $list = new Listing($this);
         $listingRecords = $list->body();

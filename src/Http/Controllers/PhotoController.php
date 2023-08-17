@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 

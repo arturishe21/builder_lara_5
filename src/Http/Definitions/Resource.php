@@ -1,78 +1,83 @@
 <?php
 
-namespace Vis\Builder\Definitions;
+namespace Vis\Builder\Http\Definitions;
 
-use Vis\Builder\Services\Listing;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\View\View;
+use Vis\Builder\Http\Services\Listing;
 use Illuminate\Support\Arr;
-use Vis\Builder\Fields\{Definition, Password, Virtual};
+use Vis\Builder\Http\Fields\{Definition, Password, Virtual};
 use Illuminate\Support\Facades\Validator;
-use Vis\Builder\Services\Actions;
+use Vis\Builder\Http\Services\Actions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
-use Vis\Builder\Definitions\Traits\{CacheResource, CloneResource};
+use Vis\Builder\Http\Definitions\Traits\{CacheResource, CloneResource};
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 
 class Resource
 {
     use CacheResource, CloneResource;
 
-    protected $orderBy = 'created_at desc';
-    protected $isSortable = false;
-    protected $perPage = [20, 100, 1000];
-    protected $cacheTag;
-    protected $updateManyToManyList = [];
-    protected $updateHasOneList = [];
-    protected $updateMorphOneList = [];
-    protected $relations = [];
+    protected string $orderBy = 'created_at desc';
+    protected bool $isSortable = false;
+    protected array  $perPage = [20, 100, 1000];
+    protected string $cacheTag = '';
+    protected array $updateManyToManyList = [];
+    protected array $updateHasOneList = [];
+    protected array $updateMorphOneList = [];
+    protected array $relations = [];
     protected $filterScope;
-    protected $autoTranslate = true;
-    protected $isShowPerPage = false;
+    protected bool $autoTranslate = true;
+    protected bool $isShowPerPage = false;
+    protected string $model;
+    protected string $title;
 
-    public function actions()
+    public function actions(): Actions
     {
         return Actions::make()->insert()->update()->clone()->revisions()->delete();
     }
 
-    public function model()
+    public function model(): Model
     {
         return new $this->model;
     }
 
-    public function buttons()
+    public function buttons(): array
     {
         return [];
     }
 
-    public function cards()
+    public function cards(): array
     {
         return [];
     }
 
-    public function getTableView()
+    public function getTableView(): string
     {
         return 'admin::table';
     }
 
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return __cms($this->title);
     }
 
-    public function getPerPage()
+    public function getPerPage(): array
     {
         return $this->perPage;
     }
 
-    public function getIsSortable()
+    public function getIsSortable(): bool
     {
         return $this->isSortable;
     }
 
-    public function getIsShowPerPage()
+    public function getIsShowPerPage(): bool
     {
         return $this->isShowPerPage;
     }
 
-    public function getOrderBy()
+    public function getOrderBy(): string
     {
         $sessionOrder = session($this->getSessionKeyOrder());
 
@@ -85,7 +90,7 @@ class Resource
 
     public function getFilter()
     {
-        return session($this->getSessionKeyFilter());;
+        return session($this->getSessionKeyFilter());
     }
 
     public function getPerPageThis()
@@ -95,22 +100,22 @@ class Resource
             : $this->perPage[0];
     }
 
-    public function getNameDefinition() : string
+    public function getNameDefinition(): string
     {
         return Str::snake(class_basename($this));
     }
 
-    public function getFullPathDefinition() : string
+    public function getFullPathDefinition(): string
     {
         return get_class($this);
     }
 
-    public function getSessionKeyOrder() : string
+    public function getSessionKeyOrder(): string
     {
         return "table_builder.{$this->getNameDefinition()}.order";
     }
 
-    public function getSessionKeyFilter() : string
+    public function getSessionKeyFilter(): string
     {
         return "table_builder.{$this->getNameDefinition()}.filter";
     }
@@ -120,14 +125,14 @@ class Resource
         return "table_builder.{$this->getNameDefinition()}.per_page";
     }
 
-    public function getUrlAction() : string
+    public function getUrlAction(): string
     {
         $arraySlugs = explode('/', request()->url());
 
         return '/admin/actions/' . last($arraySlugs);
     }
 
-    public function getAllFields() : array
+    public function getAllFields(): array
     {
         $fields = $this->fields();
         $fields = isset($fields[0]) ? $fields : Arr::flatten($fields);
@@ -653,7 +658,7 @@ class Resource
         });
     }
 
-    public function getList()
+    public function getList(): View
     {
         $list = new Listing($this);
         $listingRecords = $list->body();
@@ -661,10 +666,10 @@ class Resource
         return view('admin::list.table', compact('list', 'listingRecords'));
     }
 
-    private function returnSuccess()
+    private function returnSuccess(): JsonResponse
     {
-        return [
+        return response()->json([
             'status' => 'success'
-        ];
+        ]);
     }
 }

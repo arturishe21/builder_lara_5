@@ -1,12 +1,12 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 
 class QuickEditController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): void
     {
         $model = request('model');
         $id = request('id');

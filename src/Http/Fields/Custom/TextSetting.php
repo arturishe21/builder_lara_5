@@ -1,9 +1,9 @@
 <?php
 
-namespace Vis\Builder\Fields\Custom;
+namespace Vis\Builder\Http\Fields\Custom;
 
-use Vis\Builder\Fields\Text;
-use Vis\Builder\Setting;
+use Vis\Builder\Http\Fields\Text;
+use Vis\Builder\Models\Setting;
 
 class TextSetting extends Text
 {

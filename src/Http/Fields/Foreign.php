@@ -1,9 +1,8 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
-use Illuminate\Support\Arr;
-use Vis\Builder\Definitions\Resource;
+use Vis\Builder\Http\Definitions\Resource;
 
 class Foreign extends Field
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\File;
 
 class EditorController extends Controller
 {
-    private $pathPhotos = '/storage/editor/photos';
-    private $pathFiles = '/storage/editor/files';
+    private string $pathPhotos = '/storage/editor/photos';
+    private string $pathFiles = '/storage/editor/files';
 
     public function uploadImage(EditorImage $request)
     {

@@ -1,37 +1,28 @@
 <?php
 
-namespace Vis\Builder\Helpers\Traits;
+namespace Vis\Builder\Http\Traits;
 
 use Illuminate\Support\Facades\Config;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\StudentT;
 use Vis\Builder\Setting;
 
 trait ImagesTrait
 {
-    /*
-    *  get main picture this page
-    * @param  string|integer $width
-    * @param  string|integer $height
-    * @return string tag img
-    */
-    public function getImg($width = '', $height = '', $options = [])
+    public function getImg($width = '', $height = '', array $options = []): string
     {
         $img_res = $this->getImgPath($width, $height, $options);
 
         return  '<img src = "'.$img_res.'" title = "'.e($this->t('title')).'" alt = "'.e($this->t('title')).'">';
     }
 
-    // end getImg
-
-    public function getImgLang($width = '', $height = '', $options = [])
+    public function getImgLang($width = '', $height = '', $options = []): string
     {
         $img_res = $this->getImgPath($width, $height, $options, true);
 
         return  '<img src = "'.$img_res.'" title = "'.e($this->t('title')).'" alt = "'.e($this->t('title')).'">';
     }
 
-    // end getImg
-
-    public function getImgPath($width = '', $height = '', $options = [], $lang = false)
+    public function getImgPath($width = '', $height = '', $options = [], $lang = false): string
     {
         $picture = $this->picture;
 
@@ -59,19 +50,13 @@ trait ImagesTrait
 
         $params = array_merge($size, $options);
 
-        return  glide($picture, $params);
+        return glide($picture, $params);
     }
 
-    /*
-     * get additional pictures this page
-     * @param string $nameField field in bd
-     * @param array $paramImg param width,height,fit
-     * @return array list small images
-     */
-    public function getOtherImg($nameField = 'additional_pictures', $paramImg = '')
+    public function getOtherImg(string $nameField = 'additional_pictures', $paramImg = ''): ?array
     {
         if (! $this->$nameField) {
-            return;
+            return null;
         }
 
         $images = json_decode($this->$nameField);
@@ -88,37 +73,27 @@ trait ImagesTrait
         return $imagesRes;
     }
 
-    public function getOtherImgWatermark($nameField = 'additional_pictures', $paramImg = '')
+    public function getOtherImgWatermark(string $nameField = 'additional_pictures', string $paramImg = ''): ?array
     {
         if (! $this->$nameField) {
-            return;
+            return null;
         }
 
         $images = json_decode($this->$nameField);
+        $watermarkIsActive = config('builder.watermark.active');
 
         $imagesRes = [];
         foreach ($images as $imgOne) {
-            if ($paramImg) {
-                if (config('builder.watermark.active') && $imgOne) {
-                    $imagesRes[] = '/img/watermark/'.ltrim($imgOne, '/');
-                } else {
-                    $imagesRes[] = glide($imgOne, $paramImg);
-                }
-            } else {
-                $imagesRes[] = '/'.$imgOne;
-            }
+
+            $imagesRes[] = $paramImg
+                ? $watermarkIsActive ? '/img/watermark/'.ltrim($imgOne, '/') : glide($imgOne, $paramImg)
+                : '/'. $imgOne;
         }
 
         return $imagesRes;
     }
 
-    /**
-     * get array additional pictures with original img in key.
-     *
-     * @param string $nameField
-     * @param string $paramImg
-     */
-    public function getOtherImgWithOriginal($nameField = 'additional_pictures', $paramImg = '')
+    public function getOtherImgWithOriginal(string $nameField = 'additional_pictures', $paramImg = '')
     {
         if (! $this->$nameField) {
             return;

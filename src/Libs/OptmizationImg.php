@@ -1,13 +1,13 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Libs;
 
 class OptmizationImg
 {
-    public static function run($pathImg)
+    public static function run(string $pathImg): void
     {
         $infoImg = new \SplFileInfo($pathImg);
-        $fullPathPicture = public_path().$pathImg;
+        $fullPathPicture = public_path($pathImg);
 
         if (config('builder.optimization_img.active')) {
             $commandPng = config('builder.optimization_img.png_path');

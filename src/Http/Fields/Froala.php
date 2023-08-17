@@ -1,12 +1,15 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
 use Illuminate\Support\Str;
 
 class Froala extends Field
 {
-    private $toolbar = "fullscreen, bold, italic, underline, strikeThrough, subscript, superscript, fontFamily, fontSize,  color, emoticons, inlineStyle, paragraphStyle,  paragraphFormat, align, formatOL, formatUL, outdent, indent, quote, insertHR, insertLink, insertImage, insertVideo, insertFile, insertTable, undo, redo, clearFormatting, selectAll, html";
+    private string $toolbar = "fullscreen, bold, italic, underline, strikeThrough, subscript, superscript, fontFamily, 
+                        fontSize, color, emoticons, inlineStyle, paragraphStyle,  paragraphFormat, align, formatOL, 
+                        formatUL, outdent, indent, quote, insertHR, insertLink, insertImage, insertVideo, insertFile, 
+                        insertTable, undo, redo, clearFormatting, selectAll, html";
     private $options = '';
 
     public function toolbar($value)

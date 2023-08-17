@@ -4,27 +4,24 @@ namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Http\Requests\TranslateCms;
 use Vis\Builder\Models\{TranslationsPhrasesCms, TranslationsCms};
 use Vis\Builder\Libs\GoogleTranslateForFree;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 
-/**
- * Class TranslateController.
- */
 class TranslateCmsController extends Controller
 {
-    private $countShow;
-    private $lanuages;
+    private int $countShow;
+    private array $languages;
 
     public function __construct()
     {
-        $this->countShow = request('count_show') ? : '20';
-        $this->lanuages = config('builder.translations.cms.languages');
+        $this->countShow = request('count_show', 20);
+        $this->languages = config('builder.translations.cms.languages');
     }
 
-    public function index()
+    public function index(): View
     {
         $search = request('search_q');
         $phrases = TranslationsPhrasesCms::orderBy('id', 'desc');
@@ -36,45 +33,46 @@ class TranslateCmsController extends Controller
         $phrases = $phrases->paginate($this->countShow);
         $view = Request::ajax() ? 'admin::translation_cms.part.center' : 'admin::translation_cms.trans';
 
-        return view($view)
-            ->with('phrases', $phrases)
-            ->with('langs', $this->lanuages)
-            ->with('search_q', $search)
-            ->with('count_show', $this->countShow);
+        return view($view)->with(
+            [
+            'phrases' => $phrases,
+            'langs' => $this->languages,
+            'search_q' => $search,
+            'count_show' => $this->countShow
+            ]
+        );
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function create()
+    public function create(): View
     {
         $langs = $this->lanuages;
 
         return view('admin::translation_cms.part.form', compact('langs'));
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function saveTranslate(TranslateCms $request)
+    public function saveTranslate(TranslateCms $request): JsonResponse
     {
         $translations = [];
-        $model = TranslationsPhrasesCms::create([
+        $model = TranslationsPhrasesCms::create(
+            [
             'phrase' => $request->get('phrase')
-        ]);
+            ]
+        );
 
         foreach (request()->get('translation') as $slugTranslate => $translate) {
-            $translations[] = new TranslationsCms([
+            $translations[] = new TranslationsCms(
+                [
                 'translate' => trim($translate),
                 'lang' => $slugTranslate,
-            ]);
+                ]
+            );
         }
 
         $model->translations()->saveMany($translations);
 
         TranslationsPhrasesCms::reCacheTrans();
 
-        return Response::json(
+        return response()->json(
             [
                 'status'      => 'success',
                 'message' => __cms('Фраза успешно добавлена'),
@@ -82,40 +80,37 @@ class TranslateCmsController extends Controller
         );
     }
 
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         TranslationsPhrasesCms::find($id)->delete();
         TranslationsPhrasesCms::reCacheTrans();
 
-        return Response::json(['status' => 'ok']);
+        return response()->json(['status' => 'ok']);
     }
 
-    /**
-     * @return false|string
-     */
-    public function doTranslate(GoogleTranslateForFree $googleTranslateForFree)
+    public function doTranslate(GoogleTranslateForFree $googleTranslateForFree): JsonResponse
     {
-        $language = request('language') == 'ua' ? 'uk' : request('language');
+        $language = request('language') === 'ua' ? 'uk' : request('language');
 
-        return Response::json([
+        return response()->json(
+            [
             'text' => $googleTranslateForFree->translate('ru', $language, request('phrase'), 2)
-        ]);
+            ]
+        );
     }
 
-    public function changeTranslate()
+    public function changeTranslate(): void
     {
-        $lang = request('name');
-        $value = request('value');
-        $id = request('pk');
+        $phrase = TranslationsCms::query()
+            ->where('translations_phrases_cms_id', request()->get('pk'))
+            ->where('lang', request()->get('name'))
+            ->first();
 
-        $phrase = TranslationsCms::where('translations_phrases_cms_id', $id)->where('lang', $lang)->first();
-
-        $phrase->update([
-            'translate' => $value
-        ]);
+        $phrase->update(
+            [
+            'translate' => request()->get('value')
+            ]
+        );
 
         TranslationsPhrasesCms::reCacheTrans();
     }

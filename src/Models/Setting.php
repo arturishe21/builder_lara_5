@@ -1,16 +1,15 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Vis\Builder\Helpers\Traits\TranslateTrait;
+use Vis\Builder\Http\Traits\TranslateTrait;
 
 class Setting extends Model
 {
     use TranslateTrait;
 
     protected $table = 'settings';
-    protected $fillable = [];
     public $timestamps = false;
 
     public function getValue(string $slug)
@@ -22,7 +21,7 @@ class Setting extends Model
         }
     }
 
-    private function getResultType($setting)
+    private function getResultType($setting): array
     {
         return [
             'text' => $setting->value,

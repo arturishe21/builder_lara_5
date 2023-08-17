@@ -1,6 +1,8 @@
 <?php
 
-namespace Vis\Builder\Services;
+namespace Vis\Builder\Http\Services;
+
+use Illuminate\Database\Eloquent\Collection;
 
 class ExportUsers extends Export
 {
@@ -9,7 +11,7 @@ class ExportUsers extends Export
         return parent::headings();
     }
 
-    public function collection()
+    public function collection(): Collection
     {
         $model = $this->listing->getDefinition()->model();
         $fieldsFilter = request('d');
@@ -27,7 +29,7 @@ class ExportUsers extends Export
         return $results->get();
     }
 
-    private function prepareFields()
+    private function prepareFields(): array
     {
         $fields = request('b');
 

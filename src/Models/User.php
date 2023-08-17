@@ -1,68 +1,52 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Models;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
-use DB;
 use Cartalyst\Sentinel\Activations\EloquentActivation;
 use App\Models\Group;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-/**
- * Class User.
- */
 class User extends EloquentUser
 {
-    public function groups()
+    protected $table = 'users';
+
+    public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'role_users',  'user_id', 'role_id');
     }
 
-    public function activation()
+    public function activation(): HasOne
     {
         return $this->hasOne(EloquentActivation::class);
     }
 
-    /**
-     * @var string
-     */
-    protected $table = 'users';
-
-    /**
-     * @param array $params
-     */
-    public function setFillable(array $params)
+    public function setFillable(array $params): void
     {
         $this->fillable = $params;
     }
 
-    /**
-     * @param array $imgParam
-     *
-     * @return mixed|string
-     */
-    public function getAvatar(array $imgParam)
+    public function getAvatar(array $imgParam): string
     {
         $image = $this->picture ?? '/packages/vis/builder/img/blank_avatar.gif';
 
         return glide($image, $imgParam);
     }
 
-    /**
-     * @return string
-     */
-    public function getFullName()
+    public function getFullName(): string
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function hasAccessForCms($link, $action = 'view')
+    public function hasAccessForCms(string $link, string $action = 'view'): mixed
     {
         $link = str_replace(['/'], [''], $link).'.'. $action;
 
         return $this->hasAccess([$link]);
     }
 
-    public function hasAccessActionsForCms($action)
+    public function hasAccessActionsForCms($action): mixed
     {
         $urlArray =  explode('/', request()->path());
 

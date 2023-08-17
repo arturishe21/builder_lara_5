@@ -1,24 +1,15 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 
-/**
- * Class TreeController.
- */
 class TreeController extends Controller
 {
     protected $node;
 
-    /**
-     * @param $node
-     * @param $method
-     *
-     * @return mixed
-     */
-    public function init($node, $method)
+    public function init($node, $method): mixed
     {
         if (! $node->active(App::getLocale()) && ! request()->has('show')) {
             App::abort(404);

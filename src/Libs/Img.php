@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Libs;
 
 use Intervention\Image\Facades\Image;
 
@@ -74,12 +74,12 @@ class Img
         }
     }
 
-    private function checkFileCorrect($sourceArray)
+    private function checkFileCorrect($sourceArray): bool
     {
        return !isset($sourceArray['extension']) || !isset($sourceArray['dirname']) ? false : true;
     }
 
-    protected function setOptions($options)
+    protected function setOptions(array $options): void
     {
         $this->quality = $options['quality'] ?? $this->quality;
         $this->height = $options['h'] ?? $this->height;
@@ -94,7 +94,7 @@ class Img
         }
     }
 
-    protected function createRatioImg($img, $options)
+    protected function createRatioImg($img, array $options)
     {
         if (isset($options['fit']) && $options['fit'] == 'crop') {
             $img->fit(
@@ -119,7 +119,7 @@ class Img
         );
     }
 
-    protected function checkExistPicture()
+    protected function checkExistPicture(): bool
     {
         return file_exists(public_path($this->picturePath));
     }

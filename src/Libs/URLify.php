@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Helpers;
+namespace Vis\Builder\Libs;
 
 /**
  * A PHP port of URLify.js from the Django project

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Middleware;
 
 use Cartalyst\Sentinel\Laravel\Facades\{Sentinel, Activation};
 use Closure;
@@ -29,11 +29,13 @@ class Authenticate
 
         if (! $user) {
             if (Request::ajax()) {
-                return Response::json([
+                return Response::json(
+                    [
                     'status'  => 'error',
                     'code'    => '401',
                     'message' => __cms('Нет прав на вход в cms'),
-                ], '401');
+                    ], '401'
+                );
             }
 
             return redirect()->guest('login');
@@ -47,9 +49,11 @@ class Authenticate
             return $this->returnIfNotHasAccess(__cms('Нет прав на вход в cms'));
         }
 
-        \App::singleton('user', function () use ($user) {
-            return $user;
-        });
+        \App::singleton(
+            'user', function () use ($user) {
+                return $user;
+            }
+        );
 
         return $next($request);
     }

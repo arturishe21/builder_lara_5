@@ -9,12 +9,10 @@ use Vis\Builder\Libs\GoogleTranslateForFree;
 class TranslationsCms extends Model
 {
     protected $table = 'translations_cms';
-
     public $timestamps = false;
-
     protected $fillable = ['lang', 'translate', 'translations_phrases_cms_id'];
 
-    public function createNewTranslate($phrase)
+    public function createNewTranslate(string $phrase): void
     {
         $languages = config('builder.translations.cms.languages');
 

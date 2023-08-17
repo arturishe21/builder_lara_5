@@ -1,18 +1,13 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Contracts\View\View;
 
-/**
- * Class DashboardController.
- */
 class DashboardController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showPage()
+    public function showPage(): View
     {
         $dashboardConfig = config('builder.dashboard');
 

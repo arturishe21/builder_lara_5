@@ -1,9 +1,9 @@
 <?php
 
-namespace Vis\Builder\ControllersNew;
+namespace Vis\Builder\Http\ControllersNew;
 
 use Illuminate\Support\Str;
-use Vis\Builder\Services\Revisions;
+use Vis\Builder\Http\Services\Revisions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
 
 class TreeController

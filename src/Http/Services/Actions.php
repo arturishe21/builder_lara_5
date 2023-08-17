@@ -1,10 +1,10 @@
 <?php
 
-namespace Vis\Builder\Services;
+namespace Vis\Builder\Http\Services;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-use Vis\Builder\ControllersNew\TreeController;
+use Vis\Builder\Http\ControllersNew\TreeController;
 
 class Actions
 {
@@ -46,54 +46,54 @@ class Actions
         return $this->actionsList;
     }
 
-    public function hideActions()
+    public function hideActions(): self
     {
         $this->isHideActions = true;
 
         return $this;
     }
 
-    public function isHideAction()
+    public function isHideAction(): bool
     {
         return $this->isHideActions;
     }
 
-    public function insert()
+    public function insert(): self
     {
         $this->checkAccess('insert');
 
         return $this;
     }
 
-    public function update()
+    public function update(): self
     {
         $this->checkAccess('update');
 
         return $this;
     }
 
-    public function preview()
+    public function preview(): self
     {
         $this->actionsList['preview'] = 'preview';
 
         return $this;
     }
 
-    public function delete()
+    public function delete(): self
     {
         $this->checkAccess('delete');
 
         return $this;
     }
 
-    public function clone()
+    public function clone(): self
     {
         $this->checkAccess('revisions');
 
         return $this;
     }
 
-    public function revisions()
+    public function revisions(): self
     {
         $this->checkAccess('revisions');
 

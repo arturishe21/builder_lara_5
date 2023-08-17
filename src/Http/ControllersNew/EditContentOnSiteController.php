@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\ControllersNew;
+namespace Vis\Builder\Http\ControllersNew;
 
 use Illuminate\Support\Facades\Cache;
 

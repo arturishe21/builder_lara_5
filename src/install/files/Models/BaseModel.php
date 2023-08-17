@@ -9,12 +9,12 @@ use Illuminate\Support\Str;
 
 class BaseModel extends Model
 {
-    use \Vis\Builder\Helpers\Traits\TranslateTrait,
-        \Vis\Builder\Helpers\Traits\SeoTrait,
-        \Vis\Builder\Helpers\Traits\ImagesTrait,
-        \Vis\Builder\Helpers\Traits\QuickEditTrait,
+    use \Vis\Builder\Http\Traits\TranslateTrait,
+        \Vis\Builder\Http\Traits\SeoTrait,
+        \Vis\Builder\Http\Traits\ImagesTrait,
+        \Vis\Builder\Http\Traits\QuickEditTrait,
         \Venturecraft\Revisionable\RevisionableTrait,
-        \Vis\Builder\Helpers\Traits\Rememberable,
+        \Vis\Builder\Http\Traits\Rememberable,
         \Bkwld\Cloner\Cloneable;
 
     protected $revisionFormattedFieldNames = [

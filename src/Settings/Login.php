@@ -1,25 +1,26 @@
 <?php
 
-namespace Vis\Builder\Setting;
+namespace Vis\Builder\Settings;
 
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\RedirectResponse;
 
 class Login
 {
-    protected $backgroundUrl = '/packages/vis/builder/img/vis-admin-lock.jpg';
+    protected string $backgroundUrl = '/packages/vis/builder/img/vis-admin-lock.jpg';
     protected $css;
 
-    public function onLogin()
+    public function onLogin(): RedirectResponse
     {
         return Redirect::to('/admin/tree');
     }
 
-    public function onLogout()
+    public function onLogout(): RedirectResponse
     {
         return Redirect::to('/');
     }
 
-    public function getBackground()
+    public function getBackground(): string
     {
         return $this->backgroundUrl;
     }

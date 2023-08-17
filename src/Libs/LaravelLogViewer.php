@@ -2,17 +2,11 @@
 
 namespace Vis\Builder\Libs;
 
-/**
- * Class LaravelLogViewer.
- */
 class LaravelLogViewer
 {
-    /**
-     * @var string file
-     */
-    private static $file;
+    private static string $file;
 
-    private static $levels_classes = [
+    private static array $levels_classes = [
         'debug'     => 'info',
         'info'      => 'info',
         'notice'    => 'info',
@@ -25,7 +19,7 @@ class LaravelLogViewer
         'failed'    => 'warning',
     ];
 
-    private static $levels_imgs = [
+    private static array $levels_imgs = [
         'debug'     => 'info-circle',
         'info'      => 'info-circle',
         'notice'    => 'info-circle',
@@ -38,12 +32,7 @@ class LaravelLogViewer
         'failed'    => 'exclamation-triangle',
     ];
 
-    /**
-     * Log levels that are used.
-     *
-     * @var array
-     */
-    private static $log_levels = [
+    private static array $log_levels = [
         'emergency',
         'alert',
         'critical',

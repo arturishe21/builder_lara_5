@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +65,7 @@ class InstallCommand extends Command
         ]);
 
         \Artisan::call('db:seed', [
-            '--class' => 'Vis\\Builder\\AdminSeeder',
+            '--class' => 'Vis\\Builder\\Seeds\\AdminSeeder',
         ]);
 
         $this->insertTranslateData();

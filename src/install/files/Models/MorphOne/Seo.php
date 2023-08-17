@@ -7,7 +7,7 @@ use Vis\Builder\Fields\{Text, Textarea, Checkbox, Froala};
 
 class Seo extends Model
 {
-    use \Vis\Builder\Helpers\Traits\TranslateTrait;
+    use \Vis\Builder\Http\Traits\TranslateTrait;
 
     protected $table = 'seo';
     protected $guarded = [];

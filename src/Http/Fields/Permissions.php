@@ -1,12 +1,13 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
 use App\Cms\Admin;
+use Illuminate\Contracts\View\View;
 
 class Permissions extends Field
 {
-    private $actions = [
+    private array $actions = [
         'view' => 'Просмотр',
         'insert' => 'Создание',
         'update' => 'Редактирование',
@@ -16,7 +17,7 @@ class Permissions extends Field
         'delete' => 'Удаление'
     ];
 
-    public function getFieldForm($definition)
+    public function getFieldForm($definition): View
     {
         $permissions = $this->generatePermissions();
         $groupPermissionsThis = $this->getValue();

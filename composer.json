@@ -5,38 +5,22 @@
     "authors": [
         {
             "name": "vis",
-            "email": "artur@vis-design.com"
+            "email": "arturishe@gmail.com"
         }
     ],
     "require": {
         "cartalyst/sentinel": "^6.0",
-        "mcamara/laravel-localization": "1.7.*",
+        "mcamara/laravel-localization": "1.8.*",
         "kalnoy/nestedset": "^6.0",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
-        "predis/predis" : "v1.1.1",
+        "predis/predis" : "v2.2.1",
         "maatwebsite/excel": "3.*",
-        "barryvdh/laravel-debugbar": "^3.5",
-        "bkwld/cloner": "^3.10"
+        "barryvdh/laravel-debugbar": "^3.8",
+        "bkwld/cloner": "^3.11"
     },
     "autoload": {
-        "classmap": [
-            "src/Models",
-            "src/libs",
-            "src/Http/Controllers",
-            "src/Http/ControllersNew",
-            "src/Http/Services",
-            "src/Http/Interfaces",
-            "src/Http/Definitions",
-            "src/Http/Fields",
-            "src/Http/Traits",
-            "src/Http/Middleware",
-            "src/Console",
-            "src/Migrations",
-            "src/Seeds",
-            "src/Settings"
-        ],
         "psr-4": {
             "Vis\\Builder\\": "src/"
         }

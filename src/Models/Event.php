@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

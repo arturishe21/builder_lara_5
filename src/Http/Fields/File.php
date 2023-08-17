@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Fields;
+namespace Vis\Builder\Http\Fields;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File as FileFacade;

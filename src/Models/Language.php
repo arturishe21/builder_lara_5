@@ -3,7 +3,7 @@
 namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Vis\Builder\Helpers\Traits\Rememberable;
+use Vis\Builder\Http\Traits\Rememberable;
 
 class Language extends Model
 {
@@ -17,6 +17,7 @@ class Language extends Model
     public function __construct()
     {
         $this->supportedLocales = config('laravellocalization.supportedLocales');
+        parent::__construct();
     }
 
     public static function scopeActive($query)
@@ -29,12 +30,12 @@ class Language extends Model
         return $query->orderBy('priority', 'asc');
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->supportedLocales[$this->language]['name'] ?? '';
     }
 
-    public function supportedLocales()
+    public function supportedLocales(): array
     {
         $result = [];
 
@@ -45,7 +46,7 @@ class Language extends Model
         return $result;
     }
 
-    public static function getDefaultLanguage()
+    public static function getDefaultLanguage(): self
     {
         return self::active()->orderPriority()
             ->rememberForever()->cacheTags(['languages'])

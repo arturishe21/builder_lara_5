@@ -1,18 +1,13 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Seeds;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class AdminSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         DB::table('users')->insert([
 

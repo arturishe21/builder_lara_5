@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\RedirectResponse;
@@ -8,16 +8,7 @@ use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationMiddlewareBase;
 
 class LocalizationMiddlewareRedirect extends LaravelLocalizationMiddlewareBase
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     * @param string|null              $guard
-     *
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next): mixed
     {
         // If the URL of the request is in exceptions.
         if ($this->shouldIgnore($request)) {

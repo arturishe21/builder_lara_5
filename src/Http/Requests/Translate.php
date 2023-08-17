@@ -3,7 +3,6 @@
 namespace Vis\Builder\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Translate extends FormRequest
 {

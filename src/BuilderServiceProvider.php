@@ -12,142 +12,145 @@ use Vis\Builder\Http\ViewComposers\LayoutDefault;
 use Vis\Builder\Http\ViewComposers\Navigation;
 use Vis\Builder\Http\ViewComposers\NavigationBadge;
 use Vis\Builder\Models\TranslationsPhrases;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Vis\Builder\Http\Middleware\Authenticate;
+use Vis\Builder\Http\Middleware\AuthenticateFrontend;
+use Vis\Builder\Http\Middleware\LocalizationMiddlewareRedirect;
+use Vis\Builder\Console\GeneratePassword;
+use Vis\Builder\Console\InstallCommand;
+use Vis\Builder\Console\CreateConfig;
+use Vis\Builder\Console\CreateImgWebp;
 
-/**
- * Class BuilderServiceProvider.
- */
 class BuilderServiceProvider extends ServiceProvider
 {
-    private $commandAdminInstall = 'command.admin.install';
-    private $commandAdminGeneratePass = 'command.admin.generatePassword';
-    private $commandAdminCreateConfig = 'command.admin.createConfig';
-    private $commandAdminCreateImgWebp = 'command.admin.createImgWebp';
+    private string $commandAdminInstall = 'command.admin.install';
+    private string $commandAdminGeneratePass = 'command.admin.generatePassword';
+    private string $commandAdminCreateConfig = 'command.admin.createConfig';
+    private string $commandAdminCreateImgWebp = 'command.admin.createImgWebp';
 
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot(\Illuminate\Routing\Router $router)
+    public function boot(Router $router): void
     {
-        require __DIR__.'/../vendor/autoload.php';
-        require __DIR__.'/Http/helpers.php';
+        include __DIR__.'/../vendor/autoload.php';
+        include __DIR__.'/Http/helpers.php';
 
         $this->app->setLocale(defaultLanguage());
 
-        $router->middleware('auth.admin', \Vis\Builder\Authenticate::class);
-        $router->middleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+        $router->middleware('auth.admin', Authenticate::class);
+        $router->middleware('auth.user', AuthenticateFrontend::class);
 
         $this->setupRoutes($this->app->router);
 
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'admin');
 
-        $this->publishes([
+        $this->publishes(
+            [
             __DIR__
             .'/published/assets' => public_path('packages/vis/builder'),
             __DIR__.'/config'    => config_path('builder/'),
-        ], 'builder');
+            ], 'builder'
+        );
 
-        $this->publishes([
+        $this->publishes(
+            [
             __DIR__
             .'/published/assets' => public_path('packages/vis/builder'),
-        ], 'public');
+            ], 'public'
+        );
 
-        $this->publishes([
+        $this->publishes(
+            [
             realpath(__DIR__.'/Migrations') => $this->app->databasePath().'/migrations',
-        ]);
+            ]
+        );
 
         $this->viewComposersInit();
     }
 
-    private function viewComposersInit()
+    private function viewComposersInit(): void
     {
-        View::composer([
+        View::composer(
+            [
             'admin::partials.change_lang',
             'admin::partials.scripts'
-        ],
-            ChangeLang::class);
+            ],
+            ChangeLang::class
+        );
 
         View::composer('admin::partials.navigation_badge', NavigationBadge::class);
         View::composer('admin::partials.navigation', Navigation::class);
 
-        View::composer(['admin::tree.partials.update',
+        View::composer(
+            ['admin::tree.partials.update',
             'admin::tree.partials.preview',
             'admin::tree.partials.clone',
             'admin::tree.partials.revisions',
             'admin::tree.partials.delete',
             'admin::tree.partials.constructor',
-        ], ActivitiesTree::class);
+            ], ActivitiesTree::class
+        );
 
-        View::composer([
+        View::composer(
+            [
             'admin::translations.part.form_trans',
             'admin::translations.part.result_search',
             'admin::translations.part.table_center',
             'admin::translations.trans'
-        ], Languages::class);
-
-
-
+            ], Languages::class
+        );
 
         View::composer('admin::layouts.default',  LayoutDefault::class);
     }
 
-    /**
-     * Define the routes for the application.
-     *
-     * @param \Illuminate\Routing\Router $router
-     *
-     * @return void
-     */
-    public function setupRoutes(Router $router)
+    public function setupRoutes(Router $router): void
     {
-        require __DIR__.'/Http/route_frontend.php';
-        require __DIR__.'/Http/routers_translation_cms.php';
-        require __DIR__.'/Http/routers.php';
-        require __DIR__.'/Http/routers_translation.php';
+        include __DIR__.'/Http/route_frontend.php';
+        include __DIR__.'/Http/routers_translation_cms.php';
+        include __DIR__.'/Http/routers.php';
+        include __DIR__.'/Http/routers_translation.php';
     }
 
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(LocalizationMiddlewareRedirect::class);
 
-        if (method_exists(\Illuminate\Routing\Router::class, 'aliasMiddleware')) {
-            $this->app[\Illuminate\Routing\Router::class]
-                ->aliasMiddleware('auth.admin', \Vis\Builder\Authenticate::class);
-            $this->app[\Illuminate\Routing\Router::class]
-                ->aliasMiddleware('auth.user', \Vis\Builder\AuthenticateFrontend::class);
+        if (method_exists(Router::class, 'aliasMiddleware')) {
+            $this->app[Router::class]->aliasMiddleware('auth.admin', Authenticate::class);
+            $this->app[Router::class]->aliasMiddleware('auth.user', AuthenticateFrontend::class);
         }
 
         $this->registerCommands();
     }
 
-    private function registerCommands()
+    private function registerCommands(): void
     {
-        $this->app->singleton($this->commandAdminInstall, function () {
-            return new InstallCommand();
-        });
+        $this->app->singleton(
+            $this->commandAdminInstall, function () {
+                return new InstallCommand();
+            }
+        );
 
-        $this->app->singleton($this->commandAdminGeneratePass, function () {
-            return new GeneratePassword();
-        });
+        $this->app->singleton(
+            $this->commandAdminGeneratePass, function () {
+                return new GeneratePassword();
+            }
+        );
 
-        $this->app->singleton($this->commandAdminCreateConfig, function () {
-            return new CreateConfig();
-        });
+        $this->app->singleton(
+            $this->commandAdminCreateConfig, function () {
+                return new CreateConfig();
+            }
+        );
 
-        $this->app->singleton($this->commandAdminCreateImgWebp, function () {
-            return new CreateImgWebp();
-        });
+        $this->app->singleton(
+            $this->commandAdminCreateImgWebp, function () {
+                return new CreateImgWebp();
+            }
+        );
 
-        $this->app->singleton('arrayTranslate', function () {
-            return TranslationsPhrases::fillCacheTrans();
-        });
+        $this->app->singleton(
+            'arrayTranslate', function () {
+                return TranslationsPhrases::fillCacheTrans();
+            }
+        );
 
         $this->commands($this->commandAdminInstall);
         $this->commands($this->commandAdminGeneratePass);
@@ -155,10 +158,7 @@ class BuilderServiceProvider extends ServiceProvider
         $this->commands($this->commandAdminCreateImgWebp);
     }
 
-    /**
-     * @return array
-     */
-    public function provides()
+    public function provides(): array
     {
         return [
             $this->commandAdminInstall,

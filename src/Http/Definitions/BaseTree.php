@@ -1,20 +1,20 @@
 <?php
 
-namespace Vis\Builder\Definitions;
+namespace Vis\Builder\Http\Definitions;
 
 use App\Models\Tree;
 use Illuminate\Support\Arr;
 
 class BaseTree
 {
-    protected $model = Tree::class;
+    protected string $model = Tree::class;
 
     public function model()
     {
         return new $this->model;
     }
 
-    public function getTemplates() : array
+    public function getTemplates(): array
     {
         $templatesModels = $this->filterTemplates($this->templates());
 
@@ -51,7 +51,7 @@ class BaseTree
         return $templatesModels;
     }
 
-    public function clearCache()
+    public function clearCache(): void
     {
         $this->model()->clearCache();
     }

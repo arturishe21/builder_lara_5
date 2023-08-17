@@ -1,103 +1,75 @@
 <?php
 
+use Vis\Builder\Http\Controllers\LoginController;
+use Vis\Builder\Http\Controllers\TreeAdminController;
+use Vis\Builder\Http\Controllers\LogViewerController;
+use Vis\Builder\Http\Controllers\TableAdminController;
+use Vis\Builder\Http\Controllers\EditorController;
+use Vis\Builder\Http\Controllers\QuickEditController;
+use Vis\Builder\Http\Controllers\TBController;
+use Vis\Builder\Http\Controllers\ChangeRangeController;
+use Vis\Builder\Http\ControllersNew\EditContentOnSiteController;
+use Vis\Builder\Http\Controllers\PhotoController;
+use Vis\Builder\Http\Controllers\ExportController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
+
     Route::pattern('tree', '[a-z0-9-_]+');
     Route::pattern('any', '[a-z0-9-_/\]+');
 
     Route::group(['middleware' => ['web']], function () {
-        Route::get('login', 'Vis\Builder\LoginController@index')->name('cms.login.index');
-        Route::post('login', 'Vis\Builder\LoginController@store')->name('cms.login.store');
+        Route::get('login', [LoginController::class, 'index'])->name('cms.login.index');
+        Route::post('login', [LoginController::class, 'store'])->name('cms.login.store');
     });
 
     Route::group(['middleware' => ['web']], function () {
         Route::group(
             ['prefix' => 'admin', 'middleware' => 'auth.admin'],
             function () {
-                Route::post('change-range-card', 'Vis\Builder\ChangeRangeController@changeValue');
-                Route::post('change-range-trend', 'Vis\Builder\ChangeRangeController@changeValue');
+                Route::post('change-range-card', [ChangeRangeController::class, 'changeValue']);
+                Route::post('change-range-trend', [ChangeRangeController::class, 'changeValue']);
 
-                Route::post(
-                    '/save_edit_on_site',
-                    'Vis\Builder\ControllersNew\EditContentOnSiteController@index'
-                );
+                Route::post('/save_edit_on_site', [EditContentOnSiteController::class, 'index']);
 
-                Route::get('logout', 'Vis\Builder\LoginController@logout')->name('cms.logout');
+                Route::get('logout',  [LoginController::class, 'logout'])->name('cms.logout');
 
-                Route::get('/logs', 'Vis\Builder\LogViewerController@index');
+                Route::get('/logs', [LogViewerController::class, 'index']);
+                Route::any('/tree', [TreeAdminController::class, 'index']);
+                Route::any('/actions/tree', [TreeAdminController::class, 'handle']);
+                Route::post('/show-all-tree', [TreeAdminController::class, 'showAll']);
 
-                Route::any(
-                    '/tree',
-                    'Vis\Builder\TreeAdminController@index'
-                );
+                Route::post('/photo/upload', [PhotoController::class, 'upload']);
 
-                Route::any(
-                    '/actions/tree',
-                    'Vis\Builder\TreeAdminController@handle'
-                );
+                Route::post('/file/upload', [PhotoController::class, 'upload']);
 
-                Route::post(
-                    '/show-all-tree',
-                    'Vis\Builder\TreeAdminController@showAll'
-                );
+                Route::any('/photo/select_photos', [PhotoController::class, 'selectPhotos']);
 
-                Route::post(
-                    '/photo/upload',
-                    'Vis\Builder\PhotoController@upload'
-                );
+                Route::post('/actions/{page_admin}', [TableAdminController::class, 'actionsPage']);
 
-                Route::post(
-                    '/file/upload',
-                    'Vis\Builder\PhotoController@upload'
-                );
+                Route::get('/actions/{page_admin}/export', [ExportController::class, 'download']);
 
-                Route::any(
-                    '/photo/select_photos',
-                    'Vis\Builder\PhotoController@selectPhotos'
-                );
+                Route::get('/', [TBController::class, 'showDashboard']);
 
-                Route::post(
-                    '/actions/{page_admin}',
-                    'Vis\Builder\TableAdminController@actionsPage'
-                );
+                Route::post('upload_image', [EditorController::class, 'uploadImage']);
+                Route::post('upload_file', [EditorController::class, 'uploadFile']);
+                Route::get('load_image', [EditorController::class, 'getUploadedImages']);
+                Route::post('delete_image', [EditorController::class, 'deleteImages']);
 
-                Route::get(
-                    '/actions/{page_admin}/export',
-                    'Vis\Builder\ExportController@download'
-                );
+                Route::post('quick_edit', [QuickEditController::class]);
 
-                Route::get('/', 'Vis\Builder\TBController@showDashboard');
+                Route::post('change_skin', [TBController::class, 'changeSkin']);
+                Route::get('change_lang', [TBController::class, 'changeLanguage'])->name('change_lang');
 
-                Route::post('upload_image', 'Vis\Builder\EditorController@uploadImage');
-                Route::post('upload_file', 'Vis\Builder\EditorController@uploadFile');
-                Route::get('load_image', 'Vis\Builder\EditorController@getUploadedImages');
-                Route::post('delete_image', 'Vis\Builder\EditorController@deleteImages');
-
-                Route::post('quick_edit', 'Vis\Builder\QuickEditController');
-
-                Route::post('change_skin', 'Vis\Builder\TBController@changeSkin');
-                Route::get('change_lang', 'Vis\Builder\TBController@changeLanguage')->name('change_lang');
-
-                Route::post('save_croped_img', 'Vis\Builder\TBController@saveCropImg');
+                Route::post('save_croped_img', [TBController::class, 'saveCropImg']);
 
                 //router for pages builder
-                Route::get(
-                    '/{page_admin}',
-                    'Vis\Builder\TableAdminController@showPage'
-                );
+                Route::get('/{page_admin}', [TableAdminController::class, 'showPage']);
                 if (Request::ajax()) {
-                    Route::get(
-                        '/{page_admin}',
-                        'Vis\Builder\TableAdminController@showPagePost'
-                    );
+                    Route::get('/{page_admin}', [TableAdminController::class, 'showPagePost']);
                 }
 
-                Route::post(
-                    '/{page_admin}',
-                    'Vis\Builder\TableAdminController@actionsPage'
-                );
-                Route::post(
-                    '/{page_admin}/fast-save/{id}',
-                    'Vis\Builder\TableAdminController@fastEdit'
-                );
+                Route::post('/{page_admin}', [TableAdminController::class, 'actionsPage']);
+                Route::post('/{page_admin}/fast-save/{id}', [TableAdminController::class, 'fastEdit']);
             }
         );
     });

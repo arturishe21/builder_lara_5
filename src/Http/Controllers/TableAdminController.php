@@ -1,25 +1,15 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Http\Controllers;
 
-use Vis\Builder\Services\Actions;
+use Vis\Builder\Http\Services\Actions;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\View\View;
 
-/**
- * Class TableAdminController.
- */
 class TableAdminController extends Controller
 {
-    /**
-     * @return mixed
-     */
-    /**
-     * @param string $page
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showPage($page)
+    public function showPage(string $page): View
     {
         $modelDefinition = $this->getModelDefinition($page);
 
@@ -31,12 +21,7 @@ class TableAdminController extends Controller
         return view($model->getTableView(), compact('data'));
     }
 
-    /**
-     * @param $page
-     *
-     * @return mixed
-     */
-    public function showPagePost($page)
+    public function showPagePost(string $page)
     {
         $modelDefinition = $this->getModelDefinition($page);
 
@@ -45,19 +30,14 @@ class TableAdminController extends Controller
         return (new $modelDefinition())->getList();
     }
 
-    /**
-     * @param $page
-     *
-     * @return mixed
-     */
-    public function actionsPage($page)
+    public function actionsPage(string $page)
     {
         $modelDefinition = $this->getModelDefinition($page);
 
         return (new Actions(new $modelDefinition()))->router(request('query_type'));
     }
 
-    public function fastEdit($page, $id)
+    public function fastEdit(string $page, $id)
     {
         $modelDefinition = $this->getModelDefinition($page);
 
@@ -66,7 +46,7 @@ class TableAdminController extends Controller
         return (new Actions(new $modelDefinition()))->router('do_fast_change_field');
     }
 
-    private function getModelDefinition($page)
+    private function getModelDefinition(string $page): string
     {
         if (request('foreign_attributes')) {
             $arrayAttributes = json_decode(request('foreign_attributes'), 'true');
@@ -87,7 +67,7 @@ class TableAdminController extends Controller
         return "App\\Cms\\Definitions\\" . ucfirst(Str::camel($page));
     }
 
-    private function checkExistsClass($modelDefinition)
+    private function checkExistsClass(string $modelDefinition)
     {
         if (!class_exists($modelDefinition)) {
             throw new \Exception('Not found class '. $modelDefinition);

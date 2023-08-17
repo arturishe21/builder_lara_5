@@ -1,8 +1,7 @@
 <?php
 
-namespace Vis\Builder;
+namespace Vis\Builder\Libs;
 
-use Illuminate\Support\Facades\Config;
 use Intervention\Image\Filters\FilterInterface;
 use Intervention\Image\Image;
 

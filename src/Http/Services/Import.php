@@ -1,6 +1,6 @@
 <?php
 
-namespace Vis\Builder\Services;
+namespace Vis\Builder\Http\Services;
 
 use Illuminate\Contracts\View\View;
 use Vis\Builder\Interfaces\Button;
