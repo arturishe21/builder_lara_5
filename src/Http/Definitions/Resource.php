@@ -166,7 +166,7 @@ class Resource
         return $this->returnSuccess();
     }
 
-    public function changeOrder($requestOrder, $params) : array
+    public function changeOrder($requestOrder, $params): JsonResponse
     {
         parse_str($requestOrder, $order);
         $pageThisCount = $params ?: 1;
