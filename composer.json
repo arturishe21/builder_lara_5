@@ -9,16 +9,16 @@
         }
     ],
     "require": {
-        "cartalyst/sentinel": "^7.0",
-        "mcamara/laravel-localization": "1.8.*",
-        "kalnoy/nestedset": "^6.0",
+        "cartalyst/sentinel": "^8.0",
+        "mcamara/laravel-localization": "^2.0",
+        "kalnoy/nestedset": "^6.0.4",
         "venturecraft/revisionable": "1.*",
         "intervention/image": "2.*",
         "intervention/imagecache": "2.*",
-        "predis/predis" : "v2.2.1",
+        "predis/predis" : "^2.2",
         "maatwebsite/excel": "3.*",
-        "barryvdh/laravel-debugbar": "^3.8",
-        "bkwld/cloner": "^3.11"
+        "barryvdh/laravel-debugbar": "^3.13",
+        "bkwld/cloner": "^3.12"
     },
     "autoload": {
         "psr-4": {
