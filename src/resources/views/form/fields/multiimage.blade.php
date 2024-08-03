@@ -12,6 +12,7 @@
                     <div class="input input-file">
                         <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploadedImages('{{$field->getNameField()}}', 'multi', $(this), '{{$field->getNameField()}}', '{{request('id_tree')}}')"
                               data-name-model="{{$definition->getFullPathDefinition()}}"
+                              style="right: 20px"
                         > {{__cms('Выбрать из загруженных')}} </span>
                         <span class="button">
                             <input type="file" multiple accept="image/*" class="image_{{$field->getNameField()}}"

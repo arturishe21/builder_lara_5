@@ -2,6 +2,7 @@
 
 namespace Vis\Builder\Http\Definitions;
 
+use Illuminate\Http\JsonResponse;
 use Vis\Builder\Http\ControllersNew\TreeController;
 use Vis\Builder\Http\Services\Listing;
 use Illuminate\View\View;
@@ -65,7 +66,7 @@ class ResourceAdditionTree extends Resource
         )->render();
     }
 
-    public function changeOrder($requestOrder, $params) : array
+    public function changeOrder($requestOrder, $params): JsonResponse
     {
         $definition = $this;
 

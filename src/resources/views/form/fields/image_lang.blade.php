@@ -24,6 +24,7 @@
                                     <span class="button select_with_uploaded"
                                           onclick="TableBuilder.selectWithUploadedImages('{{$field->getNameField()}}', 'one_file', $(this), '{{$field->getNameField() . $tab->language}}', '{{request('id_tree')}}')"
                                           data-name-model="{{$definition->getFullPathDefinition()}}"
+                                          style="right: 20px"
                                     > {{__cms('Выбрать из загруженных')}}</span>
                                     <span class="button">
                                 <input type="file" accept="image/*" onchange="TableBuilder.uploadImage(this, '{{$field->getNameField()}}', '{{$field->getNameField() . $tab->language}}');"

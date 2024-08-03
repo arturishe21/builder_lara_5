@@ -2,7 +2,7 @@
 
 namespace Vis\Builder\Libs;
 
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 class Img
 {
@@ -48,7 +48,7 @@ class Img
         }
 
         try {
-            $img = Image::make(public_path($source));
+            $img = Image::read(public_path($source));
 
             if (config('builder.watermark.active') && file_exists(config('builder.watermark.path'))) {
                 $img->insert(
