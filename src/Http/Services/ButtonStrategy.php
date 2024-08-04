@@ -2,7 +2,7 @@
 
 namespace Vis\Builder\Http\Services;;
 
-use Vis\Builder\Interfaces\Button;
+use Vis\Builder\Http\Interfaces\Button;
 
 class ButtonStrategy
 {

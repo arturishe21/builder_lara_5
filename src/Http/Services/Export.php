@@ -3,7 +3,7 @@
 namespace Vis\Builder\Http\Services;
 
 use Maatwebsite\Excel\Concerns\Exportable;
-use Vis\Builder\Interfaces\Button;
+use Vis\Builder\Http\Interfaces\Button;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 

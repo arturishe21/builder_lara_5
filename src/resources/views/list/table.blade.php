@@ -16,7 +16,7 @@
                     <h2>{{ $list->title() }}</h2>
 
                     @foreach($list->getDefinition()->buttons() as $button)
-                        {!! (new \Vis\Builder\Services\ButtonStrategy(new $button($list)))->render() !!}
+                        {!! (new \Vis\Builder\Http\Services\ButtonStrategy(new $button($list)))->render() !!}
                     @endforeach
                 </header>
                 <div>
