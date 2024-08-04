@@ -14,7 +14,9 @@
                                 <input type="file"  multiple onchange="TableBuilder.uploadFileMulti(this, '{{$field->getNameField()}}');" {!! $field->getAccept() !!}>
                                 {{__cms('Загрузить')}}
                             </span>
-                            <span class="button select_with_uploaded" onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'multi_file', $(this) )">
+                            <span class="button select_with_uploaded"
+                                  style="right: 20px"
+                                  onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'multi_file', $(this) )">
                                {{__cms('Выбрать из загруженных')}}
                              </span>
                             <input type="hidden" name="{{$field->getNameField()}}" value='{{$field->getValue()}}'>
@@ -30,7 +32,6 @@
                                 {{$field->getComment()}}
                             </div>
                         @endif
-
 
                         <div class="tb-uploaded-file-container-{{$field->getNameField()}} uploaded-files">
                             <ul>

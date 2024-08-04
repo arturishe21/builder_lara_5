@@ -120,7 +120,7 @@ class Resource
         return "table_builder.{$this->getNameDefinition()}.filter";
     }
 
-    public function getSessionKeyPerPage() : string
+    public function getSessionKeyPerPage(): string
     {
         return "table_builder.{$this->getNameDefinition()}.per_page";
     }
@@ -158,7 +158,7 @@ class Resource
         return $fieldsResults;
     }
 
-    public function remove(int $id) : array
+    public function remove(int $id): JsonResponse
     {
         $this->model()->destroy($id);
         $this->clearCache();
@@ -197,7 +197,7 @@ class Resource
         ];
     }
 
-    public function showEditForm(int $id) : array
+    public function showEditForm(int $id): array
     {
         $definition = $this;
 
@@ -223,7 +223,7 @@ class Resource
         ];
     }
 
-    public function saveAddForm($request) : array
+    public function saveAddForm($request): array
     {
         $record = $this->model();
         $recordNew = $this->saveActive($record, $request);
@@ -231,14 +231,15 @@ class Resource
         return $this->resultJsonSave($recordNew);
     }
 
-    public function saveEditForm($request) : array
+    public function saveEditForm($request): array
     {
         $recordNew = $this->updateForm($request);
 
         return $this->resultJsonSave($recordNew);
     }
 
-    private function resultJsonSave($recordNew) {
+    private function resultJsonSave($recordNew): array
+    {
         return [
             'id' => $recordNew->id,
             'html' => $this->getSingleRow($recordNew),
@@ -253,7 +254,7 @@ class Resource
         return $this->saveActive($record, $request);
     }
 
-    private function getRules($fields) : array
+    private function getRules($fields): array
     {
         $rules = [];
         foreach ($fields as $field) {
@@ -415,7 +416,7 @@ class Resource
         $record->$nameField = json_encode($translateArray);
     }
 
-    private function getTranslate($field, $slugLang, $phrase)
+    private function getTranslate($field, string $slugLang, string $phrase): string
     {
         if (!$field->checkAutoTranslate() || !$this->autoTranslate) {
             return '';
@@ -440,7 +441,7 @@ class Resource
         }
     }
 
-    protected function updateManyToMany($field, $collectionsIds)
+    protected function updateManyToMany($field, $collectionsIds): void
     {
         $this->updateManyToManyList[] = [
             'field' => $field,
@@ -448,7 +449,7 @@ class Resource
         ];
     }
 
-    protected function updateHasOne($field, $value)
+    protected function updateHasOne($field, $value): void
     {
         $this->updateHasOneList[$field->getHasOne()][] = [
             'field' => $field,
@@ -456,7 +457,7 @@ class Resource
         ];
     }
 
-    protected function updateMorphOne($field, $request)
+    protected function updateMorphOne($field, $request): void
     {
         $this->updateMorphOneList[$field->getMorphOne()][] = [
             'field' => $field,
@@ -645,8 +646,7 @@ class Resource
             (get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text' ||
                 get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Textarea' ||
                 get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Froala'
-            )
-            ;
+            );
     }
 
     public function head()

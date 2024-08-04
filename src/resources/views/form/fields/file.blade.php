@@ -20,7 +20,9 @@
                         @if ($field->checkSelectionFiles())
                          <span class="button select_with_uploaded"
                                data-name-model = "{{$definition->getFullPathDefinition()}}"
-                               onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'one_file', $(this))">
+                               onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'one_file', $(this))"
+                               style="right: 20px"
+                         >
                             {{__cms('Выбрать из загруженных')}}
                          </span>
                         @endif
