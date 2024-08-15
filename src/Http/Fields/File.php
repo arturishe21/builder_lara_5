@@ -4,15 +4,18 @@ namespace Vis\Builder\Http\Fields;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File as FileFacade;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class File extends Field
 {
-    protected $accept;
-    protected $path = '/storage/files/';
+    protected string $accept = '';
+    protected string $path = '/storage/files/';
     protected $isAutoTranslate = false;
-    protected $selectWithUploaded = true;
+    protected bool $selectWithUploaded = true;
 
-    public function getAccept()
+    public function getAccept(): string
     {
         return $this->accept;
     }
@@ -31,36 +34,34 @@ class File extends Field
         }
     }
 
-    public function accept($value)
+    public function accept(string $value): self
     {
         $this->accept = 'accept="'. $value .'"';
 
         return $this;
     }
 
-    public function noFileSelection()
+    public function noFileSelection(): self
     {
         $this->selectWithUploaded = false;
 
         return $this;
     }
 
-    public function checkSelectionFiles()
+    public function checkSelectionFiles(): bool
     {
         return $this->selectWithUploaded;
     }
 
-    public function uploadPath(string $path)
+    public function uploadPath(string $path): self
     {
         $this->path = $path;
 
         return $this;
     }
 
-    public function upload()
+    public function upload(UploadedFile $file): JsonResponse
     {
-        $file = request()->file('file');
-
         if (!file_exists(public_path($this->path))) {
             mkdir(public_path($this->path), 0755, true);
         }
@@ -77,20 +78,15 @@ class File extends Field
 
         $file->move(public_path($this->path), $fileName);
 
-        return [
+        return response()->json([
             'status'     => true,
             'link'       => asset($this->path . $fileName),
             'short_link' => $fileName,
             'long_link'  => $this->path . $fileName,
-        ];
+        ]);
     }
 
-    public function selectWithUploadedFiles($definition)
-    {
-        return $this->getFilesDefaultPath();
-    }
-
-    private function getFilesDefaultPath()
+    public function selectWithUploadedFiles(): JsonResponse
     {
         $files = collect(FileFacade::files(public_path($this->path)))->sortBy(function ($file) {
             return filemtime($file);
@@ -100,12 +96,12 @@ class File extends Field
         $onPage = 24;
         $slice = $files->slice(($page - 1) * $onPage, $onPage);
 
-        $list = new \Illuminate\Pagination\LengthAwarePaginator($slice, $files->count(), $onPage);
+        $list = new LengthAwarePaginator($slice, $files->count(), $onPage);
         $list->setPath(url()->current());
 
-        return [
+        return response()->json([
             'status' => 'success',
             'data'   => view('admin::form.fields.partials.files_list', compact('list'))->render(),
-        ];
+        ]);
     }
 }

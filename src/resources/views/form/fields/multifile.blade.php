@@ -16,6 +16,7 @@
                             </span>
                             <span class="button select_with_uploaded"
                                   style="right: 20px"
+                                  data-name-model = "{{$definition->getFullPathDefinition()}}"
                                   onclick="TableBuilder.selectWithUploaded('{{$field->getNameField()}}', 'multi_file', $(this) )">
                                {{__cms('Выбрать из загруженных')}}
                              </span>

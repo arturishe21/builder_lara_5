@@ -5,7 +5,7 @@ namespace Vis\Builder\Http\Requests;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TranslateCms extends FormRequest
+class UploadFileRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,7 +15,9 @@ class TranslateCms extends FormRequest
     public function rules(): array
     {
         return [
-            'phrase' => 'required|unique:translations_phrases_cms',
+            'file'  => ['required', 'max:2040'],
+            'path_model' => ['required', 'string'],
+            'ident' => ['required', 'string'],
         ];
     }
 }

@@ -416,7 +416,7 @@ class Resource
         $record->$nameField = json_encode($translateArray);
     }
 
-    private function getTranslate($field, string $slugLang, string $phrase): string
+    private function getTranslate($field, string $slugLang, ?string $phrase = null): string
     {
         if (!$field->checkAutoTranslate() || !$this->autoTranslate) {
             return '';
@@ -425,14 +425,13 @@ class Resource
         try {
             $langDef = $field->getLanguageDefault();
 
-            if ($langDef == $slugLang || !$phrase) {
+            if ($langDef === $slugLang || !$phrase) {
                 return '';
             }
 
             $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
 
-            $result = str_replace('/ ','/', $result);
-            $result = str_replace(' /','/', $result);
+            $result = str_replace(['/ ', ' /'],'/', $result);
 
             return $result ?: $phrase;
 

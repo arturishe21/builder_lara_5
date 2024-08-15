@@ -4,45 +4,46 @@ namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Vis\Builder\Http\Requests\EditorFile;
-use Vis\Builder\Http\Requests\EditorImage;
+use Vis\Builder\Http\Requests\EditorFileRequest;
+use Vis\Builder\Http\Requests\EditorImageRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\UploadedFile;
 
 class EditorController extends Controller
 {
     private string $pathPhotos = '/storage/editor/photos';
     private string $pathFiles = '/storage/editor/files';
 
-    public function uploadImage(EditorImage $request)
+    public function uploadImage(EditorImageRequest $request): JsonResponse
     {
-        return $this->uploadFileAndReturnResult($request, $this->pathPhotos);
+        return $this->uploadFileAndReturnResult($request->file('file'), $this->pathPhotos);
     }
 
-    public function uploadFile(EditorFile $request)
+    public function uploadFile(EditorFileRequest $request): JsonResponse
     {
-        return $this->uploadFileAndReturnResult($request, $this->pathFiles);
+        return $this->uploadFileAndReturnResult($request->file('file'), $this->pathFiles);
     }
 
-    private function uploadFileAndReturnResult($request, $path)
+    private function uploadFileAndReturnResult(UploadedFile $file, string $path): JsonResponse
     {
-        $nameFile = $this->getNameFile($request->file('file'), $path);
+        $nameFile = $this->getNameFile($file, $path);
 
-        $request->file('file')->move(public_path($path), $nameFile);
+        $file->move(public_path($path), $nameFile);
 
         return response()->json([
             'link' => $path. '/' . $nameFile
         ]);
     }
 
-    private function getNameFile($file, $path)
+    private function getNameFile(UploadedFile $file, string $path): string
     {
         if (!file_exists(public_path($path))) {
             mkdir(public_path($path), 0755, true);
         }
 
         $ext = $file->getClientOriginalExtension();
-        $fullname = $file->getClientOriginalName();
-        $fullname = str_replace('.'.$ext, '', $fullname);
+        $fullname = str_replace('.'.$ext, '', $file->getClientOriginalName());
 
         $resultName = Str::slug($fullname) . '.' . $ext;
         $fullPathImg = $path . '/' . $resultName;
@@ -54,7 +55,7 @@ class EditorController extends Controller
         return $resultName;
     }
 
-    public function getUploadedImages()
+    public function getUploadedImages(): JsonResponse
     {
         $files = File::files(public_path($this->pathPhotos));
 
@@ -67,10 +68,5 @@ class EditorController extends Controller
         }, $files);
 
         return response()->json($result);
-    }
-
-    public function deleteImage()
-    {
-        unlink(public_path(request('src')));
     }
 }

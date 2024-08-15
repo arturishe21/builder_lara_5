@@ -3,10 +3,12 @@
 namespace Vis\Builder\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Vis\Builder\Http\Definitions\Resource;
+use Vis\Builder\Http\Requests\UploadPictureRequest;
 
-class PhotoController extends Controller
+class ImagesManagementController extends Controller
 {
-    private $definition;
+    private Resource $definition;
 
     public function __construct()
     {
@@ -15,14 +17,14 @@ class PhotoController extends Controller
         $this->definition = new $pathDefinition();
     }
 
-    public function upload()
+    public function upload(UploadPictureRequest $request)
     {
-        return $this->getThisField()->upload($this->definition);
+        return $this->getThisField()->upload($this->definition, $request->file('image'));
     }
 
     public function selectPhotos()
     {
-        return $this->getThisField()->selectWithUploadedImages($this->definition);
+        return $this->getThisField()->selectWithUploadedImages();
     }
 
     private function getThisField()

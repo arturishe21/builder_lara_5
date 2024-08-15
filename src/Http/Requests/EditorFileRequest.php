@@ -2,19 +2,20 @@
 
 namespace Vis\Builder\Http\Requests;
 
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EditorFile extends FormRequest
+class EditorFileRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return Sentinel::getUser()->hasAccess(['admin.access']);
     }
 
     public function rules(): array
     {
         return [
-            'file'  => 'required'
+            'file'  => ['required']
         ];
     }
 }

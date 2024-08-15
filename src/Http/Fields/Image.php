@@ -4,13 +4,18 @@ namespace Vis\Builder\Http\Fields;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Http\JsonResponse;
+use Vis\ImageStorage\Image as ImageStorage;
+use Vis\ImageStorage\Tag;
+use Vis\ImageStorage\Gallery;
 
 class Image extends Field
 {
-    protected $path = '/storage/editor/fotos/';
+    protected string $path = '/storage/editor/fotos/';
     protected $isAutoTranslate = false;
 
-    public function isTransparent()
+    public function isTransparent(): bool
     {
         $value = $this->getValue();
 
@@ -32,22 +37,21 @@ class Image extends Field
         return "<a class='screenshot' rel='{$imgHover}'><img src='{$img}'></a>";
     }
 
-    public function uploadPath(string $path)
+    public function uploadPath(string $path): self
     {
         $this->path = $path;
 
         return $this;
     }
 
-    public function selectWithUploadedImages($definition)
+    public function selectWithUploadedImages(): JsonResponse
     {
-        return $this->getImagesWithImageStorage($definition);
+        return $this->getImagesWithImageStorage();
     }
 
-    public function upload($definition)
+    public function upload($definition, UploadedFile $file): JsonResponse
     {
         $model = $definition->model();
-        $file = request()->file('image');
         $width = 200;
         $height = 200;
         $extension = $this->getExtension($file->guessExtension());
@@ -80,7 +84,7 @@ class Image extends Field
 
         $returnView = request('type') == 'single_photo' ? 'admin::tb.html_image_single' : 'admin::tb.html_image';
 
-        return [
+        return response()->json([
             'data'       => $data,
             'status'     => $status,
             'link'       => $link,
@@ -96,10 +100,10 @@ class Image extends Field
                     'height' => $height,
                 ]
             )->render(),
-        ];
+        ]);
     }
 
-    private function getExtension($guessExtension)
+    private function getExtension(string $guessExtension): string
     {
         if ($guessExtension == 'html' || $guessExtension == 'txt') {
             return 'svg';
@@ -125,16 +129,16 @@ class Image extends Field
         $imgStorage->save();
     }
 
-    private function getImagesWithImageStorage($definition) : array
+    private function getImagesWithImageStorage(): JsonResponse
     {
         if (!class_exists('\Vis\ImageStorage\Image')) {
-            return [
+            return response()->json([
                 'status' => 'success',
                 'data'   => 'Не подключен пакет ImageStorage',
-            ];
+            ]);
         }
 
-        $list = \Vis\ImageStorage\Image::orderBy('created_at', 'desc');
+        $list = ImageStorage::orderBy('created_at', 'desc');
 
         if (request('tag')) {
             $list->leftJoin('vis_tags2entities', 'id_entity', '=', 'vis_images.id')->where('entity_type', 'Vis\ImageStorage\Image')->where('id_tag', request('tag'));
@@ -150,13 +154,13 @@ class Image extends Field
 
         $list = $list->groupBy('vis_images.id')->paginate(18);
 
-        $tags = \Vis\ImageStorage\Tag::where('is_active', 1)->orderBy('title', 'asc')->get();
-        $galleries = \Vis\ImageStorage\Gallery::where('is_active', 1)->orderBy('title', 'asc')->get();
+        $tags = Tag::where('is_active', 1)->orderBy('title', 'asc')->get();
+        $galleries = Gallery::where('is_active', 1)->orderBy('title', 'asc')->get();
 
-        return [
+        return response()->json([
             'status' => 'success',
-            'data'   => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries', 'definition'))->render(),
-        ];
+            'data'   => view('admin::tb.image_storage_list', compact('list', 'tags', 'galleries'))->render(),
+        ]);
     }
 
 }

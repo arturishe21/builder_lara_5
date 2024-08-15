@@ -9,7 +9,8 @@ use Vis\Builder\Http\Controllers\QuickEditController;
 use Vis\Builder\Http\Controllers\TBController;
 use Vis\Builder\Http\Controllers\ChangeRangeController;
 use Vis\Builder\Http\ControllersNew\EditContentOnSiteController;
-use Vis\Builder\Http\Controllers\PhotoController;
+use Vis\Builder\Http\Controllers\ImagesManagementController;
+use Vis\Builder\Http\Controllers\FilesManagementController;
 use Vis\Builder\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -38,11 +39,11 @@ use Illuminate\Support\Facades\Request;
                 Route::any('/actions/tree', [TreeAdminController::class, 'handle']);
                 Route::post('/show-all-tree', [TreeAdminController::class, 'showAll']);
 
-                Route::post('/photo/upload', [PhotoController::class, 'upload']);
+                Route::post('/photo/upload', [ImagesManagementController::class, 'upload']);
+                Route::any('/photo/select_photos', [ImagesManagementController::class, 'selectPhotos']);
 
-                Route::post('/file/upload', [PhotoController::class, 'upload']);
-
-                Route::any('/photo/select_photos', [PhotoController::class, 'selectPhotos']);
+                Route::post('/file/upload', [FilesManagementController::class, 'upload']);
+                Route::post('/file/select_files', [FilesManagementController::class, 'selectFiles']);
 
                 Route::post('/actions/{page_admin}', [TableAdminController::class, 'actionsPage']);
 
@@ -53,9 +54,6 @@ use Illuminate\Support\Facades\Request;
                 Route::post('upload_image', [EditorController::class, 'uploadImage']);
                 Route::post('upload_file', [EditorController::class, 'uploadFile']);
                 Route::get('load_image', [EditorController::class, 'getUploadedImages']);
-                Route::post('delete_image', [EditorController::class, 'deleteImages']);
-
-                Route::post('quick_edit', [QuickEditController::class]);
 
                 Route::post('change_skin', [TBController::class, 'changeSkin']);
                 Route::get('change_lang', [TBController::class, 'changeLanguage'])->name('change_lang');
