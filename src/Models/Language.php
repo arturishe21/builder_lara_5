@@ -2,8 +2,10 @@
 
 namespace Vis\Builder\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Vis\Builder\Http\Traits\Rememberable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Language extends Model
 {
@@ -20,12 +22,12 @@ class Language extends Model
         parent::__construct();
     }
 
-    public static function scopeActive($query)
+    public static function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', '1');
     }
 
-    public static function scopeOrderPriority($query)
+    public static function scopeOrderPriority(Builder $query): Builder
     {
         return $query->orderBy('priority', 'asc');
     }
@@ -53,7 +55,7 @@ class Language extends Model
             ->first();
     }
 
-    public function getLanguages()
+    public function getLanguages(): Collection
     {
         return $this->active()->orderPriority()
             ->rememberForever()->cacheTags(['languages'])

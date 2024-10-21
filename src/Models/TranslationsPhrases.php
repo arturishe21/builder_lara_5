@@ -3,6 +3,7 @@
 namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Vis\Builder\Libs\GoogleTranslateForFree;
@@ -13,25 +14,17 @@ class TranslationsPhrases extends Model
     protected $fillable = ['phrase'];
     public $timestamps = false;
 
-    public function translations()
+    public function translations(): HasMany
     {
         return $this->hasMany(Translations::class, 'id_translations_phrase');
     }
 
-    public function translationsLanguage()
+    public function translationsLanguage(): array
     {
         return $this->translations()->pluck('translate', 'lang')->toArray();
     }
 
-    /**
-     * auto generate translation for function __t() if empty.
-     *
-     * @param string $phrase
-     * @param strign $thisLang
-     *
-     * @return string
-     */
-    public static function generateTranslation($phrase, $thisLang)
+    public static function generateTranslation(string $phrase, string $thisLang): string
     {
         if ($phrase && $thisLang) {
             $checkPresentPhrase = self::where('phrase', 'like', $phrase)->first();
@@ -72,12 +65,7 @@ class TranslationsPhrases extends Model
         }
     }
 
-    /**
-     * filling cache translate.
-     *
-     * @return array
-     */
-    public static function fillCacheTrans()
+    public static function fillCacheTrans(): array
     {
         if (Cache::get('translations')) {
             $arrayTranslate = Cache::get('translations');
@@ -89,22 +77,13 @@ class TranslationsPhrases extends Model
         return $arrayTranslate;
     }
 
-    /** recache translate.
-     *
-     * @return void
-     */
-    public static function reCacheTrans()
+    public static function reCacheTrans(): void
     {
         Cache::forget('translations');
         self::fillCacheTrans();
     }
 
-    /**
-     * get array all phrase translation.
-     *
-     * @return array
-     */
-    private static function getArrayTranslation()
+    private static function getArrayTranslation(): array
     {
         $translationsGet = DB::table('translations_phrases')
             ->leftJoin('translations', 'translations.id_translations_phrase', '=', 'translations_phrases.id')

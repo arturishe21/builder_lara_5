@@ -54,7 +54,7 @@ class Tree extends Model
             ->defaultOrder();
     }
 
-    protected  $fillable = [];
+    protected $fillable = [];
 
     protected array $revisionFormattedFieldNames = [
         'title'             => 'Название',
@@ -91,7 +91,7 @@ class Tree extends Model
 
     protected $_nodeUrl;
 
-    public function checkUnicUrl()
+    public function checkUnicUrl(): void
     {
         $slug = $this->slug;
         if ($slug) {

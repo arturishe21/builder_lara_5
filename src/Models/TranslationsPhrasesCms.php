@@ -3,6 +3,7 @@
 namespace Vis\Builder\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,7 @@ class TranslationsPhrasesCms extends Model
     protected $fillable = ['phrase'];
     public $timestamps = false;
 
-    public function translations()
+    public function translations(): HasMany
     {
         return $this->hasMany(TranslationsCms::class, 'translations_phrases_cms_id');
     }

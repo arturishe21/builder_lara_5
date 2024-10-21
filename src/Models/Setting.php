@@ -12,16 +12,18 @@ class Setting extends Model
     protected $table = 'settings';
     public $timestamps = false;
 
-    public function getValue(string $slug)
+    public function getValue(string $slug): ?string
     {
         $setting = $this->whereSlug($slug)->first();
 
         if ($setting) {
             return $this->getResultType($setting)[$setting->type] ?? '';
         }
+
+        return null;
     }
 
-    private function getResultType($setting): array
+    protected function getResultType($setting): array
     {
         return [
             'text' => $setting->value,

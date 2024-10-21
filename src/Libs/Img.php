@@ -76,7 +76,7 @@ class Img
 
     private function checkFileCorrect($sourceArray): bool
     {
-       return !isset($sourceArray['extension']) || !isset($sourceArray['dirname']) ? false : true;
+       return !(!isset($sourceArray['extension']) || !isset($sourceArray['dirname']));
     }
 
     protected function setOptions(array $options): void
@@ -94,7 +94,7 @@ class Img
         }
     }
 
-    protected function createRatioImg($img, array $options)
+    protected function createRatioImg($img, array $options): void
     {
         if (isset($options['fit']) && $options['fit'] == 'crop') {
             $img->fit(

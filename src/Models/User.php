@@ -46,7 +46,7 @@ class User extends EloquentUser
         return $this->hasAccess([$link]);
     }
 
-    public function hasAccessActionsForCms($action): mixed
+    public function hasAccessActionsForCms(?string $action): mixed
     {
         $urlArray =  explode('/', request()->path());
 
