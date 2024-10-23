@@ -2,7 +2,8 @@
 
 namespace Vis\Builder\Libs;
 
-use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 
 class Img
 {
@@ -33,8 +34,8 @@ class Img
         $dirname = $sourceArray['dirname'];
 
         $this->nameFile = $this->quality == 90 ?
-                $filename.'.'.$extension :
-                $filename.'_'.$this->quality.'.'.$extension;
+            $filename.'.'.$extension :
+            $filename.'_'.$this->quality.'.'.$extension;
 
         $this->pathFolder = $dirname.'/'.$this->size;
         $this->picturePath = $this->pathFolder.'/'.$this->nameFile;
@@ -48,7 +49,8 @@ class Img
         }
 
         try {
-            $img = Image::read(public_path($source));
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read(public_path($source));
 
             if (config('builder.watermark.active') && file_exists(config('builder.watermark.path'))) {
                 $img->insert(
@@ -76,7 +78,7 @@ class Img
 
     private function checkFileCorrect($sourceArray): bool
     {
-       return !(!isset($sourceArray['extension']) || !isset($sourceArray['dirname']));
+        return !(!isset($sourceArray['extension']) || !isset($sourceArray['dirname']));
     }
 
     protected function setOptions(array $options): void
@@ -96,27 +98,7 @@ class Img
 
     protected function createRatioImg($img, array $options): void
     {
-        if (isset($options['fit']) && $options['fit'] == 'crop') {
-            $img->fit(
-                $this->width,
-                $this->height,
-                function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                }
-            );
-
-            return;
-        }
-
-        $img->resize(
-            $this->width,
-            $this->height,
-            function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            }
-        );
+        $img->scale($this->width, $this->height);
     }
 
     protected function checkExistPicture(): bool

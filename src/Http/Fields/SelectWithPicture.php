@@ -23,7 +23,7 @@ class SelectWithPicture extends Select
         }
     }
 
-    public function getImg($value)
+    public function getImg(string $value): string
     {
         $optionsRes = $this->getOptions();
 
