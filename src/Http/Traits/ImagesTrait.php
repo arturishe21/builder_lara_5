@@ -22,7 +22,7 @@ trait ImagesTrait
         return  '<img src = "'.$img_res.'" title = "'.e($this->t('title')).'" alt = "'.e($this->t('title')).'">';
     }
 
-    public function getImgPath($width = '', $height = '', $options = [], $lang = false): string
+    public function getImgPath($width = '', $height = '', $options = [], $lang = false): ?string
     {
         $picture = $this->picture;
 
