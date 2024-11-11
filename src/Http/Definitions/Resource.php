@@ -642,9 +642,9 @@ class Resource
     public function isTextField($allFields, $field)
     {
         return Arr::exists($allFields, $field) &&
-            (get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Text' ||
-                get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Textarea' ||
-                get_class($allFields[$field]) == 'Vis\\Builder\\Fields\\Froala'
+            (get_class($allFields[$field]) == 'Vis\\Builder\\Http\\Fields\\Text' ||
+                get_class($allFields[$field]) == 'Vis\\Builder\\Http\\Fields\\Textarea' ||
+                get_class($allFields[$field]) == 'Vis\\Builder\\Http\\Fields\\Froala'
             );
     }
 

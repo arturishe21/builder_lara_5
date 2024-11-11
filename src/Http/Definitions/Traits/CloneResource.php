@@ -2,9 +2,11 @@
 
 namespace Vis\Builder\Http\Definitions\Traits;
 
+use Illuminate\Http\JsonResponse;
+
 trait CloneResource
 {
-    public function cloneTree(int $id): array
+    public function cloneTree(int $id): JsonResponse
     {
         $this->cloneRecursively($id);
 
@@ -42,7 +44,7 @@ trait CloneResource
         }
     }
 
-    public function clone(int $id): array
+    public function clone(int $id): JsonResponse
     {
         $this->model()->find($id)->duplicate();
 

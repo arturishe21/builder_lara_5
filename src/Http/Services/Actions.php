@@ -88,7 +88,7 @@ class Actions
 
     public function clone(): self
     {
-        $this->checkAccess('revisions');
+        $this->checkAccess('clone');
 
         return $this;
     }
