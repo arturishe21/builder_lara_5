@@ -89,7 +89,7 @@ class ResourceAdditionTree extends Resource
         return $result;
     }
 
-    public function clone(int $id): array
+    public function clone(int $id): JsonResponse
     {
         return $this->cloneTree($id);
     }
