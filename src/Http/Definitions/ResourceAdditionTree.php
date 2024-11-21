@@ -73,7 +73,7 @@ class ResourceAdditionTree extends Resource
         return (new TreeController($definition))->doChangePosition();
     }
 
-    public function saveAddForm($request) : array
+    public function saveAddForm($request): array
     {
         $result = parent::saveAddForm($request);
 

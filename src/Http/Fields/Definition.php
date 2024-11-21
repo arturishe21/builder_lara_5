@@ -135,9 +135,8 @@ class Definition extends Field
         });
     }
 
-    public function getNameField() : string
+    public function getNameField(): string
     {
-        return Str::slug(parent::getNameField());
+        return str_replace('-', '_', Str::slug(parent::getNameField()));
     }
-
 }
