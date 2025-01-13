@@ -6,6 +6,7 @@ class Options
 {
     protected string $relation;
     protected array $whereCollection = [];
+    protected array $whereInCollection = [];
     protected array $orderCollection = [];
     protected string $keyField = 'title';
     protected bool $isJson = false;
@@ -33,6 +34,16 @@ class Options
         return $this;
     }
 
+    public function whereIn(string $field, array $list): self
+    {
+        $this->whereInCollection[] = [
+            'field' => $field,
+            'list' => $list
+        ];
+
+        return $this;
+    }
+
     public function orderBy(string $field, string $order = 'desc'): self
     {
         $this->orderCollection[] = [
@@ -53,6 +64,11 @@ class Options
     public function getWhereCollection(): array
     {
         return $this->whereCollection;
+    }
+
+    public function getWhereInCollection(): array
+    {
+        return $this->whereInCollection;
     }
 
     public function getOrderCollection(): array

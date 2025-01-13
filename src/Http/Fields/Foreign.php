@@ -51,11 +51,18 @@ class Foreign extends Field
         $collection = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
 
         $where = $this->options->getWhereCollection();
+        $whereIn = $this->options->getWhereInCollection();
         $order = $this->options->getOrderCollection();
 
         if (count($where)) {
             foreach ($where as $param) {
                 $collection = $collection->where($param['field'], $param['eq'], $param['value']);
+            }
+        }
+
+        if (count($whereIn)) {
+            foreach ($whereIn as $param) {
+                $collection = $collection->whereIn($param['field'], $param['list']);
             }
         }
 
