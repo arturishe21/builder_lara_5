@@ -33,8 +33,28 @@
                                 @endif
                             </td>
                             <td>{{ $historyRecord->fieldName()}}</td>
-                            <td><div class="value_old_new">{{{ $historyRecord->old_value}}}</div></td>
-                            <td><div class="value_old_new">{{{ $historyRecord->new_value}}}</div></td>
+                            <td>
+                                <div class="value_old_new">
+                                    @if (json_validate($historyRecord->old_value))
+                                        @foreach(json_decode($historyRecord->old_value) as $k => $value)
+                                            <p>{{$k}}: {{{$value}}}</p>
+                                        @endforeach
+                                    @else
+                                        {{{ $historyRecord->old_value}}}
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <div class="value_old_new">
+                                    @if (json_validate($historyRecord->new_value))
+                                        @foreach(json_decode($historyRecord->new_value) as $k => $value)
+                                            <p>{{$k}}: {{{$value}}}</p>
+                                        @endforeach
+                                    @else
+                                        {{{ $historyRecord->new_value}}}
+                                    @endif
+                                </div>
+                            </td>
                             <td>{{{ $historyRecord->created_at}}}</td>
                             <td>
                                 <a onclick="TableBuilder.getReturnHistory({{$historyRecord->id}});">{{__cms('Вернуть изменения')}}</a>

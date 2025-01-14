@@ -2,13 +2,13 @@
 
 namespace Vis\Builder\Http\Services;
 
-use Vis\Builder\Definitions\Resource;
-use Vis\Builder\Revision;
+use Vis\Builder\Http\Interfaces\ResourceInterface;
+use Vis\Builder\Models\Revision;
 use Illuminate\Http\JsonResponse;
 
 class Revisions
 {
-    public function show(int $id, Resource $definition): JsonResponse
+    public function show(int $id, ResourceInterface $definition): JsonResponse
     {
         $model = $definition->model()->find($id);
         $history = $model->revisionHistory()->orderBy('created_at', 'desc')->get();

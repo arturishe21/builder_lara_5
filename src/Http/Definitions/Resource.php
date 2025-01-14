@@ -13,8 +13,9 @@ use Vis\Builder\Libs\GoogleTranslateForFree;
 use Vis\Builder\Http\Definitions\Traits\{CacheResource, CloneResource};
 use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
+use Vis\Builder\Http\Interfaces\ResourceInterface;
 
-class Resource
+class Resource implements ResourceInterface
 {
     use CacheResource, CloneResource;
 
