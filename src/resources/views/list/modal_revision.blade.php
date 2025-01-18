@@ -35,8 +35,8 @@
                             <td>{{ $historyRecord->fieldName()}}</td>
                             <td>
                                 <div class="value_old_new">
-                                    @if (json_validate($historyRecord->old_value))
-                                        @foreach(json_decode($historyRecord->old_value) as $k => $value)
+                                    @if (json_validate($historyRecord->old_value) && is_array(json_decode($historyRecord->old_value, true)))
+                                        @foreach(json_decode($historyRecord->old_value, true) as $k => $value)
                                             <p>{{$k}}: {{{$value}}}</p>
                                         @endforeach
                                     @else
@@ -46,7 +46,7 @@
                             </td>
                             <td>
                                 <div class="value_old_new">
-                                    @if (json_validate($historyRecord->new_value))
+                                    @if (json_validate($historyRecord->new_value) && is_array(json_decode($historyRecord->new_value, true)))
                                         @foreach(json_decode($historyRecord->new_value) as $k => $value)
                                             <p>{{$k}}: {{{$value}}}</p>
                                         @endforeach
