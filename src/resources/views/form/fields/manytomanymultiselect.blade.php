@@ -1,30 +1,37 @@
 <?php
 $selected = $field->getOptionsSelected($definition);
-
 ?>
 
 <style>
 	.ui-multiselect .ui-widget-header,.ui-multiselect  .ui-widget-header  a {
 		color: #fff;
 	}
+	.ui-multiselect {
+		margin-bottom: 10px;
+	}
 </style>
 
-<select class="multiselect" multiple="multiple" name="{{ $field->getNameField()}}[]" id="{{ $field->getNameField()}}">
+<select class="multiselect"  multiple="multiple" name="{{ $field->getNameField()}}[]" id="{{ $field->getNameField()}}">
 	@if (isset($selected) && count($selected))
 		@foreach($selected as $id => $selectOption)
 			<option value="{{$id}}" selected>{{$selectOption}}</option>
 		@endforeach
 	@endif
-		@foreach ($field->getOptions($definition) as $key => $title)
-			@if (!isset($selected[$key]))
-				<option value="{{$key}}">{{ trim($title) }}</option>
-			@endif
-		@endforeach
+	@foreach ($field->getOptions($definition) as $key => $title)
+		@if (!isset($selected[$key]))
+			<option value="{{$key}}">{{ trim($title) }}</option>
+		@endif
+	@endforeach
 </select>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        //  $.localise('ui-multiselect', {language: 'ru', path: '/packages/vis/builder/js/multiselect_master/js/locale/'});
-        $(".multiselect").multiselect();
-    });
+	$(document).ready(function () {
+		$.extend($.ui.multiselect.locale, {
+			addAll:'{{__cms('Добавить все')}}',
+			removeAll:'{{__cms('Удалить все')}}',
+			itemsCount:'{{__cms('элементов выбрано')}}'
+		});
+
+		$(".multiselect").multiselect();
+	});
 </script>
