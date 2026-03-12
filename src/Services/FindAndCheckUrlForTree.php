@@ -11,10 +11,9 @@ class FindAndCheckUrlForTree
 {
     private string $model;
 
-    public function getRoute($arrSegments)
+    public function getRoute(array $arrSegments): array|bool
     {
         $this->model = 'App\Models\Tree';
-
         $slug = $this->getSlug($arrSegments);
 
         $node = $this->findUrl($slug);
@@ -26,7 +25,7 @@ class FindAndCheckUrlForTree
         return $this->getControllerAndMethod($node);
     }
 
-    private function getSlug($arrSegments): string
+    private function getSlug(array $arrSegments): string
     {
         $slug = end($arrSegments);
 
@@ -37,7 +36,7 @@ class FindAndCheckUrlForTree
         return $slug;
     }
 
-    private function findUrl($slug)
+    private function findUrl(string $slug)
     {
         $tagsCache = ['tree'];
         $model = $this->model;
@@ -67,7 +66,7 @@ class FindAndCheckUrlForTree
             return false;
         }
 
-        $template =  new $templates[$node->template]();
+        $template = new $templates[$node->template]();
 
         $controllerAndMethod = explode('@', $template->getAction());
 

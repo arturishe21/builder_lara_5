@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cms;
+namespace App\Cms_;
 
 use Vis\Builder\Settings\AdminBase;
 

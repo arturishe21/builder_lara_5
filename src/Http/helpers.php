@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Cms\Definitions\Settings;
 use Illuminate\Support\Facades\App;
 use Vis\Builder\Services\Translate;
+use Vis\Builder\Libs\Img;
 
 if (! function_exists('defaultLanguage')) {
 
@@ -28,7 +29,6 @@ if (! function_exists('defaultLanguage')) {
 }
 
 if (! function_exists('languagesOfSite')) {
-
     function languagesOfSite()
     {
         return (new Language())->getLanguages()->pluck('language');
@@ -36,7 +36,6 @@ if (! function_exists('languagesOfSite')) {
 }
 
 if (! function_exists('setting')) {
-
     function setting(string $slug)
     {
         return Cache::tags('settings')->rememberForever($slug . App::getLocale(), function() use ($slug) {
@@ -95,7 +94,7 @@ if (! function_exists('print_arr')) {
 
 if (! function_exists('glide')) {
 
-    function glide($source, array $options = [])
+    function glide(string $source, array $options = [])
     {
         if (
             env('IMG_PLACEHOLDER', true)
@@ -107,7 +106,7 @@ if (! function_exists('glide')) {
             return "//via.placeholder.com/{$width}x{$height}";
         }
 
-        return (new Vis\Builder\Libs\Img())->get($source, $options);
+        return (new Img())->get($source, $options);
     }
 }
 
@@ -123,9 +122,9 @@ if (! function_exists('geturl')) {
 }
 
 if (! function_exists('__cms')) {
-    function __cms($phrase) : ?string
+    function __cms(?string $phrase) : ?string
     {
-        $thisLang = Cookie::get('lang_admin', config('builder.translations.cms.language_default'));
+        $thisLang = Cookie::get('language_cms', config('builder.translations.cms.language_default'));
 
         $arrayTranslate = TranslationsPhrasesCms::fillCacheTrans();
 

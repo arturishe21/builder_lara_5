@@ -12,7 +12,7 @@ use App\Cms\Admin;
 
 class Authenticate
 {
-    private $adminClass;
+    private Admin $adminClass;
 
     public function __construct(Admin $admin)
     {
@@ -71,7 +71,6 @@ class Authenticate
         $ip = $this->adminClass->accessIp();
 
         if (count($ip)) {
-
             if (!in_array($request->ip(), $ip)) {
                 return abort(403);
             }

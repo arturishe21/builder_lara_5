@@ -22,9 +22,8 @@ class TranslationsCms extends Model
         ]);
 
         foreach ($languages as $lang => $value) {
-
             try {
-                $translate = (new GoogleTranslateForFree())->translate($thisLang, $lang, $phrase, 2);
+                $translate = GoogleTranslateForFree::translate($thisLang, $lang, $phrase, 2);
             } catch (\Exception $e) {
                 $translate = $phrase;
             }

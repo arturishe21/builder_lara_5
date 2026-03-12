@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Http\JsonResponse;
+use Vis\Builder\Http\Definitions\Resource;
 use Vis\ImageStorage\Image as ImageStorage;
 use Vis\ImageStorage\Tag;
 use Vis\ImageStorage\Gallery;
@@ -49,7 +50,7 @@ class Image extends Field
         return $this->getImagesWithImageStorage();
     }
 
-    public function upload($definition, UploadedFile $file): JsonResponse
+    public function upload(Resource $definition, UploadedFile $file): JsonResponse
     {
         $model = $definition->model();
         $width = 200;
@@ -78,11 +79,11 @@ class Image extends Field
         $data = [];
         $data['sizes']['original'] = $fullFileName;
 
-        $link = $extension == 'svg' ? $fullFileName : glide($fullFileName, ['w' => $width, 'h' => $height]);
+        $link = $extension === 'svg' ? $fullFileName : glide($fullFileName, ['w' => $width, 'h' => $height]);
 
         $this->saveInImageStore($fileName, $link);
 
-        $returnView = request('type') == 'single_photo' ? 'admin::tb.html_image_single' : 'admin::tb.html_image';
+        $returnView = request('type') === 'single_photo' ? 'admin::tb.html_image_single' : 'admin::tb.html_image';
 
         return response()->json([
             'data'       => $data,
@@ -105,14 +106,14 @@ class Image extends Field
 
     private function getExtension(string $guessExtension): string
     {
-        if ($guessExtension == 'html' || $guessExtension == 'txt') {
+        if ($guessExtension === 'html' || $guessExtension === 'txt') {
             return 'svg';
         }
 
         return $guessExtension;
     }
 
-    private function saveInImageStore($fileName, $link)
+    private function saveInImageStore(string $fileName, string $link): void
     {
         if (! class_exists('\Vis\ImageStorage\Image')) {
             return;

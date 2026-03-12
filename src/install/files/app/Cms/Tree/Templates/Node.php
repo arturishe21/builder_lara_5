@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cms\Tree\Templates;
+namespace App\Cms_\Tree\Templates;
 
 use Vis\Builder\Http\Fields\{Checkbox, Froala, Id, Image, MultiImage, Text};
 use Vis\Builder\Http\Definitions\ResourceTree;

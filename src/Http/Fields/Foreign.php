@@ -81,7 +81,6 @@ class Foreign extends Field
         $optionsArray = $this->getOptions($definition);
 
         if ($this->fastEdit) {
-
             $idRecord = $this->getId();
             $field = $this->getNameFieldInBd();
 
@@ -92,9 +91,12 @@ class Foreign extends Field
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
         $record = $modelRelated::select(['id', $this->options->getKeyField() . ' as name']);
 
-        $recordThis = $record->rememberForever()
+     /*   $recordThis = $record->rememberForever()
                              ->cacheTags($this->getCacheArray($definition, $modelRelated))
-                             ->find($value);
+                             ->find($value);*/
+
+        $recordThis = $record
+            ->find($value);
 
         return optional($recordThis)->name;
     }

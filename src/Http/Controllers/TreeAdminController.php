@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class TreeAdminController extends Controller
 {
-    private $tree;
+    private TreeController $tree;
 
     public function __construct(CmsTree $tree)
     {
@@ -33,5 +33,4 @@ class TreeAdminController extends Controller
 
         return view('admin::tree.tree', compact('tree', 'parentIDs'));
     }
-
 }

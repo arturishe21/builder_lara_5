@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Vis\Builder\Http\ControllersNew\TreeController;
 use Vis\Builder\Http\Services\Listing;
 use Illuminate\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ResourceAdditionTree extends Resource
 {
@@ -25,7 +26,7 @@ class ResourceAdditionTree extends Resource
             compact('list', 'listingRecords', 'current', 'definition'));
     }
 
-    public function getListing()
+    public function getListing(): LengthAwarePaginator
     {
         $current = $this->model()->findOrFail(request('node', 1));
         $children = $current->children();
@@ -46,7 +47,7 @@ class ResourceAdditionTree extends Resource
         return $children;
     }
 
-    protected function getSingleRow($recordNew)
+    protected function getSingleRow($recordNew): string
     {
         $list = new Listing($this);
         $head = $list->head();
@@ -73,7 +74,7 @@ class ResourceAdditionTree extends Resource
         return (new TreeController($definition))->doChangePosition();
     }
 
-    public function saveAddForm($request): array
+    public function saveAddForm($request): JsonResponse
     {
         $result = parent::saveAddForm($request);
 

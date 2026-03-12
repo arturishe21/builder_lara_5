@@ -2,17 +2,21 @@
 
 namespace Vis\Builder\Http\ControllersNew;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Vis\Builder\Http\Definitions\BaseTree;
+use Vis\Builder\Http\Definitions\Resource;
 use Vis\Builder\Http\Services\Revisions;
 use Vis\Builder\Libs\GoogleTranslateForFree;
+use Illuminate\Http\JsonResponse;
 
 class TreeController
 {
-    protected $definition;
-    protected $model;
+    protected Resource|BaseTree $definition;
+    protected Model $model;
     protected $revision;
 
-    public function __construct($definition)
+    public function __construct(Resource|BaseTree $definition)
     {
         $this->definition = $definition;
         $this->model = $this->definition->model();
@@ -50,7 +54,6 @@ class TreeController
 
     public function handle()
     {
-
         if (in_array(request('query_type'),
             ['delete_foreign_row', 'get_html_foreign_definition', 'show_revisions', 'return_revisions'])) {
             $method = Str::camel(request('query_type'));
@@ -116,28 +119,28 @@ class TreeController
         ];
     }
 
-    private function getDefinitionModel($request)
+    private function getDefinitionModel(array $request)
     {
         $model = $this->model::find($request['id']);
 
         return $this->definition->templates()[$model->template];
     }
 
-    private function cloneRecordTree($request)
+    private function cloneRecordTree(array $request)
     {
         $definitionModel = $this->getDefinitionModel($request);
 
         return (new $definitionModel())->cloneTree($request['id']);
     }
 
-    private function getEditModalForm($request)
+    private function getEditModalForm(array $request)
     {
         $definitionModel = $this->getDefinitionModel($request);
 
         return (new $definitionModel())->showEditForm($request['id']);
     }
 
-    private function doChangeTemplate($request)
+    private function doChangeTemplate(array $request)
     {
         $tree = $this->model::find($request['pk']);
         $tree->template = $request['value'];
@@ -180,7 +183,7 @@ class TreeController
         ];
     }
 
-    private function getHtmlForeignDefinition($request)
+    private function getHtmlForeignDefinition(array $request)
     {
         $definition = resolve($this->getDefinitionModel($request));
 
@@ -190,7 +193,7 @@ class TreeController
         return $field->getTable($definition, $parseJsonData);
     }
 
-    private function deleteForeignRow($request)
+    private function deleteForeignRow(array $request)
     {
         $definition = resolve($this->getDefinitionModel($request));
 
@@ -200,19 +203,19 @@ class TreeController
         return $field->remove($definition, $parseJsonData);
     }
 
-    private function showRevisions($request)
+    private function showRevisions(array $request): JsonResponse
     {
         $definition = resolve($this->getDefinitionModel($request));
 
         return $this->revision->show($request['id'], $definition);
     }
 
-    private function returnRevisions($request)
+    private function returnRevisions(array $request): JsonResponse
     {
         return $this->revision->doReturn($request['id']);
     }
 
-    private function doFastChangeField()
+    private function doFastChangeField(): void
     {
         $tree = $this->model::find(request('pk'));
         $tree->is_active = request('value');
@@ -221,7 +224,7 @@ class TreeController
         $tree->clearCache();
     }
 
-    protected function checkPermissions()
+    protected function checkPermissions(): void
     {
         if (!app('user')->hasAccess(['tree.view'])) {
             abort(403);

@@ -80,7 +80,6 @@ var ForeignDefinition  = {
     },
 
     callbackForeignDefinition : function (foreignFieldId, foreignAttributes) {
-
         var attributesJson = jQuery.parseJSON(foreignAttributes);
 
         TableBuilder.doClosePopup(attributesJson.table);

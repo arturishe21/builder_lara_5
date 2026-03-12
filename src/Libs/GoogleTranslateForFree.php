@@ -2,24 +2,6 @@
 
 namespace Vis\Builder\Libs;
 
-/**
- * GoogleTranslateForFree.php.
- *
- * Class for free use Google Translator. With attempts connecting on failure and array support.
- *
- * @category Translation
- *
- * @author Yuri Darwin
- * @author Yuri Darwin <gkhelloworld@gmail.com>
- * @copyright 2018 Yuri Darwin
- * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License 3.0
- *
- * @version 1.0.0
- */
-
-/**
- * Main class GoogleTranslateForFree.
- */
 class GoogleTranslateForFree
 {
     /**
@@ -167,7 +149,7 @@ class GoogleTranslateForFree
                 return self::curlRequest($url, $fields, $fields_string, $i, $attempts);
             }
         } else {
-            return $result; //self::getBodyCurlResponse();
+            return $result;
         }
         curl_close($ch);
     }

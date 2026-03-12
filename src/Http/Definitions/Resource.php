@@ -3,6 +3,7 @@
 namespace Vis\Builder\Http\Definitions;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Vis\Builder\Http\Services\Listing;
 use Illuminate\Support\Arr;
@@ -14,6 +15,7 @@ use Vis\Builder\Http\Definitions\Traits\{CacheResource, CloneResource};
 use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use Vis\Builder\Http\Interfaces\ResourceInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Resource implements ResourceInterface
 {
@@ -167,7 +169,7 @@ class Resource implements ResourceInterface
         return $this->returnSuccess();
     }
 
-    public function changeOrder($requestOrder, $params): JsonResponse
+    public function changeOrder(string $requestOrder, string $params): JsonResponse
     {
         parse_str($requestOrder, $order);
         $pageThisCount = $params ?: 1;
@@ -188,17 +190,17 @@ class Resource implements ResourceInterface
         return $this->returnSuccess();
     }
 
-    public function showAddForm()
+    public function showAddForm(): JsonResponse
     {
         $definition = $this;
         $fields = $this->fields();
 
-        return [
+        return response()->json([
             view('admin::form.create', compact('definition', 'fields'))->render()
-        ];
+        ]);
     }
 
-    public function showEditForm(int $id): array
+    public function showEditForm(int $id): JsonResponse
     {
         $definition = $this;
 
@@ -218,13 +220,13 @@ class Resource implements ResourceInterface
             }
         }
 
-        return [
+        return response()->json([
             'html' => view('admin::form.edit', compact('definition', 'fields'))->render(),
             'status' => true
-        ];
+        ]);
     }
 
-    public function saveAddForm($request): array
+    public function saveAddForm($request): JsonResponse
     {
         $record = $this->model();
         $recordNew = $this->saveActive($record, $request);
@@ -232,23 +234,23 @@ class Resource implements ResourceInterface
         return $this->resultJsonSave($recordNew);
     }
 
-    public function saveEditForm($request): array
+    public function saveEditForm(array $request): JsonResponse
     {
         $recordNew = $this->updateForm($request);
 
         return $this->resultJsonSave($recordNew);
     }
 
-    private function resultJsonSave($recordNew): array
+    private function resultJsonSave($recordNew): JsonResponse
     {
-        return [
+        return response()->json([
             'id' => $recordNew->id,
             'html' => $this->getSingleRow($recordNew),
             'isTree' => is_subclass_of($recordNew, 'Vis\Builder\Tree')
-        ];
+        ]);
     }
 
-    protected function updateForm($request)
+    protected function updateForm(array $request): Model
     {
         $record = $this->model()->find($request['id']);
 
@@ -267,7 +269,7 @@ class Resource implements ResourceInterface
         return $rules;
     }
 
-    protected function saveActive($record, $request)
+    protected function saveActive(Model $record, array $request): Model
     {
         $fields = $this->getAllFields();
         Validator::make($request, $this->getRules($fields))->validate();
@@ -311,7 +313,7 @@ class Resource implements ResourceInterface
         if (isset($request['foreign_attributes'])) {
             $foreignAttributes = json_decode($request['foreign_attributes']);
 
-            if ($foreignAttributes->type_relation == 'morphMany') {
+            if ($foreignAttributes->type_relation === 'morphMany') {
                 $record->{$foreignAttributes->morph_type} = $foreignAttributes->model_base;
             }
         }
@@ -353,7 +355,6 @@ class Resource implements ResourceInterface
                         $data[$relationHasOne][$keyField] = $item['value'];
                     }
                 }
-
 
                 $record->$relationHasOne ?
                     $record->$relationHasOne()->update($data[$relationHasOne]) :
@@ -430,7 +431,7 @@ class Resource implements ResourceInterface
                 return '';
             }
 
-            $result = (new GoogleTranslateForFree())->translate($langDef, $slugLang, $phrase, 2);
+            $result = GoogleTranslateForFree::translate($langDef, $slugLang, $phrase, 2);
 
             $result = str_replace(['/ ', ' /'],'/', $result);
 
@@ -465,7 +466,7 @@ class Resource implements ResourceInterface
         ];
     }
 
-    protected function getSingleRow($recordNew)
+    protected function getSingleRow(Model $recordNew): string
     {
         $list = new Listing($this);
         $head = $list->head();
@@ -486,7 +487,7 @@ class Resource implements ResourceInterface
         )->render();
     }
 
-    public function getListing()
+    public function getListing(): LengthAwarePaginator
     {
         $this->checkPermissions();
 
@@ -507,12 +508,12 @@ class Resource implements ResourceInterface
         return $list;
     }
 
-    public function getListingForExel()
+    public function getListingForExel(): LengthAwarePaginator|Collection
     {
         $this->checkPermissions();
 
         $head = $this->head();
-        $list = $this->getCollection($getAllRecords = true);
+        $list = $this->getCollection(getAllRecords: true);
 
         $definition = $this;
 
@@ -529,14 +530,14 @@ class Resource implements ResourceInterface
         return $list;
     }
 
-    protected function checkPermissions()
+    protected function checkPermissions(): void
     {
         if (!app('user')->hasAccess([$this->getNameDefinition(). '.view'])) {
             abort(403);
         }
     }
 
-    public function getCollection($getAllRecords = false)
+    public function getCollection(bool $getAllRecords = false): LengthAwarePaginator|Collection
     {
         $collection = $this->model()->with($this->relations);
         $filter = $this->getFilter();
@@ -608,22 +609,22 @@ class Resource implements ResourceInterface
         return $collection->orderByRaw($orderBy)->paginate($perPage);
     }
 
-    protected function getRelationsHasOne($allFields, $field)
+    protected function getRelationsHasOne(array $allFields, string $field): ?string
     {
         if (Arr::exists($allFields, $field)) {
             return $allFields[$field]->getHasOne();
         }
 
-        return false;
+        return null;
     }
 
-    protected function getFieldName($allFields, $field)
+    protected function getFieldName(array $allFields, string $field): ?string
     {
         if (Arr::exists($allFields, $field)) {
             return $allFields[$field]->getNameFieldInBd();
         }
 
-        return false;
+        return null;
     }
 
     public function getFilterScope($collection)
@@ -640,7 +641,7 @@ class Resource implements ResourceInterface
         $this->filterScope = $scope;
     }
 
-    public function isTextField($allFields, $field)
+    public function isTextField(array $allFields, string $field): bool
     {
         return Arr::exists($allFields, $field) &&
             (get_class($allFields[$field]) == 'Vis\\Builder\\Http\\Fields\\Text' ||
@@ -649,7 +650,7 @@ class Resource implements ResourceInterface
             );
     }
 
-    public function head()
+    public function head(): Collection
     {
         $fields = $this->getAllFields();
 

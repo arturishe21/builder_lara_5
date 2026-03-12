@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cms\Definitions;
+namespace App\Cms_\Definitions;
 
 use Vis\Builder\Http\Fields\{Checkbox, File, ForeignAjax, Froala, Hidden, Id, Select, Text, Relations\Options, Textarea};
 use Vis\Builder\Http\Definitions\Resource;

@@ -2,15 +2,16 @@
 
 namespace Vis\Builder\Http\Fields;
 
+use Illuminate\Http\JsonResponse;
 use Vis\Builder\Http\Definitions\Resource;
 
 class ManyToManyAjax extends ManyToMany
 {
-    public function search(Resource $definition) : array
+    public function search(Resource $definition): JsonResponse
     {
-        return [
+        return response()->json([
             'results' => $this->getOptions($definition),
-        ];
+        ]);
     }
 
     public function getOptions(Resource $definition) : array

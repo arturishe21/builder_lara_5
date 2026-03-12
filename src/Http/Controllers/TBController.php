@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use App\Cms\Admin;
+use Illuminate\Http\RedirectResponse;
 
 class TBController extends Controller
 {
@@ -15,14 +16,14 @@ class TBController extends Controller
         return resolve($admin->login())->onLogin();
     }
 
-    public function changeSkin()
+    public function changeSkin(): void
     {
         Cookie::queue('skin', request('skin'), '100000');
     }
 
-    public function changeLanguage()
+    public function changeLanguage(): RedirectResponse
     {
-        Cookie::queue('lang_admin', request('lang'), '100000000');
+        Cookie::queue('language_cms', request('lang'), '100000000');
 
         return Redirect::back();
     }

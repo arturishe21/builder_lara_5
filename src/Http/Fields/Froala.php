@@ -12,7 +12,7 @@ class Froala extends Field
                         insertTable, undo, redo, clearFormatting, selectAll, html";
     private $options = '';
 
-    public function toolbar($value)
+    public function toolbar(string $value): self
     {
         $this->toolbar = $value;
 
@@ -26,7 +26,7 @@ class Froala extends Field
         return $this;
     }
 
-    public function getToolbar()
+    public function getToolbar(): string
     {
         return $this->toolbar;
     }
@@ -42,6 +42,6 @@ class Froala extends Field
 
         $value = $arrayValue->{$this->locale} ?? $this->getValue();
 
-        return  Str::limit(strip_tags($value), 70);
+        return Str::limit(strip_tags($value), 70);
     }
 }

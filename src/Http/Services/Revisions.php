@@ -19,9 +19,9 @@ class Revisions
         ]);
     }
 
-    public function doReturn(int $idRevision): JsonResponse
+    public function doReturn(int $revisionId): JsonResponse
     {
-        $thisRevision = Revision::find($idRevision);
+        $thisRevision = Revision::find($revisionId);
 
         $model = $thisRevision->revisionable_type;
         $key = $thisRevision->key;

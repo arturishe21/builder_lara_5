@@ -4,23 +4,20 @@ namespace Vis\Builder\Libs;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
+use Illuminate\Support\Facades\File;
 
 class Img
 {
-    private $size;
-    private $nameFile;
-    private $picturePath;
-    private $pathFolder;
-    private $width = null;
-    private $height = null;
-    private $quality = 90;
+    private string $size;
+    private string $nameFile;
+    private string $picturePath;
+    private string $pathFolder;
+    private ?int $width = null;
+    private ?int $height = null;
+    private int $quality = 90;
 
-    public function get($source, $options)
+    public function get(string $source, array $options)
     {
-        if (! $source) {
-            return;
-        }
-
         $this->setOptions($options);
         $source = '/'.ltrim($source, '/');
         $sourceArray = pathinfo($source);
@@ -40,11 +37,11 @@ class Img
         $this->pathFolder = $dirname.'/'.$this->size;
         $this->picturePath = $this->pathFolder.'/'.$this->nameFile;
 
-        if ($extension == 'svg') {
+        if ($extension === 'svg') {
             return $source;
         }
 
-        if (self::checkExistPicture()) {
+        if ($this->checkExistPicture()) {
             return $this->picturePath;
         }
 
@@ -53,7 +50,7 @@ class Img
             $img = $manager->read(public_path($source));
 
             if (config('builder.watermark.active') && file_exists(config('builder.watermark.path'))) {
-                $img->insert(
+                $img->place(
                     config('builder.watermark.path'),
                     config('builder.watermark.position'),
                     config('builder.watermark.x'),
@@ -63,7 +60,9 @@ class Img
 
             $this->createRatioImg($img, $options);
 
-            @mkdir(public_path($this->pathFolder));
+            if (!File::isDirectory(public_path($this->pathFolder))) {
+                mkdir(public_path($this->pathFolder));
+            }
 
             $pathSmallImg = public_path('/' . $this->picturePath);
             $img->save($pathSmallImg, $this->quality);
@@ -71,12 +70,13 @@ class Img
             OptmizationImg::run($this->picturePath);
 
             return $this->picturePath;
+
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    private function checkFileCorrect($sourceArray): bool
+    private function checkFileCorrect(array $sourceArray): bool
     {
         return !(!isset($sourceArray['extension']) || !isset($sourceArray['dirname']));
     }

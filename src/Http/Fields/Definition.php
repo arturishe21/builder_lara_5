@@ -3,6 +3,8 @@
 namespace Vis\Builder\Http\Fields;
 
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
+use Vis\Builder\Http\Definitions\Resource;
 
 class Definition extends Field
 {
@@ -11,7 +13,7 @@ class Definition extends Field
     protected $onlyForm = true;
     protected $typeRelative;
 
-    public function hasMany($relation, $classDefinitionRelation = null)
+    public function hasMany($relation, $classDefinitionRelation = null): self
     {
         $this->relation = $relation;
         $this->definitionRelation = $classDefinitionRelation;
@@ -20,7 +22,7 @@ class Definition extends Field
         return $this;
     }
 
-    public function morphMany($relation, $classDefinitionRelation = null)
+    public function morphMany($relation, $classDefinitionRelation = null): self
     {
         $this->relation = $relation;
         $this->definitionRelation = $classDefinitionRelation;
@@ -29,7 +31,7 @@ class Definition extends Field
         return $this;
     }
 
-    public function getDefinitionRelation($definition)
+    public function getDefinitionRelation(Resource $definition)
     {
         if ($this->definitionRelation) {
             return new $this->definitionRelation();
@@ -41,7 +43,7 @@ class Definition extends Field
         return new $fullPathClass();
     }
 
-    public function getAttributes($definition)
+    public function getAttributes(Resource $definition): string
     {
         $definitionRelation = $this->getDefinitionRelation($definition);
 
@@ -70,12 +72,12 @@ class Definition extends Field
         return json_encode($attributes);
     }
 
-    private function getFieldForeignKeyName($definition)
+    private function getFieldForeignKeyName(Resource $definition)
     {
         return $definition->model()->{$this->relation}()->getForeignKeyName();
     }
 
-    public function getTable($definition, $parseJsonData)
+    public function getTable(Resource $definition, array $parseJsonData): JsonResponse
     {
         $attributes = json_encode($parseJsonData);
         $definitionRelation = $this->getDefinitionRelation($definition);
@@ -110,14 +112,14 @@ class Definition extends Field
         $isSortable = $this->getDefinitionRelation($definition)->getIsSortable();
 
 
-        return [
+        return response()->json([
             'html' => view('admin::form.fields.partials.input_definition_table_data',
                             compact('definitionRelation', 'fieldsDefinition', 'list', 'attributes', 'urlAction', 'isSortable', 'perPage', 'count'))->render(),
             'count_records' => 0
-        ];
+        ]);
     }
 
-    public function remove($definition, $parseJsonData)
+    public function remove(Resource $definition, $parseJsonData): JsonResponse
     {
         $this->getDefinitionRelation($definition)->model()->destroy(request('idDelete'));
 
@@ -126,7 +128,7 @@ class Definition extends Field
         return $this->getTable($definition, $parseJsonData);
     }
 
-    protected function head($definition)
+    protected function head(Resource $definition)
     {
         $fields = $this->getDefinitionRelation($definition)->getAllFields();
 

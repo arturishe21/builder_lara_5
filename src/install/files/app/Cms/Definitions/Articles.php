@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cms\Definitions;
+namespace App\Cms_\Definitions;
 
 use Vis\Builder\Http\Services\Actions;
 use App\Models\Article;

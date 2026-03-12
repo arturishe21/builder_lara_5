@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cms\Definitions;
+namespace App\Cms_\Definitions;
 
 use App\Models\Group;
 use Vis\Builder\Http\Services\Actions;

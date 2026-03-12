@@ -62,14 +62,13 @@ class CreateImgWebp extends Command
         foreach ($folders as $folder) {
             if (strpos($folder, 'x')) {
                 $this->foldersAll[] = $folder;
-
             }
 
             $this->getFolders($folder);
         }
     }
 
-    private function convert($file)
+    private function convert($file): void
     {
         $newFile = str_replace(['.png', '.jpg', '.jpeg'], '.webp', $file);
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Cms\Tree;
+namespace App\Cms_\Tree;
 
-use App\Cms\Tree\Templates\Contacts;
-use App\Cms\Tree\Templates\Node;
+use App\Cms_\Tree\Templates\Contacts;
+use App\Cms_\Tree\Templates\Node;
 use Vis\Builder\Http\Definitions\BaseTree;
 
 class Tree extends BaseTree

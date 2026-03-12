@@ -3,6 +3,7 @@
 namespace Vis\Builder\Http\Definitions;
 
 use App\Models\Tree;
+use Illuminate\Http\JsonResponse;
 
 class ResourceTree extends Resource
 {
@@ -16,7 +17,7 @@ class ResourceTree extends Resource
         return 'tree';
     }
 
-    public function getTitleDefinition()
+    public function getTitleDefinition(): string
     {
         if ($this->titleDefinition) {
             return $this->titleDefinition;
@@ -25,16 +26,16 @@ class ResourceTree extends Resource
         return parent::getNameDefinition();
     }
 
-    public function saveEditForm($request): array
+    public function saveEditForm(array $request): JsonResponse
     {
         $record = $this->model()->withCount('children')->find($request['id']);
         $item = $this->saveActive($record, $request);
         $definition = $this;
 
-        return [
+        return response()->json([
             'id' => $item->id,
             'html' => view('admin::tree.row', compact('item', 'definition'))->render()
-        ];
+        ]);
     }
 
     public function getAction(): string

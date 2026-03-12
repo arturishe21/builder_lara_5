@@ -3,6 +3,7 @@
 namespace Vis\Builder\Http\Fields;
 
 use Illuminate\Support\Str;
+use Vis\Builder\Http\Definitions\Resource;
 use Vis\Builder\Models\Language;
 
 class Field
@@ -98,7 +99,7 @@ class Field
         return $this;
     }
 
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->classNameField ? 'section_field '. $this->classNameField : '';
     }
@@ -110,15 +111,15 @@ class Field
 
     public function getValue()
     {
-        return $this->value ? $this->value : $this->defaultValue;
+        return $this->value ?: $this->defaultValue;
     }
 
-    public function checkAutoTranslate()
+    public function checkAutoTranslate(): bool
     {
         return $this->isAutoTranslate;
     }
 
-    public function isOnlyForm()
+    public function isOnlyForm(): bool
     {
         return $this->onlyForm;
     }
@@ -128,12 +129,12 @@ class Field
         return $this->filter;
     }
 
-    public function getValueLanguage($postfix)
+    public function getValueLanguage(string $postfix): string
     {
         return $this->valueLanguage->$postfix ?? '';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return __cms($this->name);
     }
@@ -392,12 +393,12 @@ class Field
         return mb_convert_case($query, MB_CASE_TITLE, "UTF-8");
     }
 
-    public function isManyToMany()
+    public function isManyToMany(): bool
     {
         return $this->isManyToMany;
     }
 
-    public function hasOne($relation)
+    public function hasOne($relation): self
     {
         $this->relationHasOne = $relation;
 
@@ -409,7 +410,7 @@ class Field
         return $this->relationHasOne;
     }
 
-    public function morphOne($relation)
+    public function morphOne($relation): self
     {
         $this->relationMorphOne = $relation;
 
@@ -428,7 +429,7 @@ class Field
         return $request[$nameField];
     }
 
-    public function fastSave($definition, $request)
+    public function fastSave(Resource $definition, array $request): void
     {
         $model = $definition->model()->find($request['pk']);
         $model->{$request['ident']} = $request['value'];
@@ -437,18 +438,16 @@ class Field
         $definition->clearCache();
     }
 
-    public function hide($flag = true)
+    public function hide(bool $flag = true): self
     {
         $this->isHide = $flag;
 
         return $this;
     }
 
-    public function isHide()
+    public function isHide(): bool
     {
         return $this->isHide;
     }
-
-
 }
 

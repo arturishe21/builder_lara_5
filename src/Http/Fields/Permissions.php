@@ -35,12 +35,11 @@ class Permissions extends Field
 
     private function generatePermissions(): array
     {
-        $permissionsMenu = (new Admin())->menu();
+        $permissionsMenu = app(Admin::class)->menu();
 
         $permissions['Дооступ в cms'] = [
             "admin.access" => "Да"
         ];
-
 
         foreach ($permissionsMenu as $permission) {
             if (isset($permission['link']) && isset($permission['title'])) {

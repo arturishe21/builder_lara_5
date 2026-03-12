@@ -83,7 +83,6 @@ class BuilderServiceProvider extends ServiceProvider
             'admin::tree.partials.clone',
             'admin::tree.partials.revisions',
             'admin::tree.partials.delete',
-            'admin::tree.partials.constructor',
             ], ActivitiesTree::class
         );
 
@@ -101,10 +100,10 @@ class BuilderServiceProvider extends ServiceProvider
 
     public function setupRoutes(Router $router): void
     {
-        include __DIR__.'/Http/route_frontend.php';
-        include __DIR__.'/Http/routers_translation_cms.php';
-        include __DIR__.'/Http/routers.php';
-        include __DIR__.'/Http/routers_translation.php';
+        include __DIR__.'/Http/Routers/frontend.php';
+        include __DIR__.'/Http/Routers/translation_cms.php';
+        include __DIR__.'/Http/Routers/main.php';
+        include __DIR__.'/Http/Routers/translation.php';
     }
 
     public function register(): void

@@ -2,6 +2,8 @@
 
 namespace Vis\Builder\Http\Fields;
 
+use Illuminate\Http\JsonResponse;
+
 class ForeignAjax extends Foreign
 {
     public function setValue($item)
@@ -56,7 +58,7 @@ class ForeignAjax extends Foreign
         return $selectOption->{$this->options->getKeyField()};
     }
 
-    public function search($definition)
+    public function search($definition): JsonResponse
     {
         $keyField = $this->options->getKeyField();
         $modelRelated = $definition->model()->{$this->options->getRelation()}()->getRelated();
@@ -72,8 +74,8 @@ class ForeignAjax extends Foreign
 
         $result = $modelRelated->take(10)->get(['id', $keyField . ' as name'])->toArray();
 
-        return [
+        return response()->json([
             'results' => $result
-        ];
+        ]);
     }
 }

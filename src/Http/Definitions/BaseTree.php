@@ -36,7 +36,7 @@ class BaseTree
         }
     }
 
-    private function filterTemplates($templatesModels)
+    private function filterTemplates(array $templatesModels): array
     {
         $idNode = request('node', 1);
         $info = $this->model::find($idNode);
@@ -56,7 +56,7 @@ class BaseTree
         $this->model()->clearCache();
     }
 
-    public function definition()
+    public function definition(): string
     {
         return \App\Cms\Definitions\Tree::class;
     }

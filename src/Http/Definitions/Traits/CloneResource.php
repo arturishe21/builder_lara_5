@@ -15,7 +15,7 @@ trait CloneResource
         return $this->returnSuccess();
     }
 
-    private function cloneRecursively($id, $parentId = ''): void
+    private function cloneRecursively(int $id, int $parentId = 0): void
     {
         $model = $this->model();
 

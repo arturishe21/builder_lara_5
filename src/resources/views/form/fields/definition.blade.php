@@ -14,7 +14,6 @@
                     ForeignDefinition.callbackForeignDefinition('{{request('id')}}', '{!! $field->getAttributes($definition) !!}', 'actions');
                 </script>
             </div>
-
         </div>
     </div>
 </section>

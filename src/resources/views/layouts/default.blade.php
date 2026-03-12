@@ -65,9 +65,7 @@
             @yield('headline')
             <div id="content">
                 <div class="row" id="content_admin">
-
                     @yield('main')
-
                 </div>
             </div>
         </div>

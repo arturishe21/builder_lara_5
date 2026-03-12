@@ -9,7 +9,7 @@ class ChangeLang
     public function compose(View $view)
     {
         $languages = config("builder.translations.cms.languages");
-        $thisLang = request()->cookie('lang_admin') ?: array_key_first(config('builder.translations.cms.languages'));
+        $thisLang = request()->cookie('language_cms') ?: config('builder.translations.cms.language_default');
 
         $view->with(compact( 'languages', 'thisLang'));
     }

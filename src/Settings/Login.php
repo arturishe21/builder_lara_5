@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 class Login
 {
     protected string $backgroundUrl = '/packages/vis/builder/img/vis-admin-lock.jpg';
-    protected $css;
+    protected string $css = '';
 
     public function onLogin(): RedirectResponse
     {
@@ -25,7 +25,7 @@ class Login
         return $this->backgroundUrl;
     }
 
-    public function getCss()
+    public function getCss(): string
     {
         return $this->css;
     }
