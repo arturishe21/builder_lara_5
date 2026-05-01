@@ -11,7 +11,7 @@ use Vis\Builder\Http\ViewComposers\Languages;
 use Vis\Builder\Http\ViewComposers\LayoutDefault;
 use Vis\Builder\Http\ViewComposers\Navigation;
 use Vis\Builder\Http\ViewComposers\NavigationBadge;
-use Vis\Builder\Models\TranslationsPhrases;
+use Vis\Builder\Models\TranslationsPhrase;
 use Vis\Builder\Http\Middleware\Authenticate;
 use Vis\Builder\Http\Middleware\AuthenticateFrontend;
 use Vis\Builder\Http\Middleware\LocalizationMiddlewareRedirect;
@@ -146,7 +146,7 @@ class BuilderServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             'arrayTranslate', function () {
-                return TranslationsPhrases::fillCacheTrans();
+                return TranslationsPhrase::fillCacheTrans();
             }
         );
 

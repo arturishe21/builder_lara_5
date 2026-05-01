@@ -2,7 +2,7 @@
 
 namespace Vis\Builder\Services;
 
-use Vis\Builder\Models\TranslationsPhrases;
+use Vis\Builder\Jobs\CreateTranslateForPhrase;
 use Illuminate\Support\Facades\Lang;
 
 class Translate
@@ -24,7 +24,7 @@ class Translate
 
         $phrase = $this->checkExistsTranslate($phrase)
             ? $this->collectionTranslate[$phrase][$this->language]
-            : TranslationsPhrases::generateTranslation($phrase, $this->language);
+            : $this->generateTranslation($phrase);
 
         return $this->replaceArrayPhrase($phrase, $replacePhrase);
     }
@@ -42,6 +42,13 @@ class Translate
         if (count($replacePhrase)) {
             $phrase = str_replace(array_keys($replacePhrase), array_values($replacePhrase), $phrase);
         }
+
+        return $phrase;
+    }
+
+    private function generateTranslation(string $phrase): string
+    {
+        CreateTranslateForPhrase::dispatch($phrase);
 
         return $phrase;
     }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Vis\Builder\Http\Requests\Translate;
 use Vis\Builder\Models\Translations;
-use Vis\Builder\Models\TranslationsPhrases;
+use Vis\Builder\Models\TranslationsPhrase;
 
 class TranslateController extends Controller
 {
@@ -19,7 +19,7 @@ class TranslateController extends Controller
             return $this->search();
         }
 
-        $allPhrases = TranslationsPhrases::orderBy('id', 'desc')->paginate($this->countRecordsOnPage);
+        $allPhrases = TranslationsPhrase::orderBy('id', 'desc')->paginate($this->countRecordsOnPage);
 
         $view = Request::ajax() ? 'admin::translations.part.table_center' : 'admin::translations.trans';
 
@@ -35,7 +35,7 @@ class TranslateController extends Controller
     {
         $querySearch = trim(request('search_q'));
 
-        $allPhrases = TranslationsPhrases::leftJoin('translations', 'translations.id_translations_phrase', '=', 'translations_phrases.id')
+        $allPhrases = TranslationsPhrase::leftJoin('translations', 'translations.translations_phrase_id', '=', 'translations_phrases.id')
             ->select('translations_phrases.*')
             ->where(function ($query) use ($querySearch) {
                 $query->where('phrase', 'like', '%'.$querySearch.'%')
@@ -64,19 +64,19 @@ class TranslateController extends Controller
      */
     public function saveTranslate(Translate $request)
     {
-        $model = TranslationsPhrases::create([
+        $model = TranslationsPhrase::create([
             'phrase' => strip_tags(str_replace('"', '', trim($request->get('phrase'))))
         ]);
 
         foreach (request()->get('translation') as $slugTranslate => $translate) {
                 Translations::create([
-                    'id_translations_phrase' => $model->id,
+                    'translations_phrase_id' => $model->id,
                     'lang' => $slugTranslate,
                     'translate' => trim($translate),
                 ]);
         }
 
-        TranslationsPhrases::reCacheTrans();
+        TranslationsPhrase::reCacheTrans();
 
         return Response::json(
             [
@@ -93,9 +93,9 @@ class TranslateController extends Controller
      */
     public function remove()
     {
-        TranslationsPhrases::find(request('id'))->delete();
+        TranslationsPhrase::find(request('id'))->delete();
 
-        TranslationsPhrases::reCacheTrans();
+        TranslationsPhrase::reCacheTrans();
 
         return Response::json(['status' => 'ok']);
     }
@@ -113,7 +113,7 @@ class TranslateController extends Controller
 
         if ($id && $phrase && $lang) {
 
-            $phraseChange = Translations::where('id_translations_phrase', $id)->where('lang', $lang)->first();
+            $phraseChange = Translations::where('translations_phrase_id', $id)->where('lang', $lang)->first();
 
             if ($phraseChange) {
                 $phraseChange->translate = $phrase;
@@ -121,7 +121,7 @@ class TranslateController extends Controller
             } else {
                 Translations::create(
                     [
-                        'id_translations_phrase' => $id,
+                        'translations_phrase_id' => $id,
                         'lang'                   => $lang,
                         'translate'              => $phrase,
                     ]
@@ -129,12 +129,12 @@ class TranslateController extends Controller
             }
         }
 
-        TranslationsPhrases::reCacheTrans();
+        TranslationsPhrase::reCacheTrans();
     }
 
     public function getJs($lang, $withoutHeader = false)
     {
-        $data = TranslationsPhrases::fillCacheTrans();
+        $data = TranslationsPhrase::fillCacheTrans();
 
         $translates = [];
         foreach ($data as $phrase => $translate) {

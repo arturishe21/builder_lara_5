@@ -422,11 +422,16 @@ class Field
         return $this->relationMorphOne;
     }
 
+    public function getDefault()
+    {
+        return $this->defaultValue;
+    }
+
     public function prepareSave($request)
     {
         $nameField = $this->getNameField();
 
-        return $request[$nameField];
+        return $request[$nameField] ?? $this->getDefault();
     }
 
     public function fastSave(Resource $definition, array $request): void

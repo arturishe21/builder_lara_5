@@ -10,7 +10,7 @@ class TranslationsCms extends Model
 {
     protected $table = 'translations_cms';
     public $timestamps = false;
-    protected $fillable = ['lang', 'translate', 'translations_phrases_cms_id'];
+    protected $guarded = ['id'];
 
     public function createNewTranslate(string $phrase): void
     {

@@ -8,11 +8,18 @@ class ForeignAjax extends Foreign
 {
     public function setValue($item)
     {
+        $this->value = '';
+        if ($this->relationHasOne) {
+            $item = $item->{$this->relationHasOne};
+        }
+
+        if (!$item) {
+            return;
+        }
+
         $relation = $item->{$this->options->getRelation()}()
             ->select([ "id", "{$this->options->getKeyField()} as name"])
             ->first();
-
-        $this->value = '';
 
         if ($relation) {
             $this->value = $relation->name;
@@ -37,6 +44,11 @@ class ForeignAjax extends Foreign
         if ($value) {
             $item = $model::find($value);
             if ($item) {
+
+                if ($this->relationHasOne) {
+                    $item = $item->{$this->relationHasOne};
+                }
+
                 $related = $item->{$this->options->getRelation()}()
                     ->select([ "id", "{$this->options->getKeyField()} as name"])
                     ->first();

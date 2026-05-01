@@ -79,7 +79,8 @@ class ResourceAdditionTree extends Resource
         $result = parent::saveAddForm($request);
 
         $node = request('__node') ? : 1;
-        $thisRecord = $this->model()->find($result['id']);
+        $resultArray = $result->getData(true);
+        $thisRecord = $this->model()->find($resultArray['id']);
 
         $thisRecord->parent_id = $node;
         $thisRecord->save();

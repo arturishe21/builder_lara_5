@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Vis\Builder\Http\Fields\{Definition, Password, Virtual};
 use Illuminate\Support\Facades\Validator;
 use Vis\Builder\Http\Services\Actions;
+use Vis\Builder\Jobs\CreateTranslateForResource;
 use Vis\Builder\Libs\GoogleTranslateForFree;
 use Vis\Builder\Http\Definitions\Traits\{CacheResource, CloneResource};
 use Illuminate\Support\Str;
@@ -273,13 +274,20 @@ class Resource implements ResourceInterface
     {
         $fields = $this->getAllFields();
         Validator::make($request, $this->getRules($fields))->validate();
+        $defaultLanguage = defaultLanguage();
+
+        $fieldsForTranslate = [];
 
         foreach ($fields as $field) {
             $nameField = $field->getNameField();
-            if ($nameField != 'id') {
+            if ($nameField !== 'id') {
 
-                if ($field->getLanguage() && !$field->getMorphOne() && !$field->getHasOne()) {
-                    $this->saveLanguage($field, $record, $request);
+                if ($field->getLanguage()) {
+                    if ($this->needToTranslate($request[$nameField], $defaultLanguage)) {
+                        $fieldsForTranslate[$nameField] = $request[$nameField] ?? '';
+                    }
+
+                    $record->$nameField = json_encode($request[$nameField]);
                     continue;
                 }
 
@@ -319,6 +327,10 @@ class Resource implements ResourceInterface
         }
 
         $record->save();
+
+        if (count($fieldsForTranslate)) {
+            CreateTranslateForResource::dispatch($record, $this, $fieldsForTranslate);
+        }
 
         if (count($this->updateManyToManyList)) {
             foreach ($this->updateManyToManyList as $item) {
@@ -403,19 +415,19 @@ class Resource implements ResourceInterface
         return $record;
     }
 
-    protected function saveLanguage($field, &$record, $request)
+    private function needToTranslate(array $fields, string $defaultLanguage): bool
     {
-        $nameField = $field->getNameField();
-
-        foreach ($field->getLanguage() as $langPrefix) {
-
-            $translate = $request[$nameField][$langPrefix->language] ?:
-                $this->getTranslate($field, $langPrefix->language, $request[$nameField][config('app.locale')]);
-
-            $translateArray[$langPrefix->language] = $translate;
+        if (empty($fields[$defaultLanguage])) {
+            return false;
         }
 
-        $record->$nameField = json_encode($translateArray);
+        foreach ($fields as $field) {
+            if (!$field) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getTranslate($field, string $slugLang, ?string $phrase = null): string

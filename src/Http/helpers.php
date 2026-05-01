@@ -94,7 +94,7 @@ if (! function_exists('print_arr')) {
 
 if (! function_exists('glide')) {
 
-    function glide(string $source, array $options = [])
+    function glide(?string $source = null, array $options = [])
     {
         if (
             env('IMG_PLACEHOLDER', true)
@@ -104,6 +104,10 @@ if (! function_exists('glide')) {
             $height = $options['h'] ?? 100;
 
             return "//via.placeholder.com/{$width}x{$height}";
+        }
+
+        if (! $source) {
+            $source = setting('no-foto');
         }
 
         return (new Img())->get($source, $options);

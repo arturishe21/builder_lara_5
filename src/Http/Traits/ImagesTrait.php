@@ -35,10 +35,6 @@ trait ImagesTrait
             $picture = $this->t('picture');
         }
 
-        if (! $picture) {
-            $picture = setting('no-foto');
-        }
-
         $size = [];
         if ($width) {
             $size['w'] = $width;
