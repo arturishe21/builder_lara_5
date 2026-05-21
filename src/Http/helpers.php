@@ -36,11 +36,13 @@ if (! function_exists('languagesOfSite')) {
 }
 
 if (! function_exists('setting')) {
-    function setting(string $slug)
+    function setting(string $slug): mixed
     {
-        return Cache::tags('settings')->rememberForever($slug . App::getLocale(), function() use ($slug) {
-            return (new Settings())->model()->getValue($slug);
+        $value = Cache::tags('settings')->rememberForever($slug . App::getLocale(), function() use ($slug) {
+            return app(Settings::class)->model()->getValue($slug) ?? '__NULL__';
         });
+
+        return $value === '__NULL__' ? null : $value;
     }
 }
 

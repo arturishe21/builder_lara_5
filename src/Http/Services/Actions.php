@@ -222,6 +222,15 @@ class Actions
         return $this->responseSuccess();
     }
 
+    private function fastSave(array $request): JsonResponse
+    {
+        $model = $this->definition->model()->find($request['id']);
+        $model->{$request['name']} = $request['value'];
+        $model->save();
+
+        return $this->responseSuccess();
+    }
+
     private function search(array $request): JsonResponse
     {
         session()->put($this->definition->getSessionKeyFilter(), $request);

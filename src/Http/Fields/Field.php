@@ -15,7 +15,7 @@ class Field
     public $value = '';
     protected $valueLanguage;
     protected $isSortable = false;
-    protected $defaultValue;
+    protected $defaultValue = '';
     protected $placeholderValue;
     protected $rules = null;
     protected $nullValue;

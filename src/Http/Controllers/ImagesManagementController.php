@@ -10,12 +10,12 @@ use Vis\Builder\Http\Requests\UploadPictureRequest;
 
 class ImagesManagementController extends Controller
 {
-    private Resource $definition;
+    private ?Resource $definition;
 
     public function __construct()
     {
         $pathDefinition = request('path_model');
-        $this->definition = new $pathDefinition();
+        $this->definition = $pathDefinition ? new $pathDefinition() : null;
     }
 
     public function upload(UploadPictureRequest $request)

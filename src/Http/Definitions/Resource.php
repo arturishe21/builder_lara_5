@@ -282,7 +282,7 @@ class Resource implements ResourceInterface
             $nameField = $field->getNameField();
             if ($nameField !== 'id') {
 
-                if ($field->getLanguage()) {
+                if ($field->getLanguage() && !$field->getMorphOne() && !$field->getHasOne()) {
                     if ($this->needToTranslate($request[$nameField], $defaultLanguage)) {
                         $fieldsForTranslate[$nameField] = $request[$nameField] ?? '';
                     }
